@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendações</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-card wide-card">
+        <header class="results-header" style="text-align: center;">
+            <h2 id="tituloRecomendacao">Recomendações para:<br>Carregando...</h2>
+        </header>
+
+        <div class="book-list" id="booksContainer">
+            <!-- Os livros do MySQL aparecerão aqui -->
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/" class="btn-secondary">Fazer Nova Busca</a>
+        </div>
+    </div>
+
+    <!-- Tela/Modal de Detalhes do Livro[cite: 1] -->
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <button class="btn-back" onclick="fecharModal()">⬅ Voltar</button>
+            <h2 style="text-align: center;">Informações do Livro</h2>
+            
+            <h1 id="modalTitle" style="text-align: center;">Título Livro</h1>
+            <p id="modalAuthor" style="text-align: center;">Autor: Nome do autor do Livro</p>
+            
+            <div style="text-align: center; margin: 15px 0;">
+                <span class="badge">Tag Emocional</span>
+            </div>
+
+            <button class="btn-primary" id="btnLerLivro" style="width: 100%;">🔗 Ler livro</button>
+            
+            <p><strong>Gênero:</strong> <span id="modalGenre">Gênero do livro</span></p>
+            <p><strong>Sinopse:</strong> <span id="modalSynopsis">Sinopse aqui.</span></p>
+        </div>
+    </div>
+
+    <!-- Script para buscar os dados no banco e fazer a lógica funcionar -->
+    <script>
+        function abrirModal(titulo, autor, genero, sinopse, link) {
+            document.getElementById('modalTitle').innerText = titulo;
+            document.getElementById('modalAuthor').innerText = 'Autor: ' + autor;
+            document.getElementById('modalGenre').innerText = genero;
+            document.getElementById('modalSynopsis').innerText = sinopse;
+            
+            // Configura o botão de ler livro com o alerta exigido no PDF[cite: 1]
+            const btnLer = document.getElementById('btnLerLivro');
+            btnLer.onclick = function() {
+                const confirmar = confirm("Você será direcionado para um link externo para poder ler o seu livro.");
+                if (confirmar) {
+                    window.open(link, '_blank');
+                }
+            };
+            
+            document.getElementById('bookModal').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('bookModal').style.display = 'none';
+        }
+
+        // Simula a busca no backend (você já fez a rota /livros)
+        // Simula a busca no backend e preenche os cards
+window.addEventListener('DOMContentLoaded', async () => {
+    // 1. Pega o que o usuário escolheu na tela anterior
+    const urlParams = new URLSearchParams(window.location.search);
+    const humor = urlParams.get('humor');
+    const intencao = urlParams.get('intencao');
+    
+    // Se não tiver escolhido, avisa
+    if(!humor || !intencao) {
+        document.getElementById('tituloRecomendacao').innerHTML = "Por favor, volte e escolha uma opção.";
+        return;
+    }
+
+    document.getElementById('tituloRecomendacao').innerHTML = `Recomendações para:<br>${humor} | ${intencao}`;
+
+    try {
+        // 2. Pede os dados para o seu Node.js (aquela mesma rota que gerou o JSON)
+        const response = await fetch('/recomendar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ humor: humor, intencao: intencao })
+        });
+        
+        const data = await response.json();
+        const livros = data.recomendacoes; // Pega só os livros da resposta
+
+        const container = document.getElementById('booksContainer');
+        container.innerHTML = ''; // Limpa a tela
+
+        // 3. Se não achar livro nenhum
+        if (!livros || livros.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding: 20px;">Nenhum livro encontrado para esta combinação.</p>';
+            return;
+        }
+
+        // 4. Se achar, cria os cartões HTML bonitinhos
+        // 4. Se achar, cria os cartões HTML bonitinhos
+        livros.forEach(livro => {
+            const div = document.createElement('div');
+            div.className = 'book-item';
+            
+            // Monta os textos
+            div.innerHTML = `
+                <div class="book-details" style="border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 10px;">
+                    <h3>${livro.titulo}</h3>
+                    <p>Autor: ${livro.autor}</p>
+                    <p>Ano: ${livro.ano_publicacao}</p>
+                </div>
+            `;
+
+            // Cria o botão de forma isolada para as aspas da sinopse não quebrarem o HTML
+            const btnDetalhes = document.createElement('button');
+            btnDetalhes.className = 'btn-secondary';
+            btnDetalhes.innerText = 'Ver Detalhes';
+            
+            // Atrela a função direto ao clique do botão
+            btnDetalhes.onclick = function() {
+                abrirModal(livro.titulo, livro.autor, livro.genero, livro.sinopse, livro.link_leitura);
+            };
+
+            // Adiciona o botão dentro do card
+            div.querySelector('.book-details').appendChild(btnDetalhes);
+            
+            container.appendChild(div);
+        });
+          
+    } catch (err) {
+        console.error("Erro ao buscar as recomendações:", err);
+        document.getElementById('booksContainer').innerHTML = '<p>Erro ao carregar os livros do banco de dados.</p>';
+    }
+});
+    </script>
+</body>
+</html>

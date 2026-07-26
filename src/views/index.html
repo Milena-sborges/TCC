@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioterapia - Início</title>
+    <!-- Vincula o arquivo CSS externo -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-card">
+        <header class="app-header">
+            
+            <h1>Recomendação de livro</h1>
+            <p class="subtitle">Encontre o livro certo para o seu momento emocional</p>
+        </header>
+
+        <form action="/recomendacoes.html" method="GET" class="form-flow">
+            <!-- Grupo 1: Humor -->
+            <div class="form-group">
+                <label class="group-title">O que você está sentindo hoje?</label>
+                <div class="radio-grid">
+                    <div class="radio-option">
+                        <input type="radio" id="humor-tristeza" name="humor" value="tristeza" required>
+                        <label for="humor-tristeza">😢 Tristeza</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="humor-felicidade" name="humor" value="felicidade">
+                        <label for="humor-felicidade">😄 Felicidade</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="humor-tedio" name="humor" value="tedio">
+                        <label for="humor-tedio">🥱 Tédio</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="humor-neutro" name="humor" value="neutro">
+                        <label for="humor-neutro">😐 Neutro</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="humor-ansiedade" name="humor" value="ansiedade">
+                        <label for="humor-ansiedade">😰 Ansiedade</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grupo 2: Intenção -->
+            <div class="form-group">
+                <label class="group-title">O que você busca nesta leitura?</label>
+                <div class="radio-vertical">
+                    <div class="radio-option">
+                        <input type="radio" id="intencao-manter" name="intencao" value="manter" required> 
+                        <label for="intencao-manter">Manter o meu estado emocional</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="intencao-alterar" name="intencao" value="alterar"> 
+                        <label for="intencao-alterar"> Alterar o meu estado emocional</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">Buscar Recomendação</button>
+        </form>
+    </div>
+</body>
+</html>
