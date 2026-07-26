@@ -4,24 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioterapia - Início</title>
-    <!-- Vincula o arquivo CSS externo -->
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Caixa de mensagem de erro */
+        .mensagem-erro {
+            background-color: #ffe6e6;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+            display: none; /* Escondido até que falte algo */
+        }
+    </style>
 </head>
 <body>
     <div class="app-card">
         <header class="app-header">
-            
             <h1>Recomendação de livro</h1>
             <p class="subtitle">Encontre o livro certo para o seu momento emocional</p>
         </header>
 
-        <form action="/recomendacoes.html" method="GET" class="form-flow">
+        <!-- Mensagem de erro dinâmica -->
+        <div id="mensagemErro" class="mensagem-erro"></div>
+
+        <form action="/recomendacoes.html" method="GET" class="form-flow" id="formRecomendacao">
             <!-- Grupo 1: Humor -->
             <div class="form-group">
                 <label class="group-title">O que você está sentindo hoje?</label>
                 <div class="radio-grid">
                     <div class="radio-option">
-                        <input type="radio" id="humor-tristeza" name="humor" value="tristeza" required>
+                        <input type="radio" id="humor-tristeza" name="humor" value="tristeza">
                         <label for="humor-tristeza">😢 Tristeza</label>
                     </div>
                     <div class="radio-option">
@@ -48,12 +63,12 @@
                 <label class="group-title">O que você busca nesta leitura?</label>
                 <div class="radio-vertical">
                     <div class="radio-option">
-                        <input type="radio" id="intencao-manter" name="intencao" value="manter" required> 
+                        <input type="radio" id="intencao-manter" name="intencao" value="manter"> 
                         <label for="intencao-manter">Manter o meu estado emocional</label>
                     </div>
                     <div class="radio-option">
                         <input type="radio" id="intencao-alterar" name="intencao" value="alterar"> 
-                        <label for="intencao-alterar"> Alterar o meu estado emocional</label>
+                        <label for="intencao-alterar">Alterar o meu estado emocional</label>
                     </div>
                 </div>
             </div>
@@ -61,5 +76,33 @@
             <button type="submit" class="btn-primary">Buscar Recomendação</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('formRecomendacao').addEventListener('submit', function(e) {
+            const humorSelecionado = document.querySelector('input[name="humor"]:checked');
+            const intencaoSelecionada = document.querySelector('input[name="intencao"]:checked');
+            const boxErro = document.getElementById('mensagemErro');
+
+            let erros = [];
+
+            // Verifica o que está faltando
+            if (!humorSelecionado) {
+                erros.push("o seu estado emocional (O que está sentindo hoje)");
+            }
+            if (!intencaoSelecionada) {
+                erros.push("a sua intenção de leitura (O que busca nesta leitura)");
+            }
+
+            // Se faltar algo, bloqueia o envio e avisa o usuário
+            if (erros.length > 0) {
+                e.preventDefault(); // Impede de ir para a próxima página
+                boxErro.style.display = 'block';
+                boxErro.innerHTML = '⚠️ <strong>Por favor, selecione:</strong><br>' + erros.join('<br>e ');
+                boxErro.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                boxErro.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

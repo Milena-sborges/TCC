@@ -1,11 +1,11 @@
-
 const db = require('./db');
 
 const buscarPorContextoEmocional = async (humor, intencao) => {
     let tagAlvo = "";
 
+    // Mapeamento das emoções para bater com as tags do MySQL
     if (humor === "felicidade") {
-        tagAlvo = intencao === "validacao" ? "Felicidade" : "Felicidade"; // Ajuste conforme os nomes salvos na sua tabela Tag_Emocional
+        tagAlvo = "Felicidade";
     } else if (humor === "tristeza") {
         tagAlvo = "Tristeza";
     } else if (humor === "ansiedade") {
@@ -17,9 +17,18 @@ const buscarPorContextoEmocional = async (humor, intencao) => {
     }
 
     try {
-        // Consulta unindo as tabelas do banco da Biblioteca Emocional
+        // Query corrigida: usa t.nome e l.link_leitura idênticos ao script .sql
         const [linhas] = await db.execute(`
-            SELECT l.titulo, l.autor, l.genero, l.sinopse, l.ano_publicacao, l.capa_url, l.link_leitura, t.nome as tag
+            SELECT 
+                l.id_livro, 
+                l.titulo, 
+                l.autor, 
+                l.genero, 
+                l.sinopse, 
+                l.ano_publicacao,
+                l.capa_url,
+                l.link_leitura, 
+                t.nome AS tag
             FROM Livro l
             JOIN Livro_Tag lt ON l.id_livro = lt.id_livro
             JOIN Tag_Emocional t ON lt.id_tag = t.id_tag

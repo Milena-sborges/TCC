@@ -11,8 +11,7 @@ const gerarRecomendacao = async (req, res) => {
     try {
         const livrosRecomendados = await Livro.buscarPorContextoEmocional(humor, intencao);
 
-        // Se a chamada veio via formulário comum, podemos redirecionar ou renderizar. 
-        // Como o front-end HTML vai ler via JSON ou renderização, vamos retornar JSON por enquanto:
+        
         return res.json({
             humorInformado: humor,
             intencaoInformada: intencao,
