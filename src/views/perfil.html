@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionBooks - Perfil</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><h2 style="margin:0; font-size: 1.4rem;">📚 EmotionBooks</h2></div>
+        <div class="nav-links">
+            <a href="/">🏠 Início</a>
+            <a href="/biblioteca">📖 Minha Biblioteca</a>
+            <a href="#" class="active">👤 Perfil</a>
+            <a href="/sair" onclick="return confirm('Você deseja realmente sair da sua conta?')">Sair</a>
+        </div>
+    </nav>
+
+    <div class="container perfil-wrapper">
+        
+        <!-- Cabeçalho do Perfil -->
+        <div class="perfil-header">
+            <div class="avatar" id="avatarSigla">--</div> 
+            <div class="user-info">
+                <h2 id="userName">Carregando...</h2>
+                <p id="userEmail">Aguarde...</p>
+                <span class="insight-badge">✨ Acompanhe o seu histórico de leitura e emoções.</span>
+            </div>
+        </div>
+
+        <!-- Dashboard de Números -->
+        <div class="dashboard-numeros">
+            <div class="stat-card">
+                <span class="stat-title">📖 Lidos</span>
+                <span class="stat-number" id="numLidos">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">⏳ Quero Ler</span>
+                <span class="stat-number" id="numQueroLer">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">❤️ Favoritos</span>
+                <span class="stat-number" id="numFavoritos">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">🎭 Emoções Buscadas</span>
+                <span class="stat-number" id="numEmocoes">-</span> 
+            </div>
+        </div>
+
+        <!-- Dashboard de Comportamento -->
+        <div class="dashboard-comportamento">
+            <h3>📊 Dashboard de comportamento</h3>
+            
+            <div class="comportamento-grid">
+                <!-- Emoção mais selecionada -->
+                <div class="emocao-destaque">
+                    <p>Emoção mais selecionada:</p>
+                    <h4 id="emocaoDestaque">Em breve</h4>
+                </div>
+
+                <!-- Últimas buscas -->
+                <div class="emocao-historico">
+                    <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #8a7e74;">Últimas buscas:</p>
+                    <div id="ultimasEmocoesContainer" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="color:#999; font-size:0.85rem;">Carregando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- ACESSIBILIDADE -->
+    <!-- ===================================================== -->
+
+    <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade" aria-label="Abrir menu de acessibilidade">
+        ♿
+    </button>
+
+    <div class="menu-acessibilidade" id="menuAcessibilidade" role="dialog" aria-label="Menu de acessibilidade">
+        <h3>Navegação</h3>
+        <p class="text-desc">Personalize a experiência para deixar a leitura mais confortável.</p>
+
+        <div class="acessibilidade-item">
+            <span>Tamanho da fonte</span>
+            <div>
+                <button onclick="alterarFonte(-1)" aria-label="Diminuir fonte">A-</button>
+                <button onclick="alterarFonte(1)" aria-label="Aumentar fonte">A+</button>
+            </div>
+        </div>
+
+        <div class="acessibilidade-item">
+            <span>Alto contraste</span>
+            <button onclick="toggleContraste()" aria-label="Ativar ou desativar alto contraste">Ligar/Desligar</button>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================
+           ACESSIBILIDADE
+        ===================================== */
+
+        function toggleMenuAcessibilidade() {
+            const menu = document.getElementById('menuAcessibilidade');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleContraste() {
+            document.body.classList.toggle('alto-contraste');
+        }
+
+        let tamanhoAtual = 100;
+
+        function alterarFonte(direcao) {
+            if (direcao > 0 && tamanhoAtual < 130) {
+                tamanhoAtual += 10;
+            } else if (direcao < 0 && tamanhoAtual > 80) {
+                tamanhoAtual -= 10;
+            }
+            
+            document.documentElement.style.fontSize = tamanhoAtual + '%';
+            document.body.style.fontSize = tamanhoAtual + '%';
+        }
+
+
+        /* =====================================
+           CARREGAR PERFIL
+        ===================================== */
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/minha-biblioteca');
+                
+                if (response.status === 401) {
+                    alert("Sua sessão expirou. Faça login novamente.");
+                    window.location.href = '/login';
+                    return;
+                }
+
+                const data = await response.json();
+                
+                // =====================================
+                // 1. Dados do Usuário
+                // =====================================
+                document.getElementById('userName').innerText = data.usuario.nome;
+                document.getElementById('userEmail').innerText = data.usuario.email;
+                document.getElementById('avatarSigla').innerText = data.usuario.nome.charAt(0).toUpperCase();
+
+                // =====================================
+                // 2. Estatísticas de Livros
+                // =====================================
+                const livros = data.livros;
+                let contLidos = 0;
+                let contQueroLer = 0;
+                let contFavoritos = 0;
+
+                livros.forEach(livro => {
+                    if (livro.status_leitura === 'Lido') contLidos++;
+                    if (livro.status_leitura === 'Quero ler') contQueroLer++;
+                    if (livro.favorito === 1) contFavoritos++; 
+                });
+
+                document.getElementById('numLidos').innerText = contLidos;
+                document.getElementById('numQueroLer').innerText = contQueroLer;
+                document.getElementById('numFavoritos').innerText = contFavoritos;
+
+                // =====================================
+                // 3. Estatísticas de Emoções
+                // =====================================
+                if(data.emocoes) {
+                    // Total de emoções buscadas
+                    document.getElementById('numEmocoes').innerText = data.emocoes.total;
+                    
+                    // Emoção mais frequente
+                    document.getElementById('emocaoDestaque').innerText = data.emocoes.maisFrequente;
+
+                    // =====================================
+                    // 4. ÚLTIMAS 3 BUSCAS (NOVO!)
+                    // =====================================
+                    const ultimasContainer = document.getElementById('ultimasEmocoesContainer');
+                    ultimasContainer.innerHTML = ''; // Limpa o "Carregando..."
+
+                    // Verifica se tem dados
+                    if (data.emocoes.ultimas && data.emocoes.ultimas.length > 0) {
+                        // Cores para cada tipo de emoção
+                        const coresEmocoes = {
+                            'Felicidade': '#4CAF50',
+                            'Tristeza': '#5C6BC0',
+                            'Ansiedade': '#FF7043',
+                            'Tédio': '#FFA726',
+                            'Neutro': '#78909C'
+                        };
+
+                        data.emocoes.ultimas.forEach(emocao => {
+                            const tag = document.createElement('span');
+                            tag.className = 'tag-pill';
+                            tag.style.backgroundColor = coresEmocoes[emocao] || '#4a4038';
+                            tag.style.color = '#ffffff';
+                            tag.style.padding = '6px 14px';
+                            tag.style.borderRadius = '20px';
+                            tag.style.fontSize = '0.8rem';
+                            tag.style.fontWeight = '500';
+                            tag.style.display = 'inline-block';
+                            tag.innerText = emocao;
+                            ultimasContainer.appendChild(tag);
+                        });
+                    } else {
+                        ultimasContainer.innerHTML = '<span style="color:#999; font-size:0.85rem;">Nenhuma busca ainda.</span>';
+                    }
+                }
+
+            } catch (error) {
+                console.error("Erro ao carregar o perfil:", error);
+                document.getElementById('userName').innerText = "Erro ao carregar dados";
+            }
+        });
+    </script>
+</body>
+</html>

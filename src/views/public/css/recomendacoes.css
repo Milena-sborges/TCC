@@ -1,0 +1,1093 @@
+/* =====================================================
+   EMOTIONBOOKS
+   PÁGINA DE RECOMENDAÇÕES
+===================================================== */
+
+/* =====================================================
+   BASE PARA ACESSIBILIDADE
+===================================================== */
+
+html {
+    font-size: 100%;
+    transition: font-size 0.2s ease;
+}
+
+body {
+    font-size: 1rem;
+    transition: font-size 0.2s ease;
+}
+
+
+/* =====================================================
+   CONTAINER PRINCIPAL
+===================================================== */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.8125rem 1.5625rem 3.75rem;
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+
+.results-header h1 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.375rem; /* 38px */
+    font-weight: 700;
+    color: #3f2a1d;
+}
+
+
+.results-subtitle {
+    margin: 0.625rem 0 1.5625rem;
+    color: #777;
+    font-size: 1rem;
+}
+
+
+/* =====================================================
+   FILTROS
+===================================================== */
+
+.filtros-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+}
+
+
+.filtro-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+
+    padding: 0.625rem 1.125rem;
+
+    border: 1px solid #e4d9cc;
+    border-radius: 30px;
+
+    background: #fff;
+
+    color: #6b5849;
+
+    font-size: 0.875rem;
+
+    box-shadow: 0 2px 8px rgba(80, 50, 30, 0.04);
+}
+
+
+.filtro-tag strong {
+    color: #3f2a1d;
+}
+
+
+/* =====================================================
+   GRID DE LIVROS
+===================================================== */
+
+.books-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 1.5rem;
+
+    align-items: stretch;
+}
+
+
+/* =====================================================
+   CARD DO LIVRO
+===================================================== */
+
+.book-card {
+    background: #fff;
+
+    border: 1px solid #e7dfd7;
+
+    border-radius: 18px;
+
+    padding: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    box-shadow:
+        0 5px 18px rgba(70, 45, 25, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.book-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(70, 45, 25, 0.09);
+}
+
+
+/* =====================================================
+   PARTE SUPERIOR DO CARD
+===================================================== */
+
+.book-main-content {
+    display: flex;
+
+    gap: 1.25rem;
+
+    min-height: 235px;
+}
+
+
+/* =====================================================
+   CAPA
+===================================================== */
+
+.book-cover-img {
+    width: 125px;
+    height: 190px;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.14);
+
+    background: #eee;
+}
+
+
+/* =====================================================
+   INFORMAÇÕES DO LIVRO
+===================================================== */
+
+.book-info-side {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.book-title {
+    margin: 0.25rem 0 0.4375rem;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1.375rem; /* 22px */
+
+    line-height: 1.25;
+
+    color: #3f2a1d;
+}
+
+
+.book-author {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 0.875rem; /* 14px */
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   TAGS
+===================================================== */
+
+.book-tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.4375rem;
+
+    margin-top: 1.375rem;
+}
+
+
+.tag-pill {
+    display: inline-block;
+
+    padding: 0.375rem 0.625rem;
+
+    border-radius: 15px;
+
+    background: #f5f1ed;
+
+    color: #806957;
+
+    font-size: 0.75rem; /* 12px */
+
+    line-height: 1;
+}
+
+
+/* =====================================================
+   BOTÃO VER DETALHES
+===================================================== */
+
+.btn-saiba-mais {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 0.3125rem;
+
+    padding: 0.75rem 1rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.625rem;
+
+    position: relative;
+
+    border: 1px solid #a98258;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: #76502d;
+
+    font-size: 0.9375rem; /* 15px */
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.btn-saiba-mais:hover {
+    background: #f9f2e9;
+
+    border-color: #8f683e;
+}
+
+
+.btn-saiba-mais .seta {
+    position: absolute;
+
+    right: 18px;
+
+    font-size: 1.25rem;
+
+    transition: transform 0.2s ease;
+}
+
+
+.btn-saiba-mais:hover .seta {
+    transform: translateX(4px);
+}
+
+
+/* =====================================================
+   AÇÕES RÁPIDAS
+===================================================== */
+
+.quick-actions-container {
+    margin-top: 1.125rem;
+}
+
+
+.quick-actions-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.625rem;
+
+    margin: 0 0 0.625rem;
+
+    color: #777;
+
+    font-size: 0.8125rem; /* 13px */
+}
+
+
+.quick-actions-title::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #eee5dc;
+}
+
+
+/* =====================================================
+   BOTÕES DE AÇÃO
+===================================================== */
+
+.quick-actions-buttons {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 0.5rem;
+}
+
+
+.btn-action {
+    min-height: 45px;
+
+    padding: 0.5rem 0.4375rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 0.375rem;
+
+    border: 1px solid #e0d8d0;
+
+    border-radius: 9px;
+
+    background: #fff;
+
+    color: #4f4035;
+
+    font-size: 0.8125rem; /* 13px */
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.btn-action:hover {
+    background: #faf7f4;
+
+    border-color: #bda991;
+
+    transform: translateY(-1px);
+}
+
+
+.btn-action:disabled {
+    cursor: default;
+
+    opacity: 0.85;
+
+    transform: none;
+}
+
+
+.action-icon {
+    font-size: 1.0625rem; /* 17px */
+
+    line-height: 1;
+}
+
+
+/* =====================================================
+   QUERO LER
+===================================================== */
+
+.btn-quero-ler:hover {
+    border-color: #c99b52;
+
+    color: #98651d;
+
+    background: #fffaf2;
+}
+
+
+.btn-quero-ler.ativo {
+    background: #fff5e4;
+
+    border-color: #d7b27a;
+
+    color: #98651d;
+}
+
+
+/* =====================================================
+   LIDO
+===================================================== */
+
+.btn-lido:hover {
+    border-color: #a98f73;
+
+    background: #faf8f6;
+}
+
+
+.btn-lido.ativo {
+    background: #f5f1ed;
+
+    border-color: #b6a28d;
+
+    color: #655345;
+}
+
+
+/* =====================================================
+   FAVORITO
+===================================================== */
+
+.btn-favorito {
+    color: #9c5360;
+
+    border-color: #e5c7cb;
+
+    background: #fff;
+}
+
+
+.btn-favorito:hover {
+    background: #fff5f6;
+
+    border-color: #e6a9b1;
+
+    color: #c43850;
+}
+
+
+.btn-favorito .action-icon {
+    font-size: 1.1875rem; /* 19px */
+}
+
+
+.btn-favorito.favoritado {
+    background: #fff1f3;
+
+    border-color: #e5a0a9;
+
+    color: #c72f48;
+}
+
+
+.favorito-animacao {
+    animation: favoritoPulse 0.25s ease;
+}
+
+
+@keyframes favoritoPulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+
+/* =====================================================
+   VOLTAR AO INÍCIO
+===================================================== */
+
+.rodape-acoes {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 2.625rem;
+}
+
+
+.btn-voltar-inicio {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 190px;
+
+    padding: 0.75rem 1.375rem;
+
+    border: 1px solid #a98258;
+
+    border-radius: 25px;
+
+    background: #fff;
+
+    color: #76502d;
+
+    text-decoration: none;
+
+    font-size: 0.875rem; /* 14px */
+
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.btn-voltar-inicio:hover {
+    background: #faf5ef;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 1.25rem;
+
+    background:
+        rgba(35, 25, 18, 0.55);
+
+    backdrop-filter: blur(3px);
+}
+
+
+.modal-content {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 600px;
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    padding: 2.1875rem;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+
+.modal-fechar {
+    position: absolute;
+
+    top: 15px;
+
+    right: 18px;
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f6f1ec;
+
+    color: #654c3b;
+
+    font-size: 1.4375rem; /* 23px */
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+.modal-detalhes-content h2 {
+    margin: 0 40px 5px 0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: #3f2a1d;
+
+    font-size: 1.75rem; /* 28px */
+}
+
+
+.modal-autor {
+    margin: 0 0 1.5625rem;
+
+    color: #777;
+
+    font-size: 0.9375rem; /* 15px */
+}
+
+
+.sinopse-box {
+    padding: 1.25rem;
+
+    border-radius: 12px;
+
+    background: #faf7f3;
+
+    border: 1px solid #eee3d8;
+}
+
+
+.sinopse-box h3 {
+    margin: 0 0 0.625rem;
+
+    color: #65452d;
+
+    font-size: 1rem;
+}
+
+
+.sinopse-box p {
+    margin: 0;
+
+    color: #51463e;
+
+    line-height: 1.7;
+
+    font-size: 0.9375rem; /* 15px */
+}
+
+
+.modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 0.625rem;
+
+    margin-top: 1.5625rem;
+}
+
+
+.btn-finalizar,
+.btn-ler {
+    min-height: 42px;
+
+    padding: 0.625rem 1.25rem;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 0.875rem; /* 14px */
+
+    text-decoration: none;
+}
+
+
+.btn-finalizar {
+    border: 1px solid #d8cec5;
+
+    background: #fff;
+
+    color: #67574c;
+}
+
+
+.btn-ler {
+    border: 1px solid #8b6139;
+
+    background: #8b6139;
+
+    color: #fff;
+}
+
+
+/* =====================================================
+   ESTADO VAZIO / ERRO
+===================================================== */
+
+.empty-state {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 3.75rem 1.25rem;
+
+    background: #fff;
+
+    border: 1px solid #e7dfd7;
+
+    border-radius: 18px;
+}
+
+
+.empty-icon {
+    font-size: 2.8125rem; /* 45px */
+
+    margin-bottom: 0.625rem;
+}
+
+
+.empty-state h3 {
+    margin: 0 0 0.5rem;
+
+    color: #493629;
+}
+
+
+.empty-state p {
+    margin: 0 0 1.5625rem;
+
+    color: #777;
+}
+
+
+.mensagem-erro {
+    color: #a34a4a;
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+===================================================== */
+
+.btn-acessibilidade-flutuante {
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 20px;
+
+    z-index: 900;
+
+    width: 48px;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #76502d;
+
+    color: #fff;
+
+    font-size: 1.3125rem; /* 21px */
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+.menu-acessibilidade {
+    display: none;
+
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 80px;
+
+    z-index: 901;
+
+    width: 280px;
+
+    padding: 1.25rem;
+
+    border-radius: 14px;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+.menu-acessibilidade h3 {
+    margin-top: 0;
+
+    color: #493629;
+}
+
+
+.text-desc {
+    color: #777;
+
+    font-size: 0.8125rem; /* 13px */
+
+    line-height: 1.5;
+}
+
+
+.acessibilidade-item {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 0.625rem;
+
+    padding: 0.75rem 0;
+
+    border-top: 1px solid #eee;
+}
+
+
+.acessibilidade-item button {
+    padding: 0.4375rem 0.625rem;
+
+    border: 1px solid #cdbda9;
+
+    border-radius: 6px;
+
+    background: #fff;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   ALTO CONTRASTE
+===================================================== */
+
+.alto-contraste {
+    background: #000 !important;
+
+    color: #fff !important;
+}
+
+
+.alto-contraste .book-card,
+.alto-contraste .modal-content,
+.alto-contraste .empty-state {
+    background: #111 !important;
+
+    color: #fff !important;
+
+    border-color: #fff !important;
+}
+
+
+.alto-contraste .book-title,
+.alto-contraste .results-header h1,
+.alto-contraste .book-author,
+.alto-contraste .results-subtitle {
+    color: #fff !important;
+}
+
+
+/* =====================================================
+   CORREÇÃO: BOTÕES NO ALTO CONTRASTE
+===================================================== */
+
+.alto-contraste .btn-action,
+.alto-contraste .btn-saiba-mais,
+.alto-contraste .btn-voltar-inicio,
+.alto-contraste .btn-finalizar,
+.alto-contraste .btn-ler,
+.alto-contraste .modal-fechar,
+.alto-contraste .acessibilidade-item button,
+.alto-contraste .btn-acessibilidade-flutuante {
+    background: #222 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.alto-contraste .btn-action:hover,
+.alto-contraste .btn-saiba-mais:hover,
+.alto-contraste .btn-voltar-inicio:hover,
+.alto-contraste .btn-finalizar:hover,
+.alto-contraste .btn-ler:hover {
+    background: #333 !important;
+    color: #fff !important;
+}
+
+.alto-contraste .filtro-tag,
+.alto-contraste .sinopse-box {
+    background: #111 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.alto-contraste .tag-pill {
+    background: #222 !important;
+    color: #fff !important;
+}
+
+.alto-contraste .quick-actions-title::after {
+    background: #555 !important;
+}
+
+.alto-contraste .btn-quero-ler.ativo,
+.alto-contraste .btn-lido.ativo,
+.alto-contraste .btn-favorito.favoritado {
+    background: #333 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.alto-contraste .menu-acessibilidade {
+    background: #111 !important;
+    border-color: #fff !important;
+}
+
+.alto-contraste .acessibilidade-item {
+    border-color: #444 !important;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .books-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .container {
+        padding: 1.875rem 1rem 2.8125rem;
+    }
+
+
+    .results-header h1 {
+        font-size: 1.875rem; /* 30px */
+    }
+
+
+    .books-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .book-card {
+        padding: 1.25rem;
+    }
+
+
+    .book-main-content {
+        min-height: auto;
+    }
+
+
+    .book-cover-img {
+        width: 110px;
+
+        height: 165px;
+    }
+
+
+    .book-title {
+        font-size: 1.25rem; /* 20px */
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .book-main-content {
+        gap: 0.875rem;
+    }
+
+
+    .book-cover-img {
+        width: 95px;
+
+        height: 145px;
+    }
+
+
+    .book-title {
+        font-size: 1.125rem; /* 18px */
+    }
+
+
+    .book-author {
+        font-size: 0.8125rem; /* 13px */
+    }
+
+
+    .quick-actions-buttons {
+        grid-template-columns: 1fr;
+    }
+
+
+    .btn-action {
+        width: 100%;
+    }
+
+
+    .modal-content {
+        padding: 1.5625rem 1.25rem;
+    }
+
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+
+    .btn-finalizar,
+    .btn-ler {
+        width: 100%;
+    }
+
+}

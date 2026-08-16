@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionBooks - Início</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Navbar Superior -->
+    <nav class="navbar">
+        <div class="logo">
+            <h2>📚 EmotionBooks</h2>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">🏠 Início</a>
+            <a href="/biblioteca">📖 Minha Biblioteca</a>
+            <a href="/perfil">👤 Perfil</a>
+            <a href="/sair" onclick="return confirm('Você deseja realmente sair da sua conta?')">Sair</a>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <div class="header-text">
+            <h1>Encontre leituras que conversem com o seu momento.</h1>
+            <p>Um espaço para transformar emoções em leituras.</p>
+        </div>
+
+        <!-- Formulário e Validação -->
+        <div id="mensagemErro" class="mensagem-erro"></div>
+
+        <form action="/recomendacoes.html" method="GET" id="formRecomendacao">
+            
+            <h3 class="section-title">Como você está se sentindo agora?</h3>
+            <div class="grid-cards">
+                
+                <div class="card-option">
+                    <input type="radio" id="humor-tristeza" name="humor" value="tristeza">
+                    <label for="humor-tristeza">
+                        <span class="icon">😢</span>
+                        <span class="title">Triste</span>
+                       
+                    </label>
+                </div>
+
+                <div class="card-option">
+                    <input type="radio" id="humor-ansiedade" name="humor" value="ansiedade">
+                    <label for="humor-ansiedade">
+                        <span class="icon">😰</span>
+                        <span class="title">Ansioso</span>
+                        
+                    </label>
+                </div>
+
+                <div class="card-option">
+                    <input type="radio" id="humor-felicidade" name="humor" value="felicidade">
+                    <label for="humor-felicidade">
+                        <span class="icon">😄</span>
+                        <span class="title">Feliz</span>
+                       
+                    </label>
+                </div>
+
+                <div class="card-option">
+                    <input type="radio" id="humor-neutro" name="humor" value="neutro">
+                    <label for="humor-neutro">
+                        <span class="icon">😐</span>
+                        <span class="title">Neutro</span>
+                        
+                    </label>
+                </div>
+
+            </div>
+
+            <h3 class="section-title">O que você busca nesta leitura?</h3>
+            <div class="grid-cards grid-cards-2">
+                
+                <div class="card-option">
+                    <input type="radio" id="intencao-manter" name="intencao" value="manter">
+                    <label for="intencao-manter">
+                        <span class="icon">✨</span>
+                        <span class="title">Validar meu estado</span>
+                        <span class="desc">Quero ler algo que combine com o que sinto agora.</span>
+                    </label>
+                </div>
+
+                <div class="card-option">
+                    <input type="radio" id="intencao-alterar" name="intencao" value="alterar">
+                    <label for="intencao-alterar">
+                        <span class="icon">🔄</span>
+                        <span class="title">Transformar emoção</span>
+                        <span class="desc">Quero uma leitura para mudar meu estado de espírito.</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-primary">Ver Recomendações</button>
+        </form>
+    </div>
+
+    <!-- Menu de Acessibilidade -->
+    <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade">♿</button>
+    
+    <div class="menu-acessibilidade" id="menuAcessibilidade">
+        <h3>Navegação</h3>
+        <p class="text-desc">Personalize a experiência para deixar a leitura mais confortável.</p>
+        
+        <div class="acessibilidade-item">
+            <span>Tamanho da fonte</span>
+            <div>
+                <button onclick="alterarFonte(-1)">A-</button>
+                <button onclick="alterarFonte(1)">A+</button>
+            </div>
+        </div>
+
+        <div class="acessibilidade-item">
+            <span>Alto contraste</span>
+            <button onclick="toggleContraste()">Ligar/Desligar</button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica do Menu de Acessibilidade
+        function toggleMenuAcessibilidade() {
+            const menu = document.getElementById('menuAcessibilidade');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+        function toggleContraste() {
+            document.body.classList.toggle('alto-contraste');
+        }
+        let tamanhoAtual = 100;
+        function alterarFonte(direcao) {
+            if (direcao > 0 && tamanhoAtual < 130) tamanhoAtual += 10;
+            else if (direcao < 0 && tamanhoAtual > 90) tamanhoAtual -= 10;
+            document.body.style.fontSize = tamanhoAtual + '%';
+        }
+
+        // Lógica de Validação do Formulário
+        document.getElementById('formRecomendacao').addEventListener('submit', function(e) {
+            const humorSelecionado = document.querySelector('input[name="humor"]:checked');
+            const intencaoSelecionada = document.querySelector('input[name="intencao"]:checked');
+            const boxErro = document.getElementById('mensagemErro');
+
+            let erros = [];
+            if (!humorSelecionado) erros.push("seu estado emocional atual");
+            if (!intencaoSelecionada) erros.push("o que você busca nesta leitura");
+
+            if (erros.length > 0) {
+                e.preventDefault(); 
+                boxErro.style.display = 'block';
+                boxErro.innerHTML = '⚠️ <strong>Por favor, selecione:</strong><br>' + erros.join(' e ');
+                boxErro.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                boxErro.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

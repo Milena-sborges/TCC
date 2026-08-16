@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionBooks - Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        
+   
+        <div class="login-info">
+            <div class="tag-leitura">📖 Leitura guiada pelo seu momento</div>
+            <h1>Um espaço acolhedor para transformar emoções em boas leituras.</h1>
+            <p>Entre no seu ambiente e descubra recomendações de livros pensadas para o que você sente agora.</p>
+        </div>
+
+        <div class="login-form-container">
+            <h2>Acesso ao Ambiente</h2>
+            <p>Faça login para continuar sua jornada de leitura e bem-estar.</p>
+
+           <form action="/login" method="POST" class="form-login">
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="ana@aurora.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+                </div>
+
+              
+                <button type="submit" class="btn-primary btn-full-width">Entrar e continuar</button>
+            </form>
+
+            
+            <div class="register-link">
+                <p>Ainda não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></p>
+            </div>
+           
+        </div>
+
+    </div>
+    <script>
+        // Pega os parâmetros da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const formContainer = document.querySelector('.form-login');
+
+        // Se o cadastro foi um sucesso (Caixa Verde)
+        if (urlParams.get('cadastro') === 'sucesso') {
+            const mensagem = document.createElement('div');
+            mensagem.style.cssText = 'background: #dcfce7; color: #166534; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #bbf7d0;';
+            mensagem.innerText = '✨ Cadastro realizado com sucesso! Faça login para continuar.';
+            formContainer.parentNode.insertBefore(mensagem, formContainer);
+        }
+
+        // Se errou a senha ou e-mail (Caixa Vermelha)
+        if (urlParams.get('erro') === 'credenciais') {
+            const mensagemErro = document.createElement('div');
+            mensagemErro.style.cssText = 'background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #fecaca;';
+            mensagemErro.innerText = '⚠️ E-mail ou senha incorretos. Tente novamente.';
+            formContainer.parentNode.insertBefore(mensagemErro, formContainer);
+        }
+    </script>
+</body>
+</html>

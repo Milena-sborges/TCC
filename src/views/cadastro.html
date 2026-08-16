@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionBooks - Cadastro</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        
+        <!-- Lado Esquerdo: Mensagem de Boas-Vindas -->
+        <div class="login-info">
+            <div class="tag-leitura">🌱 Comece sua jornada</div>
+            <h1>Crie sua conta e descubra o poder da leitura para suas emoções.</h1>
+            <p>Junte-se a nós para ter um histórico personalizado de leituras e salvar os livros que mais conversam com o seu momento.</p>
+        </div>
+
+        <!-- Lado Direito: Formulário de Cadastro -->
+        <div class="login-form-container">
+            <h2>Criar nova conta</h2>
+            <p>Preencha seus dados para acessar o ambiente.</p>
+
+            <form action="/cadastrar" method="POST" class="form-login">
+                <div class="input-group">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Ana Martins" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="ana@aurora.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="senha">Crie uma senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Mínimo de 6 caracteres" required minlength="6">
+                </div>
+
+                <button type="submit" class="btn-primary btn-full-width">Cadastrar</button>
+            </form>
+
+            <div class="register-link">
+                <p>Já tem uma conta? <a href="/login">Faça login aqui</a></p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

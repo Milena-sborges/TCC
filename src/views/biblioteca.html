@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionBooks - Minha Biblioteca</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/biblioteca.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><h2 style="margin:0; font-size: 1.4rem;">📚 EmotionBooks</h2></div>
+        <div class="nav-links">
+            <a href="/">🏠 Início</a>
+            <a href="/biblioteca" class="active">📖 Minha Biblioteca</a>
+            <a href="/perfil">👤 Perfil</a>
+            <a href="/sair" onclick="return confirm('Deseja sair?')">Sair</a>
+        </div>
+    </nav>
+
+    <div class="container biblioteca-wrapper">
+        <div class="header-biblioteca">
+            <div>
+                <h2>Minha Biblioteca</h2>
+                <p>Gerencie suas leituras e favoritos</p>
+            </div>
+        </div>
+
+        <!-- Controles: Busca e Filtros -->
+        <div class="biblioteca-controles">
+            <input type="text" id="buscaLivro" class="input-busca" placeholder="🔍 Buscar por título ou autor..." onkeyup="aplicarFiltros()" aria-label="Buscar livros por título ou autor">
+            
+            <div class="filtros-botoes" role="tablist" aria-label="Filtros de livros">
+                <button class="btn-filtro ativo" onclick="mudarFiltro('Todos', this)" role="tab" aria-selected="true">Todos</button>
+                <button class="btn-filtro" onclick="mudarFiltro('Lido', this)" role="tab" aria-selected="false">Lidos</button>
+                <button class="btn-filtro" onclick="mudarFiltro('Quero ler', this)" role="tab" aria-selected="false">Quero Ler</button>
+                <button class="btn-filtro" onclick="mudarFiltro('Favorito', this)" role="tab" aria-selected="false">❤️ Favoritos</button>
+            </div>
+        </div>
+
+        <div id="listaBiblioteca" role="list" aria-label="Lista de livros da biblioteca">
+            <p style="text-align: center; color: #888;">Carregando seus livros...</p>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- ACESSIBILIDADE -->
+    <!-- ===================================================== -->
+
+    <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade" aria-label="Abrir menu de acessibilidade">
+        ♿
+    </button>
+
+    <div class="menu-acessibilidade" id="menuAcessibilidade" role="dialog" aria-label="Menu de acessibilidade">
+        <h3>Navegação</h3>
+        <p class="text-desc">Personalize a experiência para deixar a leitura mais confortável.</p>
+
+        <div class="acessibilidade-item">
+            <span>Tamanho da fonte</span>
+            <div>
+                <button onclick="alterarFonte(-1)" aria-label="Diminuir fonte">A-</button>
+                <button onclick="alterarFonte(1)" aria-label="Aumentar fonte">A+</button>
+            </div>
+        </div>
+
+        <div class="acessibilidade-item">
+            <span>Alto contraste</span>
+            <button onclick="toggleContraste()" aria-label="Ativar ou desativar alto contraste">Ligar/Desligar</button>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================
+           ACESSIBILIDADE
+        ===================================== */
+
+        function toggleMenuAcessibilidade() {
+            const menu = document.getElementById('menuAcessibilidade');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleContraste() {
+            document.body.classList.toggle('alto-contraste');
+        }
+
+        let tamanhoAtual = 100;
+
+        function alterarFonte(direcao) {
+            if (direcao > 0 && tamanhoAtual < 130) {
+                tamanhoAtual += 10;
+            } else if (direcao < 0 && tamanhoAtual > 80) {
+                tamanhoAtual -= 10;
+            }
+            
+            document.documentElement.style.fontSize = tamanhoAtual + '%';
+            document.body.style.fontSize = tamanhoAtual + '%';
+        }
+
+
+        /* =====================================
+           BIBLIOTECA
+        ===================================== */
+
+        let todosOsLivros = [];
+        let filtroAtual = 'Todos';
+
+        window.addEventListener('DOMContentLoaded', carregarBiblioteca);
+
+        async function carregarBiblioteca() {
+            try {
+                const response = await fetch('/minha-biblioteca');
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                
+                const data = await response.json();
+                todosOsLivros = data.livros;
+                aplicarFiltros();
+
+            } catch (error) {
+                console.error("Erro ao carregar:", error);
+                document.getElementById('listaBiblioteca').innerHTML = `
+                    <p style="text-align: center; color: #a34a4a;">Erro ao carregar livros. Tente novamente.</p>
+                `;
+            }
+        }
+
+        function mudarFiltro(novoFiltro, botaoClicado) {
+            filtroAtual = novoFiltro;
+            
+            document.querySelectorAll('.btn-filtro').forEach(btn => {
+                btn.classList.remove('ativo');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            botaoClicado.classList.add('ativo');
+            botaoClicado.setAttribute('aria-selected', 'true');
+            
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const termoBusca = document.getElementById('buscaLivro').value.toLowerCase();
+            const container = document.getElementById('listaBiblioteca');
+            
+            const livrosFiltrados = todosOsLivros.filter(livro => {
+                const bateuTexto = livro.titulo.toLowerCase().includes(termoBusca) || livro.autor.toLowerCase().includes(termoBusca);
+                
+                let bateuFiltro = true;
+                if (filtroAtual === 'Lido') bateuFiltro = livro.status_leitura === 'Lido';
+                if (filtroAtual === 'Quero ler') bateuFiltro = livro.status_leitura === 'Quero ler';
+                if (filtroAtual === 'Favorito') bateuFiltro = livro.favorito === 1;
+
+                return bateuTexto && bateuFiltro;
+            });
+
+            desenharLivros(livrosFiltrados, container);
+        }
+
+        function desenharLivros(livros, container) {
+            container.innerHTML = '';
+
+            if (livros.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📚</div>
+                        <h3>Nenhum livro encontrado</h3>
+                        <p>Tente ajustar os filtros ou a busca.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            livros.forEach(livro => {
+                const ehFavorito = livro.favorito === 1;
+                const div = document.createElement('div');
+                div.className = 'livro-item';
+                div.setAttribute('role', 'listitem');
+                
+                let capaLimpa = livro.capa_url;
+                if (capaLimpa && capaLimpa.includes('](')) {
+                    capaLimpa = capaLimpa.split('(')[1].replace(')', '');
+                }
+
+                const botaoLidoHtml = livro.status_leitura === 'Quero ler' 
+                    ? `<button class="btn-acao-rapida btn-lido-rapido" onclick="promoverParaLido(${livro.id_livro})" title="Marcar como Lido" aria-label="Marcar ${livro.titulo} como lido">✓</button>`
+                    : ``;
+
+                div.innerHTML = `
+                    <img src="${capaLimpa || '/img/placeholder.jpg'}" alt="Capa do livro ${livro.titulo}" class="livro-capa" onerror="this.src='/img/placeholder.jpg'">
+                    
+                    <div class="livro-info">
+                        <h4>${livro.titulo}</h4>
+                        <p>${livro.autor}</p>
+                        <span class="status-badge ${livro.status_leitura === 'Lido' ? 'status-lido' : 'status-quero-ler'}">${livro.status_leitura}</span>
+                        ${ehFavorito ? '<span class="status-badge status-favorito">❤️ Favorito</span>' : ''}
+                    </div>
+                    
+                    <div class="livro-acoes">
+                        ${botaoLidoHtml}
+                        <button class="btn-acao-rapida btn-heart-rapido ${ehFavorito ? 'ativo' : ''}" onclick="alternarFavoritoBiblioteca(${livro.id_livro}, ${!ehFavorito})" title="${ehFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" aria-label="${ehFavorito ? 'Remover' : 'Adicionar'} ${livro.titulo} dos favoritos">
+                            ${ehFavorito ? '❤️' : '🤍'}
+                        </button>
+                        <button class="btn-acao-rapida btn-remover" onclick="removerLivro(${livro.id_livro})" title="Remover da biblioteca" aria-label="Remover ${livro.titulo} da biblioteca">🗑️</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function promoverParaLido(idLivro) {
+            try {
+                const response = await fetch('/marcar-lido', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro })
+                });
+                if (response.ok) carregarBiblioteca();
+            } catch (error) { console.error("Erro:", error); }
+        }
+
+        async function alternarFavoritoBiblioteca(idLivro, novoStatus) {
+            try {
+                const response = await fetch('/favoritar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro, favorito: novoStatus })
+                });
+                if (response.ok) carregarBiblioteca();
+            } catch (error) { console.error("Erro:", error); }
+        }
+
+        async function removerLivro(idLivro) {
+            if (!confirm("Remover este livro da sua biblioteca?")) return;
+            try {
+                const response = await fetch('/remover-livro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro })
+                });
+                if (response.ok) carregarBiblioteca();
+            } catch (error) { console.error("Erro:", error); }
+        }
+    </script>
+</body>
+</html>

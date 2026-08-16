@@ -1,0 +1,518 @@
+/* =====================================================
+   BIBLIOTECA - EMOTIONBOOKS
+===================================================== */
+
+.biblioteca-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid #ece8e4;
+}
+
+.header-biblioteca {
+    margin-bottom: 25px;
+}
+
+.header-biblioteca h2 {
+    margin: 0 0 5px 0;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #2d2a27;
+    font-size: 1.8rem;
+}
+
+.header-biblioteca p {
+    margin: 0;
+    color: #8a7e74;
+    font-size: 0.95rem;
+}
+
+
+/* =====================================================
+   CONTROLES: BUSCA E FILTROS
+===================================================== */
+
+.biblioteca-controles {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0ece8;
+}
+
+.input-busca {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e4ddd6;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: #f8f6f4;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input-busca:focus {
+    border-color: #4a4038;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(74, 64, 56, 0.1);
+}
+
+.filtros-botoes {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro {
+    background: transparent;
+    border: 1px solid #e4ddd6;
+    color: #6b5f55;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-filtro:hover {
+    background: #f5f2ef;
+    border-color: #bfb2a6;
+}
+
+.btn-filtro.ativo {
+    background: #4a4038;
+    color: #ffffff;
+    border-color: #4a4038;
+}
+
+
+/* =====================================================
+   LISTA DE LIVROS
+===================================================== */
+
+.livro-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    border: 1px solid #ece8e4;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+    background: #ffffff;
+}
+
+.livro-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-color: #d5cdc4;
+    transform: translateX(4px);
+}
+
+.livro-capa {
+    width: 65px;
+    height: 95px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.livro-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.livro-info h4 {
+    margin: 0 0 4px 0;
+    color: #2d2a27;
+    font-size: 1.1rem;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.livro-info p {
+    margin: 0 0 8px 0;
+    color: #8a7e74;
+    font-size: 0.85rem;
+}
+
+.status-badge {
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.status-lido {
+    background: #e8f0e8;
+    color: #2d6a4f;
+}
+
+.status-quero-ler {
+    background: #f0ece8;
+    color: #6b5f55;
+}
+
+.status-favorito {
+    background: #fde8ea;
+    color: #a84a5a;
+}
+
+
+/* =====================================================
+   BOTÕES DE AÇÃO
+===================================================== */
+
+.livro-acoes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+.btn-acao-rapida {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: 1px solid #e4ddd6;
+}
+
+.btn-acao-rapida:hover {
+    transform: scale(1.1);
+}
+
+/* Botão Marcar como Lido */
+.btn-lido-rapido {
+    border-color: #bbf7d0;
+    color: #16a34a;
+}
+.btn-lido-rapido:hover {
+    background: #f0fdf4;
+}
+
+/* Botão Favorito */
+.btn-heart-rapido {
+    border-color: #e4ddd6;
+    color: #94a3b8;
+}
+.btn-heart-rapido:hover {
+    background: #fff5f5;
+    border-color: #fcd4d4;
+}
+.btn-heart-rapido.ativo {
+    border-color: #fcd4d4;
+    background: #fff5f5;
+}
+
+/* Botão Remover */
+.btn-remover {
+    border-color: #fecaca;
+    color: #ef4444;
+}
+.btn-remover:hover {
+    background: #fef2f2;
+}
+
+
+/* =====================================================
+   ESTADO VAZIO
+===================================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: #faf8f6;
+    border-radius: 12px;
+    border: 1px dashed #e4ddd6;
+}
+
+.empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+    margin: 0 0 8px 0;
+    color: #2d2a27;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #8a7e74;
+}
+
+
+/* =====================================================
+   ACESSIBILIDADE
+===================================================== */
+
+.btn-acessibilidade-flutuante {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 900;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background: #4a4038;
+    color: #ffffff;
+    font-size: 1.3125rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.btn-acessibilidade-flutuante:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.20);
+}
+
+.menu-acessibilidade {
+    display: none;
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    z-index: 901;
+    width: 280px;
+    padding: 1.25rem;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #eee9e4;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.10);
+}
+
+.menu-acessibilidade h3 {
+    margin-top: 0;
+    color: #2d2a27;
+    font-size: 1rem;
+}
+
+.text-desc {
+    color: #8a7e74;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.acessibilidade-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid #f0ece8;
+}
+
+.acessibilidade-item button {
+    padding: 0.4375rem 0.75rem;
+    border: 1px solid #ddd5cd;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.acessibilidade-item button:hover {
+    background: #f5f2ef;
+    border-color: #bfb2a6;
+}
+
+
+/* =====================================================
+   ALTO CONTRASTE
+===================================================== */
+
+.alto-contraste {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.alto-contraste .biblioteca-wrapper,
+.alto-contraste .livro-item,
+.alto-contraste .empty-state,
+.alto-contraste .menu-acessibilidade {
+    background: #111111 !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.alto-contraste .header-biblioteca h2,
+.alto-contraste .header-biblioteca p,
+.alto-contraste .livro-info h4,
+.alto-contraste .livro-info p,
+.alto-contraste .empty-state h3,
+.alto-contraste .empty-state p,
+.alto-contraste .menu-acessibilidade h3,
+.alto-contraste .text-desc {
+    color: #ffffff !important;
+}
+
+.alto-contraste .input-busca {
+    background: #222222 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+.alto-contraste .input-busca::placeholder {
+    color: #888888 !important;
+}
+
+.alto-contraste .btn-filtro {
+    background: #111111 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+.alto-contraste .btn-filtro:hover {
+    background: #222222 !important;
+}
+
+.alto-contraste .btn-filtro.ativo {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+.alto-contraste .btn-acao-rapida {
+    background: #222222 !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.alto-contraste .btn-acao-rapida:hover {
+    background: #333333 !important;
+}
+
+.alto-contraste .btn-heart-rapido.ativo {
+    background: #333333 !important;
+    border-color: #ffffff !important;
+}
+
+.alto-contraste .status-badge {
+    background: #222222 !important;
+    color: #ffffff !important;
+    border: 1px solid #ffffff;
+}
+
+.alto-contraste .status-lido {
+    background: #1a3a2a !important;
+    color: #8fdfb0 !important;
+}
+
+.alto-contraste .status-quero-ler {
+    background: #2a2a2a !important;
+    color: #cccccc !important;
+}
+
+.alto-contraste .status-favorito {
+    background: #3a1a1a !important;
+    color: #ff8a8a !important;
+}
+
+.alto-contraste .btn-acessibilidade-flutuante {
+    background: #222222 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+.alto-contraste .btn-acessibilidade-flutuante:hover {
+    background: #333333 !important;
+}
+
+.alto-contraste .acessibilidade-item button {
+    background: #222222 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+.alto-contraste .acessibilidade-item button:hover {
+    background: #333333 !important;
+}
+
+.alto-contraste .acessibilidade-item {
+    border-color: #444444 !important;
+}
+
+.alto-contraste .biblioteca-controles {
+    border-color: #444444 !important;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 700px) {
+    .biblioteca-wrapper {
+        margin: 20px 10px;
+        padding: 20px;
+    }
+
+    .livro-item {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .livro-capa {
+        width: 55px;
+        height: 80px;
+    }
+
+    .livro-acoes {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .filtros-botoes {
+        gap: 6px;
+    }
+
+    .btn-filtro {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .biblioteca-wrapper {
+        padding: 15px;
+    }
+
+    .header-biblioteca h2 {
+        font-size: 1.4rem;
+    }
+
+    .livro-item {
+        padding: 12px 14px;
+    }
+
+    .livro-info h4 {
+        font-size: 0.95rem;
+    }
+
+    .livro-capa {
+        width: 45px;
+        height: 65px;
+        margin-right: 12px;
+    }
+
+    .btn-acao-rapida {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+    }
+}

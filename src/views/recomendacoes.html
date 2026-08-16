@@ -1,187 +1,955 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recomendações</title>
+
+    <title>EmotionBooks - Recomendações</title>
+
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        /* Ajustes visuais específicos dos botões */
-        .btn-back {
-            background: none;
-            border: 1px solid #ccc;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 15px;
-            transition: background 0.2s;
-        }
-        .btn-back:hover {
-            background: #f0f0f0;
-        }
-        .actions-footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/recomendacoes.css">
 </head>
+
 <body>
-    <div class="app-card wide-card">
-        <header class="results-header" style="text-align: center;">
-            <h2 id="tituloRecomendacao">Recomendações para:<br>Carregando...</h2>
-        </header>
 
-        <div class="book-list" id="booksContainer">
-            <!-- Os livros do MySQL aparecerão aqui -->
-        </div>
-        
-        <div class="actions-footer">
-            <a href="/" class="btn-secondary" style="text-decoration: none; padding: 12px 24px; display: inline-block;">🔄 Fazer Nova Busca</a>
-        </div>
-    </div>
+    <!-- NAVBAR -->
+    <nav class="navbar">
 
-    <!-- Modal de Detalhes do Livro -->
-    <div class="modal" id="bookModal">
-        <div class="modal-content" style="position: relative; padding: 30px;">
-            <button class="btn-back" onclick="fecharModal()">⬅ Voltar</button>
-           
-            
-            <h1 id="modalTitle" style="text-align: center;">Título Livro</h1>
-            <p id="modalAuthor" style="text-align: center;">Autor: Nome do autor do Livro</p>
-            
-            <div style="text-align: center; margin: 15px 0;">
-                <span class="badge" id="modalTag">Tag Emocional</span>
+        <div class="logo">
+            <h2>📚 EmotionBooks</h2>
+        </div>
+
+        <div class="nav-links">
+            <a href="/">🏠 Início</a>
+            <a href="/biblioteca">📖 Minha Biblioteca</a>
+            <a href="/perfil">👤 Perfil</a>
+
+            <a href="/sair"
+               onclick="return confirm('Você deseja realmente sair da sua conta?')">
+                Sair
+            </a>
+        </div>
+
+    </nav>
+
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="container">
+
+        <!-- CABEÇALHO -->
+        <header class="results-header">
+
+            <h1>Recomendações para você</h1>
+
+            <p class="results-subtitle">
+                Livros selecionados com base na sua emoção e intenção
+            </p>
+
+            <!-- FILTROS -->
+            <div id="filtrosContainer" class="filtros-container">
+                <!-- Preenchido pelo JavaScript -->
             </div>
 
-            <button class="btn-primary" id="btnLerLivro" style="width: 100%; margin: 15px 0;">🔗 Ler livro</button>
-            
-            <p><strong>Gênero:</strong> <span id="modalGenre">Gênero do livro</span></p>
-            <p><strong>Sinopse:</strong> <span id="modalSynopsis">Sinopse aqui.</span></p>
+        </header>
+
+
+        <!-- LIVROS -->
+        <section
+            class="books-grid"
+            id="booksContainer"
+            aria-label="Livros recomendados">
+
+            <!-- Cards inseridos pelo JavaScript -->
+
+        </section>
+   
+        <div class="rodape-acoes">
+
+            <a href="/" class="btn-voltar-inicio">
+                ← Voltar ao início
+            </a>
+
         </div>
+
+    </main>
+
+
+    <!-- ============================= -->
+    <!-- MODAL DE DETALHES -->
+    <!-- ============================= -->
+
+    <div
+        class="modal"
+        id="modalDetalhes"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detalheTitulo">
+
+        <div class="modal-content modal-detalhes-content">
+
+            <button
+                class="modal-fechar"
+                onclick="fecharModalDetalhes()"
+                aria-label="Fechar">
+                ×
+            </button>
+
+            <h2 id="detalheTitulo">
+                Título do Livro
+            </h2>
+
+            <p id="detalheAutor" class="modal-autor">
+                Autor do Livro
+            </p>
+
+            <div class="sinopse-box">
+
+                <h3>Sinopse</h3>
+
+                <p id="detalheSinopse">
+                    Resumo da história do livro...
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    class="btn-finalizar"
+                    onclick="fecharModalDetalhes()">
+                    Voltar
+                </button>
+
+                <button
+                    class="btn-ler"
+                    id="btnIrParaLeitura">
+                    Ler agora ↗
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
 
+
+    <!-- ============================= -->
+    <!-- ACESSIBILIDADE -->
+    <!-- ============================= -->
+
+    <button
+        class="btn-acessibilidade-flutuante"
+        onclick="toggleMenuAcessibilidade()"
+        title="Acessibilidade">
+
+        ♿
+
+    </button>
+
+
+    <div
+        class="menu-acessibilidade"
+        id="menuAcessibilidade">
+
+        <h3>Navegação</h3>
+
+        <p class="text-desc">
+            Personalize a experiência para deixar a leitura mais confortável.
+        </p>
+
+        <div class="acessibilidade-item">
+
+            <span>Tamanho da fonte</span>
+
+            <div>
+                <button onclick="alterarFonte(-1)">A-</button>
+                <button onclick="alterarFonte(1)">A+</button>
+            </div>
+
+        </div>
+
+        <div class="acessibilidade-item">
+
+            <span>Alto contraste</span>
+
+            <button onclick="toggleContraste()">
+                Ligar/Desligar
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================= -->
+
     <script>
-        function abrirModal(titulo, autor, genero, sinopse, link, tag) {
-            document.getElementById('modalTitle').innerText = titulo;
-            document.getElementById('modalAuthor').innerText = 'Autor: ' + autor;
-            document.getElementById('modalGenre').innerText = genero || 'Não informado';
-            document.getElementById('modalSynopsis').innerText = sinopse || 'Sem sinopse disponível.';
-            if (tag) {
-                document.getElementById('modalTag').innerText = tag;
+
+        let livrosAtuais = [];
+
+
+        /* =====================================
+           FUNÇÃO PARA LIMPAR URL DAS IMAGENS
+        ===================================== */
+
+        function limparUrlCapa(url) {
+            if (!url) return '/img/placeholder.jpg';
+            
+            // Remove formatação Markdown [texto](url)
+            if (url.includes('](')) {
+                const match = url.match(/\]\((.*?)\)/);
+                if (match && match[1]) {
+                    return match[1];
+                }
             }
             
-            const btnLer = document.getElementById('btnLerLivro');
-            btnLer.onclick = function() {
-                if (link) {
-                    const confirmar = confirm("Você será direcionado para um link externo para poder ler o seu livro.");
-                    if (confirmar) {
-                        window.open(link, '_blank');
-                    }
-                } else {
-                    alert("Link para leitura indisponível.");
+            return url;
+        }
+
+
+        /* =====================================
+           ACESSIBILIDADE
+        ===================================== */
+
+        function toggleMenuAcessibilidade() {
+
+            const menu =
+                document.getElementById('menuAcessibilidade');
+
+            menu.style.display =
+                menu.style.display === 'block'
+                    ? 'none'
+                    : 'block';
+        }
+
+
+        function toggleContraste() {
+
+            document.body.classList.toggle('alto-contraste');
+
+        }
+
+
+               /* =====================================
+           ACESSIBILIDADE - AJUSTE DE FONTE
+        ===================================== */
+
+        let tamanhoAtual = 100;
+
+        function alterarFonte(direcao) {
+            // Limites: 80% (mínimo) e 130% (máximo)
+            if (direcao > 0 && tamanhoAtual < 130) {
+                tamanhoAtual += 10;
+            } else if (direcao < 0 && tamanhoAtual > 80) {
+                tamanhoAtual -= 10;
+            }
+            
+            // Aplica o tamanho diretamente no HTML
+            document.documentElement.style.fontSize = tamanhoAtual + '%';
+            
+            // Também aplica no body para garantir
+            document.body.style.fontSize = tamanhoAtual + '%';
+        }
+
+
+        /* =====================================
+           MODAL DE DETALHES
+        ===================================== */
+
+        function abrirDetalhes(index) {
+
+            const livro = livrosAtuais[index];
+
+            document.getElementById('detalheTitulo').innerText =
+                livro.titulo;
+
+            document.getElementById('detalheAutor').innerText =
+                livro.autor;
+
+            document.getElementById('detalheSinopse').innerText =
+                livro.sinopse || 'Sinopse não disponível.';
+
+
+            const btnLeitura =
+                document.getElementById('btnIrParaLeitura');
+
+            btnLeitura.onclick = function () {
+
+                confirmarLeituraExterna(
+                    livro.link_externo || livro.link_leitura
+                );
+
+            };
+
+
+            document.getElementById('modalDetalhes').style.display =
+                'flex';
+        }
+
+
+        function fecharModalDetalhes() {
+
+            document.getElementById('modalDetalhes').style.display =
+                'none';
+
+        }
+
+
+        /* Fechar modal clicando fora */
+
+        window.addEventListener('click', function (event) {
+
+            const modal =
+                document.getElementById('modalDetalhes');
+
+            if (event.target === modal) {
+
+                fecharModalDetalhes();
+
+            }
+
+        });
+
+
+        /* =====================================
+           CARREGAR RECOMENDAÇÕES
+        ===================================== */
+
+        window.addEventListener(
+            'DOMContentLoaded',
+            async () => {
+
+                const urlParams =
+                    new URLSearchParams(window.location.search);
+
+                const humor =
+                    urlParams.get('humor');
+
+                const intencao =
+                    urlParams.get('intencao');
+
+
+                /* Verificação */
+
+                if (!humor || !intencao) {
+
+                    document.getElementById(
+                        'filtrosContainer'
+                    ).innerHTML = `
+                        <p class="mensagem-erro">
+                            Seleção incompleta. Volte à página inicial.
+                        </p>
+                    `;
+
+                    return;
                 }
-            };
-            
-            document.getElementById('bookModal').style.display = 'flex';
+
+
+                /* Mapas */
+
+                const mapaHumor = {
+
+                    'tristeza': 'Triste',
+
+                    'felicidade': 'Feliz',
+
+                    'tedio': 'Entediado',
+
+                    'neutro': 'Neutro',
+
+                    'ansiedade': 'Ansioso'
+
+                };
+
+
+                const mapaIntencao = {
+
+                    'manter': 'Validar emoção',
+
+                    'alterar': 'Transformar emoção'
+
+                };
+
+
+                const textoHumor =
+                    mapaHumor[humor.toLowerCase()] || humor;
+
+
+                const textoIntencao =
+                    mapaIntencao[intencao.toLowerCase()] || intencao;
+
+
+                /* Mostra os filtros */
+
+                document.getElementById(
+                    'filtrosContainer'
+                ).innerHTML = `
+
+                    <span class="filtro-tag">
+                        Emoção:
+                        <strong>${textoHumor}</strong>
+                    </span>
+
+                    <span class="filtro-tag">
+                        Intenção:
+                        <strong>${textoIntencao}</strong>
+                    </span>
+
+                `;
+
+
+                /* =====================================
+                   BUSCAR RECOMENDAÇÕES
+                ===================================== */
+
+                try {
+
+                    const response = await fetch(
+                        '/recomendar',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body: JSON.stringify({
+                                humor: humor,
+                                intencao: intencao
+                            })
+                        }
+                    );
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Erro na resposta do servidor.'
+                        );
+
+                    }
+
+
+                    const data =
+                        await response.json();
+
+
+                    livrosAtuais =
+                        data.recomendacoes || [];
+
+
+                    const container =
+                        document.getElementById(
+                            'booksContainer'
+                        );
+
+
+                    container.innerHTML = '';
+
+
+                    /* =====================================
+                       NENHUM LIVRO
+                    ===================================== */
+
+                    if (livrosAtuais.length === 0) {
+
+                        container.innerHTML = `
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+                                    📚
+                                </div>
+
+                                <h3>
+                                    Nenhum livro encontrado
+                                </h3>
+
+                                <p>
+                                    Não encontramos recomendações
+                                    para essa combinação no momento.
+                                </p>
+
+                                <a
+                                    href="/"
+                                    class="btn-voltar-inicio">
+                                    ← Voltar ao início
+                                </a>
+
+                            </div>
+
+                        `;
+
+                        return;
+                    }
+
+
+                    /* =====================================
+                       CRIAR CARDS
+                    ===================================== */
+
+                    livrosAtuais.forEach(
+                        (livro, index) => {
+
+                            const div =
+                                document.createElement('article');
+
+
+                            div.className =
+                                'book-card';
+
+
+                            const genero =
+                                livro.genero
+                                    ? livro.genero
+                                    : 'Leitura';
+
+
+                            const estaFavorito =
+                                livro.favorito === 1 ||
+                                livro.favorito === true;
+
+                            // LIMPA A URL DA CAPA
+                            const capaLimpa = limparUrlCapa(livro.capa_url);
+
+                            div.innerHTML = `
+
+                                <!-- CAPA E INFORMAÇÕES BÁSICAS -->
+
+                                <div class="book-main-content">
+
+                                    <img
+                                        src="${capaLimpa}"
+                                        alt="Capa do livro ${livro.titulo}"
+                                        class="book-cover-img"
+                                        onerror="this.src='/img/placeholder.jpg'"
+                                    >
+
+
+                                    <div class="book-info-side">
+
+                                        <h3 class="book-title">
+                                            ${livro.titulo}
+                                        </h3>
+
+                                        <p class="book-author">
+                                            ${livro.autor}
+                                        </p>
+
+
+                                        <div class="book-tags">
+
+                                            <span class="tag-pill">
+                                                #${textoHumor.toLowerCase()}
+                                            </span>
+
+                                            <span class="tag-pill">
+                                                #${genero.toLowerCase()}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- BOTÃO PRINCIPAL -->
+
+                                <button
+                                    class="btn-saiba-mais"
+                                    onclick="abrirDetalhes(${index})">
+
+                                   
+
+                                    <span>
+                                        Ver detalhes
+                                    </span>
+
+                                    <span class="seta">
+                                        →
+                                    </span>
+
+                                </button>
+
+
+                                <!-- AÇÕES -->
+
+                                <div class="quick-actions-container">
+
+                                    <p class="quick-actions-title">
+                                        Ações rápidas
+                                    </p>
+
+
+                                    <div class="quick-actions-buttons">
+
+
+                                        <!-- QUERO LER -->
+
+                                        <button
+                                            class="btn-action btn-quero-ler"
+                                            onclick="marcarQueroLer(
+                                                ${livro.id_livro},
+                                                this
+                                            )">
+
+                                            <span class="action-icon">+</span>
+
+                                            <span>
+                                                Quero ler
+                                            </span>
+
+                                        </button>
+
+
+                                        <!-- LIDO -->
+
+                                        <button
+                                            class="btn-action btn-lido"
+                                            onclick="marcarComoLido(
+                                                ${livro.id_livro},
+                                                this
+                                            )">
+
+                                            <span class="action-icon">
+                                                ✓
+                                            </span>
+
+                                            <span>
+                                                Lido
+                                            </span>
+
+                                        </button>
+
+
+                                        <!-- FAVORITO -->
+
+                                        <button
+                                            class="btn-action btn-favorito
+                                            ${estaFavorito ? 'favoritado' : ''}"
+                                            data-favoritado="${estaFavorito}"
+                                            onclick="alternarFavorito(
+                                                ${livro.id_livro},
+                                                this
+                                            )">
+
+                                            <span class="action-icon">
+                                                ${estaFavorito ? '♥' : '♡'}
+                                            </span>
+
+                                            <span class="texto-favorito">
+                                                ${estaFavorito
+                                                    ? 'Favorito'
+                                                    : 'Favoritar'}
+                                            </span>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+
+                            container.appendChild(div);
+
+                        }
+                    );
+
+
+                } catch (err) {
+
+                    console.error(
+                        "Erro ao buscar as recomendações:",
+                        err
+                    );
+
+
+                    document.getElementById(
+                        'booksContainer'
+                    ).innerHTML = `
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                ⚠️
+                            </div>
+
+                            <h3>
+                                Não foi possível carregar
+                                as recomendações
+                            </h3>
+
+                            <p>
+                                Tente novamente em alguns instantes.
+                            </p>
+
+                            <a
+                                href="/"
+                                class="btn-voltar-inicio">
+                                ← Voltar ao início
+                            </a>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+        );
+
+
+        /* =====================================
+           MARCAR COMO LIDO
+        ===================================== */
+
+        async function marcarComoLido(
+            idLivro,
+            botao
+        ) {
+
+            const confirmacao = confirm(
+                "Deseja realmente marcar este livro como lido? Ele não será mais recomendado para você."
+            );
+
+
+            if (!confirmacao) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        '/marcar-lido',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body: JSON.stringify({
+                                id_livro: idLivro
+                            })
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    botao.classList.add('ativo');
+
+                    botao.innerHTML = `
+                        <span class="action-icon">✓</span>
+                        <span>Lido</span>
+                    `;
+
+                    botao.disabled = true;
+
+
+                    alert(
+                        "Livro salvo no seu histórico com sucesso!"
+                    );
+
+                } else {
+
+                    alert(
+                        "Erro ao salvar. Tente novamente."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erro:",
+                    error
+                );
+
+                alert(
+                    "Erro de conexão."
+                );
+
+            }
+
         }
 
-        function fecharModal() {
-            document.getElementById('bookModal').style.display = 'none';
+
+        /* =====================================
+           QUERO LER
+        ===================================== */
+
+        async function marcarQueroLer(
+            idLivro,
+            botao
+        ) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        '/quero-ler',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body: JSON.stringify({
+                                id_livro: idLivro
+                            })
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    botao.classList.add('ativo');
+
+                    botao.innerHTML = `
+                        <span class="action-icon">✓</span>
+                        <span>Na lista</span>
+                    `;
+
+                    botao.disabled = true;
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erro:",
+                    error
+                );
+
+            }
+
         }
 
-        window.addEventListener('DOMContentLoaded', async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const humor = urlParams.get('humor');
-    const intencao = urlParams.get('intencao');
-    
-    if (!humor || !intencao) {
-        document.getElementById('tituloRecomendacao').innerText = "Seleção incompleta";
-        document.getElementById('booksContainer').innerHTML = '<p style="text-align:center; padding: 20px;">Por favor, selecione o humor e a intenção na página inicial.</p>';
-        return;
-    }
 
-    // Mapeamento para nomes amigáveis e acolhedores
-    const mapaHumor = {
-        'tristeza': ' Tristeza',
-        'felicidade': ' Felicidade',
-        'tedio': ' Tédio',
-        'neutro': ' Neutro',
-        'ansiedade': ' Ansiedade'
-    };
+        /* =====================================
+           FAVORITO
+        ===================================== */
 
-    const mapaIntencao = {
-        'manter': 'Validar humor',
-        'alterar': 'Transformar humor'
-    };
+        async function alternarFavorito(
+            idLivro,
+            botao
+        ) {
 
-    const textoHumor = mapaHumor[humor.toLowerCase()] || humor;
-    const textoIntencao = mapaIntencao[intencao.toLowerCase()] || intencao;
+            const estaFavoritado =
+                botao.dataset.favoritado === 'true';
 
-    // Renderiza um cabeçalho bonito com pílulas/badges
-    document.getElementById('tituloRecomendacao').innerHTML = `
-        <span style="font-size: 0.9em; color: #666; font-weight: normal; display: block; margin-bottom: 8px;">Recomendações baseadas no seu momento:</span>
-        <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 5px;">
-            <span style="background: #eef2ff; color: #4f46e5; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600;">${textoHumor}</span>
-            <span style="color: #ccc;">•</span>
-            <span style="background: #f3f4f6; color: #374151; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600;">${textoIntencao}</span>
-        </div>
-    `;
 
-    try {
-        const response = await fetch('/recomendar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ humor: humor, intencao: intencao })
-        });
-        
-        const data = await response.json();
-        const livros = data.recomendacoes;
+            const novoStatus =
+                !estaFavoritado;
 
-        const container = document.getElementById('booksContainer');
-        container.innerHTML = '';
 
-        if (!livros || livros.length === 0) {
-            container.innerHTML = '<p style="text-align:center; padding: 30px; color: #666;">Nenhum livro encontrado para esta combinação no momento.</p>';
-            return;
+            try {
+
+                const response =
+                    await fetch(
+                        '/favoritar',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body: JSON.stringify({
+                                id_livro: idLivro,
+                                favorito: novoStatus
+                            })
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    botao.dataset.favoritado =
+                        novoStatus;
+
+
+                    if (novoStatus) {
+
+                        botao.classList.add(
+                            'favoritado'
+                        );
+
+                        botao.innerHTML = `
+                            <span class="action-icon">
+                                ♥
+                            </span>
+
+                            <span class="texto-favorito">
+                                Favorito
+                            </span>
+                        `;
+
+                    } else {
+
+                        botao.classList.remove(
+                            'favoritado'
+                        );
+
+                        botao.innerHTML = `
+                            <span class="action-icon">
+                                ♡
+                            </span>
+
+                            <span class="texto-favorito">
+                                Favoritar
+                            </span>
+                        `;
+
+                    }
+
+
+                    /* Pequena animação */
+
+                    botao.classList.remove(
+                        'favorito-animacao'
+                    );
+
+                    void botao.offsetWidth;
+
+                    botao.classList.add(
+                        'favorito-animacao'
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erro:",
+                    error
+                );
+
+            }
+
         }
 
-        livros.forEach(livro => {
-            const div = document.createElement('div');
-            div.className = 'book-item';
-            div.style.cssText = 'background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; justify-content: space-between; align-items: center;';
-            
-            div.innerHTML = `
-                <div class="book-details">
-                    <h3 style="margin: 0 0 6px 0; color: #1f2937; font-size: 1.1em;">${livro.titulo}</h3>
-                    <p style="margin: 2px 0; color: #4b5563; font-size: 0.9em;"><strong>Autor:</strong> ${livro.autor}</p>
-                    <p style="margin: 2px 0; color: #9ca3af; font-size: 0.85em;"><strong>Ano:</strong> ${livro.ano_publicacao || 'N/I'}</p>
-                </div>
-            `;
-
-            const btnDetalhes = document.createElement('button');
-            btnDetalhes.className = 'btn-secondary';
-            btnDetalhes.style.cssText = 'background: #4f46e5; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 0.9em; transition: background 0.2s; white-space: nowrap; margin-left: 15px;';
-            btnDetalhes.innerText = 'Ver Detalhes';
-            
-            btnDetalhes.onmouseover = () => btnDetalhes.style.background = '#4338ca';
-            btnDetalhes.onmouseout = () => btnDetalhes.style.background = '#4f46e5';
-
-            btnDetalhes.onclick = function() {
-                abrirModal(livro.titulo, livro.autor, livro.genero, livro.sinopse, livro.link_externo || livro.link_leitura, livro.tag);
-            };
-
-            div.appendChild(btnDetalhes);
-            container.appendChild(div);
-        });
-          
-    } catch (err) {
-        console.error("Erro ao buscar as recomendações:", err);
-        document.getElementById('booksContainer').innerHTML = '<p style="text-align:center; color:#ef4444; padding: 20px;">Erro ao carregar os livros do banco de dados.</p>';
-    }
-});
     </script>
+
 </body>
+
 </html>

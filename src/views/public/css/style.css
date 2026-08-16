@@ -1,178 +1,615 @@
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* Estilos Globais e Fundo */
+/* =========================================
+   VARIÁVEIS DE CORES E TEMA
+========================================= */
+:root {
+    --bg-color: #f5f0eb;
+    --text-color: #2d2a27;
+    --text-light: #8a7e74;
+    --card-bg: #ffffff;
+    --border-color: #ece8e4;
+    --primary-color: #8b7355;
+    --primary-hover: #6e5a42;
+    --primary-light: rgba(139, 115, 85, 0.12);
+    --nav-bg: #ffffff;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 8px 35px rgba(0, 0, 0, 0.08);
+    --radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.alto-contraste {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --text-light: #aaaaaa;
+    --card-bg: #1e1e1e;
+    --border-color: #333333;
+    --primary-color: #ffcc00;
+    --primary-hover: #e6b800;
+    --primary-light: rgba(255, 204, 0, 0.15);
+    --nav-bg: #1e1e1e;
+    --shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+    --shadow-hover: 0 8px 35px rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================
+   ESTILOS GLOBAIS
+========================================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    transition: var(--transition);
     min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.navbar .logo h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 25px;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.nav-links a.active {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.nav-links a.active:hover {
+    background-color: var(--primary-hover);
+}
+
+/* =========================================
+   CONTAINER PRINCIPAL
+========================================= */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px 24px 60px;
+}
+
+/* =========================================
+   HEADER TEXT
+========================================= */
+.header-text {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-top: 20px;
+}
+
+.header-text h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.header-text h1 .highlight {
+    color: var(--primary-color);
+    position: relative;
+}
+
+.header-text h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 4px;
+    opacity: 0.3;
+}
+
+.header-text p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 300;
     margin: 0;
 }
 
-/* Cartão Principal */
-.app-card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    padding: 40px;
-    max-width: 500px;
-    width: 90%;
-}
-
-.wide-card {
-    max-width: 700px;
-}
-
-/* Cabeçalho */
-.app-header {
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.logo-icon {
-    font-size: 3.5rem;
-    margin-bottom: 10px;
-}
-
-h1 {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    margin: 0 0 5px 0;
-}
-
-.subtitle {
-    font-size: 0.95rem;
-    color: #7f8c8d;
-    margin-top: 0;
-}
-
-/* Grupos e Títulos */
-.group-title {
+/* =========================================
+   SEÇÃO TITLE
+========================================= */
+.section-title {
+    font-size: 1.2rem;
     font-weight: 600;
-    display: block;
-    margin-bottom: 15px;
-    color: #34495e;
-    font-size: 1.05rem;
-}
-
-.form-group {
-    margin-bottom: 35px;
-}
-
-/* Botões Selecionáveis (Radio Option) */
-.radio-grid {
+    color: var(--text-color);
+    margin-bottom: 20px;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 12px;
 }
 
-.radio-vertical {
+.section-title .title-icon {
+    font-size: 1.4rem;
+}
+
+.section-divider {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 40px 0 32px;
+    opacity: 0.5;
+}
+
+/* =========================================
+   CARDS DE SELEÇÃO (Rádios customizados)
+   COM ALTURA ALINHADA
+========================================= */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 0;
+}
+
+.grid-cards-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card-option {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+}
+
+.card-option input[type="radio"] {
+    display: none;
+}
+
+.card-option label {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-}
-
-.radio-option {
-    position: relative;
-    flex: 1 1 30%;
-}
-
-.radio-option input[type="radio"] {
-    display: none; /* Esconde a bolinha padrão do HTML */
-}
-
-.radio-option label {
-    display: block;
-    padding: 12px 15px;
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    cursor: pointer;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-    color: #555;
-}
-
-/* Efeito de Seleção */
-.radio-option input[type="radio"]:checked + label {
-    background: #ebf5fb;
-    border-color: #3498db;
-    color: #2980b9;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.15);
-    transform: translateY(-2px);
-}
-
-.radio-option label:hover {
-    border-color: #bdc3c7;
-}
-
-.radio-vertical .radio-option label {
-    text-align: left;
-    padding-left: 20px;
-}
-
-/* Botões do Sistema */
-.btn-primary {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    min-height: 150px;
     width: 100%;
-    padding: 16px;
-    background: #3498db;
-    color: white;
+    box-shadow: var(--shadow);
+}
+
+.grid-cards-2 .card-option label {
+    min-height: 150px;
+}
+
+.card-option label .icon {
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+    display: block;
+    flex-shrink: 0;
+}
+
+.card-option label .title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 4px;
+    flex-shrink: 0;
+}
+
+.card-option label .desc {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    max-width: 200px;
+    flex-shrink: 0;
+}
+
+/* Efeito Hover */
+.card-option label:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Efeito Selecionado */
+.card-option input[type="radio"]:checked + label {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+    box-shadow: 0 4px 20px rgba(139, 115, 85, 0.15);
+    transform: translateY(-4px);
+}
+
+.card-option input[type="radio"]:checked + label .icon {
+    transform: scale(1.1);
+}
+
+/* Cores de fundo para cada emoção */
+.card-option input[type="radio"][value="tristeza"]:checked + label {
+    border-color: #5c6bc0;
+    background-color: rgba(92, 107, 192, 0.08);
+}
+
+.card-option input[type="radio"][value="ansiedade"]:checked + label {
+    border-color: #ff7043;
+    background-color: rgba(255, 112, 67, 0.08);
+}
+
+.card-option input[type="radio"][value="felicidade"]:checked + label {
+    border-color: #66bb6a;
+    background-color: rgba(102, 187, 106, 0.08);
+}
+
+.card-option input[type="radio"][value="neutro"]:checked + label {
+    border-color: #78909c;
+    background-color: rgba(120, 144, 156, 0.08);
+}
+
+/* =========================================
+   BOTÃO PRINCIPAL
+========================================= */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: #ffffff;
     border: none;
-    border-radius: 12px;
+    padding: 16px 40px;
+    border-radius: 30px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 40px auto 0;
+    box-shadow: 0 6px 24px rgba(139, 115, 85, 0.25);
+    letter-spacing: 0.3px;
 }
 
 .btn-primary:hover {
-    background: #2980b9;
-    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(139, 115, 85, 0.35);
 }
 
-.btn-secondary {
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
+}
+
+.btn-primary::after {
+    content: ' →';
+    transition: transform 0.3s ease;
     display: inline-block;
-    padding: 10px 20px;
-    background: #e9ecef;
-    color: #495057;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.2s;
 }
 
-.btn-secondary:hover {
-    background: #dee2e6;
+.btn-primary:hover::after {
+    transform: translateX(6px);
 }
 
-/* Modais de Detalhes */
-.modal {
+/* =========================================
+   MENSAGEM DE ERRO
+========================================= */
+.mensagem-erro {
     display: none;
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-weight: 500;
+    border-left: 4px solid #dc2626;
+    font-size: 0.95rem;
+}
+
+.mensagem-erro strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* =========================================
+   ACESSIBILIDADE
+========================================= */
+.btn-acessibilidade-flutuante {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
+    right: 24px;
+    bottom: 24px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: none;
+    z-index: 1000;
+    transition: var(--transition);
 }
 
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+.btn-acessibilidade-flutuante:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+}
+
+.menu-acessibilidade {
+    display: none;
+    position: fixed;
+    right: 24px;
+    bottom: 88px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px 24px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    width: 260px;
+}
+
+.menu-acessibilidade h3 {
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.menu-acessibilidade .text-desc {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.acessibilidade-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.acessibilidade-item:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.acessibilidade-item span {
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.acessibilidade-item div {
+    display: flex;
+    gap: 6px;
+}
+
+.acessibilidade-item button {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.acessibilidade-item button:hover {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
+/* =========================================
+   ALTO CONTRASTE - AJUSTES ADICIONAIS
+========================================= */
+.alto-contraste .btn-primary {
+    background: #ffcc00;
+    color: #000000;
+    box-shadow: 0 4px 20px rgba(255, 204, 0, 0.3);
+}
+
+.alto-contraste .btn-primary:hover {
+    background: #e6b800;
+    box-shadow: 0 8px 30px rgba(255, 204, 0, 0.4);
+}
+
+.alto-contraste .card-option input[type="radio"]:checked + label {
+    border-color: #ffcc00;
+    background-color: rgba(255, 204, 0, 0.12);
+}
+
+.alto-contraste .card-option label:hover {
+    border-color: #ffcc00;
+}
+
+.alto-contraste .nav-links a.active {
+    background-color: #ffcc00;
+    color: #000000;
+}
+
+.alto-contraste .nav-links a.active:hover {
+    background-color: #e6b800;
+}
+
+.alto-contraste .btn-acessibilidade-flutuante {
+    background-color: #ffcc00;
+    color: #000000;
+}
+
+.alto-contraste .mensagem-erro {
+    background: #2a1a1a;
+    color: #ff6b6b;
+    border-left-color: #ff6b6b;
+}
+
+.alto-contraste .acessibilidade-item button:hover {
+    background: #ffcc00;
+    color: #000000;
+    border-color: #ffcc00;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 20px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .nav-links {
+        gap: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+
+    .container {
+        padding: 20px 16px 40px;
+    }
+
+    .header-text h1 {
+        font-size: 2rem;
+    }
+
+    .header-text p {
+        font-size: 1rem;
+    }
+
+    .grid-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .grid-cards-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .card-option label {
+        min-height: 130px;
+        padding: 18px 14px;
+    }
+
+    .grid-cards-2 .card-option label {
+        min-height: 130px;
+    }
+
+    .card-option label .icon {
+        font-size: 2rem;
+    }
+
+    .btn-primary {
+        max-width: 100%;
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+
+    .menu-acessibilidade {
+        right: 16px;
+        bottom: 80px;
+        width: 220px;
+        padding: 16px 18px;
+    }
+
+    .btn-acessibilidade-flutuante {
+        right: 16px;
+        bottom: 16px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-text h1 {
+        font-size: 1.6rem;
+    }
+
+    .grid-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .card-option label {
+        min-height: 110px;
+        padding: 14px 10px;
+    }
+
+    .grid-cards-2 .card-option label {
+        min-height: 110px;
+    }
+
+    .card-option label .icon {
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+    }
+
+    .card-option label .title {
+        font-size: 0.85rem;
+    }
+
+    .card-option label .desc {
+        font-size: 0.7rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
 }
