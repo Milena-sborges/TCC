@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EmotionBooks - Início</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
 </head>
 <body>
 
@@ -24,7 +25,7 @@
     <!-- Conteúdo Principal -->
     <div class="container">
         <div class="header-text">
-            <h1>Encontre leituras que conversem com o seu momento.</h1>
+            <h1>Encontre leituras que conversem com o seu <span class="highlight">momento</span>.</h1>
             <p>Um espaço para transformar emoções em leituras.</p>
         </div>
 
@@ -41,7 +42,6 @@
                     <label for="humor-tristeza">
                         <span class="icon">😢</span>
                         <span class="title">Triste</span>
-                       
                     </label>
                 </div>
 
@@ -50,7 +50,6 @@
                     <label for="humor-ansiedade">
                         <span class="icon">😰</span>
                         <span class="title">Ansioso</span>
-                        
                     </label>
                 </div>
 
@@ -59,7 +58,6 @@
                     <label for="humor-felicidade">
                         <span class="icon">😄</span>
                         <span class="title">Feliz</span>
-                       
                     </label>
                 </div>
 
@@ -68,11 +66,12 @@
                     <label for="humor-neutro">
                         <span class="icon">😐</span>
                         <span class="title">Neutro</span>
-                        
                     </label>
                 </div>
 
             </div>
+
+            <hr class="section-divider">
 
             <h3 class="section-title">O que você busca nesta leitura?</h3>
             <div class="grid-cards grid-cards-2">
@@ -134,7 +133,8 @@
         let tamanhoAtual = 100;
         function alterarFonte(direcao) {
             if (direcao > 0 && tamanhoAtual < 130) tamanhoAtual += 10;
-            else if (direcao < 0 && tamanhoAtual > 90) tamanhoAtual -= 10;
+            else if (direcao < 0 && tamanhoAtual > 80) tamanhoAtual -= 10;
+            document.documentElement.style.fontSize = tamanhoAtual + '%';
             document.body.style.fontSize = tamanhoAtual + '%';
         }
 

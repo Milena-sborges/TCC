@@ -1,0 +1,371 @@
+/* =====================================================
+   EMOTIONBOOKS - PÁGINA INICIAL
+   TAMANHOS REDUZIDOS E DISTÂNCIA MENOR ENTRE SEÇÕES
+===================================================== */
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 20px 50px;
+}
+
+/* =====================================================
+   HEADER TEXT
+===================================================== */
+
+.header-text {
+    text-align: center;
+    margin-bottom: 28px; /* REDUZIDO */
+    padding-top: 15px;
+}
+
+.header-text h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.header-text h1 .highlight {
+    color: var(--primary-color);
+    position: relative;
+}
+
+.header-text h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 4px;
+    opacity: 0.3;
+}
+
+.header-text p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-weight: 300;
+    margin: 0;
+}
+
+
+/* =====================================================
+   SEÇÃO TITLE
+===================================================== */
+
+.section-title {
+    font-size: 1.2rem; 
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title .title-icon {
+    font-size: 1.2rem;
+}
+
+.section-divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0 18px; /* REDUZIDO */
+    opacity: 0.5;
+}
+
+
+/* =====================================================
+   CARDS DE SELEÇÃO
+===================================================== */
+
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 0;
+}
+
+.grid-cards-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card-option {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+}
+
+.card-option input[type="radio"] {
+    display: none;
+}
+
+.card-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    min-height: 120px;
+    width: 100%;
+    box-shadow: var(--shadow);
+}
+
+.grid-cards-2 .card-option label {
+    min-height: 120px;
+}
+
+.card-option label .icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    display: block;
+    flex-shrink: 0;
+}
+
+.card-option label .title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 3px;
+    flex-shrink: 0;
+}
+
+.card-option label .desc {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    max-width: 180px;
+    flex-shrink: 0;
+}
+
+/* Efeito Hover */
+.card-option label:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Efeito Selecionado */
+.card-option input[type="radio"]:checked + label {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+    box-shadow: 0 4px 20px rgba(139, 115, 85, 0.15);
+    transform: translateY(-3px);
+}
+
+.card-option input[type="radio"]:checked + label .icon {
+    transform: scale(1.08);
+}
+
+/* Cores de fundo para cada emoção */
+.card-option input[type="radio"][value="tristeza"]:checked + label {
+    border-color: #5c6bc0;
+    background-color: rgba(92, 107, 192, 0.08);
+}
+
+.card-option input[type="radio"][value="ansiedade"]:checked + label {
+    border-color: #ff7043;
+    background-color: rgba(255, 112, 67, 0.08);
+}
+
+.card-option input[type="radio"][value="felicidade"]:checked + label {
+    border-color: #66bb6a;
+    background-color: rgba(102, 187, 106, 0.08);
+}
+
+.card-option input[type="radio"][value="neutro"]:checked + label {
+    border-color: #78909c;
+    background-color: rgba(120, 144, 156, 0.08);
+}
+
+
+/* =====================================================
+   BOTÃO PRINCIPAL
+===================================================== */
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: #ffffff;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: var(--transition);
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    margin: 28px auto 0; /* REDUZIDO */
+    box-shadow: 0 6px 24px rgba(139, 115, 85, 0.25);
+    letter-spacing: 0.3px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(139, 115, 85, 0.35);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
+}
+
+.btn-primary::after {
+    content: ' →';
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.btn-primary:hover::after {
+    transform: translateX(6px);
+}
+
+
+/* =====================================================
+   MENSAGEM DE ERRO
+===================================================== */
+
+.mensagem-erro {
+    display: none;
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 16px; /* REDUZIDO */
+    text-align: center;
+    font-weight: 500;
+    border-left: 4px solid #dc2626;
+    font-size: 0.85rem;
+}
+
+.mensagem-erro strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px 16px 40px;
+    }
+
+    .header-text {
+        margin-bottom: 20px;
+    }
+
+    .header-text h1 {
+        font-size: 1.6rem;
+    }
+
+    .header-text p {
+        font-size: 0.85rem;
+    }
+
+    .grid-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .grid-cards-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .card-option label {
+        min-height: 110px;
+        padding: 16px 12px;
+    }
+
+    .grid-cards-2 .card-option label {
+        min-height: 110px;
+    }
+
+    .card-option label .icon {
+        font-size: 1.7rem;
+    }
+
+    .card-option label .title {
+        font-size: 0.85rem;
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+    }
+
+    .section-divider {
+        margin: 16px 0 14px;
+    }
+
+    .btn-primary {
+        max-width: 100%;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        margin-top: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-text h1 {
+        font-size: 1.3rem;
+    }
+
+    .grid-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .card-option label {
+        min-height: 95px;
+        padding: 12px 10px;
+    }
+
+    .grid-cards-2 .card-option label {
+        min-height: 95px;
+    }
+
+    .card-option label .icon {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+
+    .card-option label .title {
+        font-size: 0.75rem;
+    }
+
+    .card-option label .desc {
+        font-size: 0.6rem;
+    }
+
+    .section-title {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+
+    .section-divider {
+        margin: 14px 0 12px;
+    }
+
+    .btn-primary {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        margin-top: 18px;
+    }
+
+    .btn-primary::after {
+        content: ' →';
+    }
+}

@@ -260,35 +260,35 @@
         ===================================== */
 
         function abrirDetalhes(index) {
-
             const livro = livrosAtuais[index];
 
-            document.getElementById('detalheTitulo').innerText =
-                livro.titulo;
+            document.getElementById('detalheTitulo').innerText = livro.titulo;
+            document.getElementById('detalheAutor').innerText = livro.autor;
+            document.getElementById('detalheSinopse').innerText = livro.sinopse || 'Sinopse não disponível.';
 
-            document.getElementById('detalheAutor').innerText =
-                livro.autor;
-
-            document.getElementById('detalheSinopse').innerText =
-                livro.sinopse || 'Sinopse não disponível.';
-
-
-            const btnLeitura =
-                document.getElementById('btnIrParaLeitura');
-
+            const btnLeitura = document.getElementById('btnIrParaLeitura');
+            
             btnLeitura.onclick = function () {
+                // 1. Pega o link que veio do banco
+                let linkBruto = livro.link_externo || livro.link_leitura;
 
-                confirmarLeituraExterna(
-                    livro.link_externo || livro.link_leitura
-                );
+                // 2. Limpa a formatação Markdown [texto](url) caso ela exista
+                if (linkBruto && linkBruto.includes('](')) {
+                    const match = linkBruto.match(/\]\((.*?)\)/);
+                    if (match && match[1]) {
+                        linkBruto = match[1];
+                    }
+                }
 
+                // 3. Manda o link limpo para a função que abre a aba
+                confirmarLeituraExterna(linkBruto);
             };
 
-
-            document.getElementById('modalDetalhes').style.display =
-                'flex';
+            document.getElementById('modalDetalhes').style.display = 'flex';
         }
 
+
+           
 
         function fecharModalDetalhes() {
 
@@ -787,7 +787,23 @@
 
         }
 
+/* =====================================
+           LEITURA EXTERNA
+        ===================================== */
+        function confirmarLeituraExterna(link) {
+            // Verifica se o link realmente existe e não está vazio
+            if (!link || link.trim() === "" || link === "null") {
+                alert("Desculpe, o link de leitura não está disponível para este livro.");
+                return;
+            }
 
+            // Pergunta se o usuário quer sair do site
+            const confirmar = confirm("Você será direcionado para o site Gutenberg (externo) para ler o livro. Deseja continuar?");
+            
+            if (confirmar) {
+                window.open(link, '_blank'); // Abre em uma nova aba
+            }
+        }
         /* =====================================
            QUERO LER
         ===================================== */
