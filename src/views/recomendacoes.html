@@ -46,9 +46,9 @@
                 Livros selecionados com base na sua emoção e intenção
             </p>
 
-            <!-- FILTROS -->
+           
             <div id="filtrosContainer" class="filtros-container">
-                <!-- Preenchido pelo JavaScript -->
+               
             </div>
 
         </header>
@@ -522,13 +522,13 @@
 
                                 <div class="book-main-content">
 
-                                    <img
-                                        src="${capaLimpa}"
-                                        alt="Capa do livro ${livro.titulo}"
-                                        class="book-cover-img"
-                                        onerror="this.src='/img/placeholder.jpg'"
+                                   <img
+                                      src="${capaLimpa}"
+                                      alt="Capa do livro ${livro.titulo}"
+                                      class="book-cover-img"
+                                      loading="lazy"
+                                      onerror="this.src='/img/placeholder.jpg'"
                                     >
-
 
                                     <div class="book-info-side">
 
