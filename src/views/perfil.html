@@ -72,6 +72,16 @@
             </div>
         </div>
 
+        <!-- ===================================== -->
+        <!-- MINHA BIBLIOTECA (RESUMO) -->
+        <!-- ===================================== -->
+        <div class="minha-biblioteca-resumo" style="margin-top: 40px;">
+            <h3 style="font-family: Georgia, 'Times New Roman', serif; color: #2d2a27; margin-bottom: 16px;">📚 Meus Livros</h3>
+            <div id="bibliotecaResumoContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                <p style="color: #8a7e74; text-align: center;">Carregando seus livros...</p>
+            </div>
+        </div>
+
     </div>
 
     <!-- ===================================================== -->
@@ -108,6 +118,7 @@
         function limparUrl(url) {
             // Se não tiver URL, retorna vazio
             if (!url) return '';
+            if (url === 'null' || url === 'undefined') return '';
 
             // Remove espaços extras
             url = url.trim();
@@ -120,7 +131,7 @@
                 }
             }
 
-            // Caso 2: URL com parênteses extras
+            // Caso 2: URL com parênteses extras (url)
             if (url.includes('(') && url.includes(')')) {
                 const match = url.match(/\((.*?)\)/);
                 if (match && match[1] && match[1].startsWith('http')) {
@@ -128,7 +139,7 @@
                 }
             }
 
-            // Caso 3: URL com colchetes extras
+            // Caso 3: URL com colchetes extras [url]
             if (url.startsWith('[') && url.includes(']')) {
                 const match = url.match(/\[(.*?)\]/);
                 if (match && match[1] && match[1].startsWith('http')) {
@@ -143,6 +154,27 @@
 
             // Se nada funcionar, retorna vazio
             return '';
+        }
+
+        /* =====================================
+           FUNÇÃO PARA CRIAR CAPA COM FALLBACK
+        ===================================== */
+
+        function criarCapa(url, titulo) {
+            const urlLimpa = limparUrl(url);
+            
+            if (urlLimpa) {
+                return `<img 
+                    src="${urlLimpa}" 
+                    alt="Capa do livro ${titulo}" 
+                    class="livro-capa-mini"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    style="width: 50px; height: 75px; object-fit: cover; border-radius: 6px;"
+                >
+                <div style="display: none; width: 50px; height: 75px; background: #f0ece8; border-radius: 6px; align-items: center; justify-content: center; font-size: 1.5rem; color: #8a7e74; flex-shrink: 0;">📖</div>`;
+            }
+            
+            return `<div style="width: 50px; height: 75px; background: #f0ece8; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #8a7e74; flex-shrink: 0;">📖</div>`;
         }
 
 
@@ -218,15 +250,9 @@
                 // 3. Estatísticas de Emoções
                 // =====================================
                 if(data.emocoes) {
-                    // Total de emoções buscadas
                     document.getElementById('numEmocoes').innerText = data.emocoes.total;
-                    
-                    // Emoção mais frequente
                     document.getElementById('emocaoDestaque').innerText = data.emocoes.maisFrequente;
 
-                    // =====================================
-                    // 4. ÚLTIMAS 3 BUSCAS
-                    // =====================================
                     const ultimasContainer = document.getElementById('ultimasEmocoesContainer');
                     ultimasContainer.innerHTML = '';
 
@@ -257,9 +283,85 @@
                     }
                 }
 
+                // =====================================
+                // 4. RESUMO DA BIBLIOTECA
+                // =====================================
+                const bibliotecaContainer = document.getElementById('bibliotecaResumoContainer');
+                bibliotecaContainer.innerHTML = '';
+
+                if (livros.length === 0) {
+                    bibliotecaContainer.innerHTML = `
+                        <div style="text-align: center; padding: 20px; color: #8a7e74; background: #f8f6f4; border-radius: 12px;">
+                            <p style="margin: 0;">Sua biblioteca está vazia. Busque recomendações!</p>
+                            <a href="/" style="display: inline-block; margin-top: 10px; color: #8b7355; text-decoration: none; font-weight: 500;">← Voltar ao início</a>
+                        </div>
+                    `;
+                } else {
+                    // Mostra apenas os 5 primeiros livros
+                    const livrosResumo = livros.slice(0, 5);
+                    
+                    livrosResumo.forEach(livro => {
+                        const div = document.createElement('div');
+                        div.style.cssText = `
+                            display: flex;
+                            align-items: center;
+                            gap: 14px;
+                            padding: 12px 16px;
+                            background: #ffffff;
+                            border: 1px solid #ece8e4;
+                            border-radius: 10px;
+                            transition: all 0.2s ease;
+                        `;
+                        
+                        const statusIcon = livro.status_leitura === 'Lido' ? '📖' : '⏳';
+                        const statusCor = livro.status_leitura === 'Lido' ? '#2d6a4f' : '#6b5f55';
+                        
+                        div.innerHTML = `
+                            ${criarCapa(livro.capa_url, livro.titulo)}
+                            <div style="flex: 1; min-width: 0;">
+                                <h4 style="margin: 0; font-size: 0.95rem; color: #2d2a27; font-family: Georgia, 'Times New Roman', serif;">${livro.titulo}</h4>
+                                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #8a7e74;">${livro.autor}</p>
+                            </div>
+                            <span style="padding: 4px 12px; border-radius: 12px; background: ${statusCor}15; color: ${statusCor}; font-size: 0.7rem; font-weight: 600; white-space: nowrap;">
+                                ${statusIcon} ${livro.status_leitura}
+                            </span>
+                            ${livro.favorito === 1 ? '<span style="font-size: 0.9rem;">❤️</span>' : ''}
+                        `;
+                        
+                        // Adiciona hover effect
+                        div.addEventListener('mouseenter', () => {
+                            div.style.borderColor = '#d5cdc4';
+                            div.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+                        });
+                        div.addEventListener('mouseleave', () => {
+                            div.style.borderColor = '#ece8e4';
+                            div.style.boxShadow = 'none';
+                        });
+                        
+                        bibliotecaContainer.appendChild(div);
+                    });
+
+                    // Se tiver mais de 5 livros, mostra link para ver todos
+                    if (livros.length > 5) {
+                        const verTodos = document.createElement('div');
+                        verTodos.style.cssText = 'text-align: center; margin-top: 8px;';
+                        verTodos.innerHTML = `
+                            <a href="/biblioteca" style="color: #8b7355; text-decoration: none; font-weight: 500; font-size: 0.85rem;">
+                                Ver todos os ${livros.length} livros →
+                            </a>
+                        `;
+                        bibliotecaContainer.appendChild(verTodos);
+                    }
+                }
+
             } catch (error) {
                 console.error("Erro ao carregar o perfil:", error);
                 document.getElementById('userName').innerText = "Erro ao carregar dados";
+                document.getElementById('bibliotecaResumoContainer').innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #a34a4a; background: #fef2f2; border-radius: 12px;">
+                        <p style="margin: 0;">Erro ao carregar seus livros. Tente novamente.</p>
+                    </div>
+                `;
             }
         });
     </script>
