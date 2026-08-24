@@ -419,7 +419,45 @@ window.addEventListener(
 
                 const genero = livro.genero ? livro.genero : 'Leitura';
                 const estaFavorito = livro.favorito === 1 || livro.favorito === true;
-                const capaLimpa = limparUrlCapa(livro.capa_url);
+               function limparUrlCapa(url) {
+    // Se não tiver URL, retorna placeholder
+    if (!url) return '/img/placeholder.jpg';
+    
+    // Remove espaços extras
+    url = url.trim();
+    
+    // Caso 1: Formato Markdown [texto](url)
+    if (url.includes('](')) {
+        const match = url.match(/\]\((.*?)\)/);
+        if (match && match[1]) {
+            return match[1];
+        }
+    }
+    
+    // Caso 2: URL com parênteses extras
+    if (url.includes('(') && url.includes(')')) {
+        const match = url.match(/\((.*?)\)/);
+        if (match && match[1]) {
+            return match[1];
+        }
+    }
+    
+    // Caso 3: URL com colchetes extras
+    if (url.startsWith('[') && url.includes(']')) {
+        const match = url.match(/\[(.*?)\]/);
+        if (match && match[1] && match[1].startsWith('http')) {
+            return match[1];
+        }
+    }
+    
+    // Caso 4: Verifica se é uma URL válida
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+    }
+    
+    // Se nada funcionar, retorna placeholder
+    return '/img/placeholder.jpg';
+}
 
                 div.innerHTML = `
                     <div class="book-main-content">
@@ -427,7 +465,6 @@ window.addEventListener(
                             src="${capaLimpa}"
                             alt="Capa do livro ${livro.titulo}"
                             class="book-cover-img"
-                         
                             onerror="this.src='/img/placeholder.jpg'"
                         >
                         <div class="book-info-side">
