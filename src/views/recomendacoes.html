@@ -394,6 +394,9 @@ window.addEventListener(
            BUSCAR RECOMENDAÇÕES
         ===================================== */
 
+      
+      
+
         const container = document.getElementById('booksContainer');
 
         // MOSTRA O LOADER ENQUANTO CARREGA
@@ -434,27 +437,29 @@ window.addEventListener(
             }
 
             // =====================================
-            // CRIAR CARDS (mas ainda não mostra)
+            // CRIAR CARDS E MOSTRAR IMEDIATAMENTE
             // =====================================
             const fragment = document.createDocumentFragment();
 
             livrosAtuais.forEach((livro, index) => {
                 const div = document.createElement('article');
                 div.className = 'book-card';
-                div.style.opacity = '0'; // Começa invisível
+                div.style.opacity = '0'; // Começa invisível para o fade-in
                 div.style.transform = 'translateY(20px)';
 
                 const genero = livro.genero ? livro.genero : 'Leitura';
                 const estaFavorito = livro.favorito === 1 || livro.favorito === true;
                 const capaLimpa = limparUrlCapa(livro.capa_url);
 
-            div.innerHTML = `
-                <div class="book-main-content">
-                    <img
-                        src="${capaLimpa}"
-                        alt="Capa do livro ${livro.titulo}"
+                div.innerHTML = `
+                    <div class="book-main-content">
+                        <!-- Imagem com loading lazy e um placeholder da internet caso o Gutenberg bloqueie -->
+                        <img
+                            src="${capaLimpa}"
+                            alt="Capa do livro ${livro.titulo}"
                             class="book-cover-img"
-                            onerror="this.src='/img/placeholder.jpg'"
+                            loading="lazy"
+                            onerror="this.src='https://placehold.co/110x165/f5f1ed/8a7e74?text=Sem+Capa'"
                         >
                         <div class="book-info-side">
                             <h3 class="book-title">${livro.titulo}</h3>
@@ -493,55 +498,7 @@ window.addEventListener(
                 fragment.appendChild(div);
             });
 
-            // =====================================
-            // ESPERA AS IMAGENS CARREGAREM
-            // =====================================
-            const imagens = fragment.querySelectorAll('.book-cover-img');
-            const totalImagens = imagens.length;
-            let imagensCarregadas = 0;
-
-            // Função que verifica se todas carregaram
-            function verificarTodasImagens() {
-                return new Promise((resolve) => {
-                    if (totalImagens === 0) {
-                        resolve();
-                        return;
-                    }
-
-                    imagens.forEach((img) => {
-                        if (img.complete) {
-                            imagensCarregadas++;
-                            img.classList.add('loaded');
-                        } else {
-                            img.addEventListener('load', () => {
-                                imagensCarregadas++;
-                                img.classList.add('loaded');
-                                if (imagensCarregadas === totalImagens) {
-                                    resolve();
-                                }
-                            });
-                            img.addEventListener('error', () => {
-                                imagensCarregadas++;
-                                if (imagensCarregadas === totalImagens) {
-                                    resolve();
-                                }
-                            });
-                        }
-                    });
-
-                    // Se já estiverem todas carregadas no loop
-                    if (imagensCarregadas === totalImagens) {
-                        resolve();
-                    }
-                });
-            }
-
-            // Aguarda todas as imagens carregarem
-            await verificarTodasImagens();
-
-            // =====================================
-            // MOSTRA OS LIVROS COM FADE-IN
-            // =====================================
+            // Adiciona tudo na tela instantaneamente
             container.innerHTML = '';
             container.appendChild(fragment);
 
@@ -555,10 +512,10 @@ window.addEventListener(
                     card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, 100 + (i * 150)); // 100ms + 150ms entre cada card
+                }, 100 + (i * 150));
             });
 
-        } catch (err) {
+      } catch (err) {
             console.error("Erro ao buscar as recomendações:", err);
 
             container.innerHTML = `
@@ -573,6 +530,9 @@ window.addEventListener(
     }
 );
 
+        /* =====================================
+           MARCAR COMO LIDO
+        ===================================== */
 
         /* =====================================
            MARCAR COMO LIDO
