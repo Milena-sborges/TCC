@@ -102,6 +102,51 @@
 
     <script>
         /* =====================================
+           FUNÇÃO ROBUSTA PARA LIMPAR URL
+        ===================================== */
+
+        function limparUrl(url) {
+            // Se não tiver URL, retorna vazio
+            if (!url) return '';
+
+            // Remove espaços extras
+            url = url.trim();
+
+            // Caso 1: Formato Markdown [texto](url)
+            if (url.includes('](')) {
+                const match = url.match(/\]\((.*?)\)/);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+
+            // Caso 2: URL com parênteses extras
+            if (url.includes('(') && url.includes(')')) {
+                const match = url.match(/\((.*?)\)/);
+                if (match && match[1] && match[1].startsWith('http')) {
+                    return match[1];
+                }
+            }
+
+            // Caso 3: URL com colchetes extras
+            if (url.startsWith('[') && url.includes(']')) {
+                const match = url.match(/\[(.*?)\]/);
+                if (match && match[1] && match[1].startsWith('http')) {
+                    return match[1];
+                }
+            }
+
+            // Caso 4: Verifica se é uma URL válida
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                return url;
+            }
+
+            // Se nada funcionar, retorna vazio
+            return '';
+        }
+
+
+        /* =====================================
            ACESSIBILIDADE
         ===================================== */
 
@@ -180,14 +225,12 @@
                     document.getElementById('emocaoDestaque').innerText = data.emocoes.maisFrequente;
 
                     // =====================================
-                    // 4. ÚLTIMAS 3 BUSCAS (NOVO!)
+                    // 4. ÚLTIMAS 3 BUSCAS
                     // =====================================
                     const ultimasContainer = document.getElementById('ultimasEmocoesContainer');
-                    ultimasContainer.innerHTML = ''; // Limpa o "Carregando..."
+                    ultimasContainer.innerHTML = '';
 
-                    // Verifica se tem dados
                     if (data.emocoes.ultimas && data.emocoes.ultimas.length > 0) {
-                        // Cores para cada tipo de emoção
                         const coresEmocoes = {
                             'Felicidade': '#4CAF50',
                             'Tristeza': '#5C6BC0',
