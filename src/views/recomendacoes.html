@@ -537,84 +537,41 @@ window.addEventListener(
         /* =====================================
            MARCAR COMO LIDO
         ===================================== */
+async function marcarComoLido(idLivro, botao) {
+            const confirmacao = confirm("Deseja realmente marcar este livro como lido? Ele não será mais recomendado para você.");
+            if (!confirmacao) return;
 
-        async function marcarComoLido(
-            idLivro,
-            botao
-        ) {
-
-            const confirmacao = confirm(
-                "Deseja realmente marcar este livro como lido? Ele não será mais recomendado para você."
-            );
-
-
-            if (!confirmacao) {
-
-                return;
-
-            }
-
+            // FEEDBACK IMEDIATO: Muda para "Salvando..." antes da internet responder
+            const conteudoOriginal = botao.innerHTML;
+            botao.innerHTML = `<span class="action-icon">⏳</span><span>Salvando...</span>`;
+            botao.style.pointerEvents = 'none';
+            botao.style.opacity = '0.7';
 
             try {
-
-                const response =
-                    await fetch(
-                        '/marcar-lido',
-                        {
-                            method: 'POST',
-
-                            headers: {
-                                'Content-Type':
-                                    'application/json'
-                            },
-
-                            body: JSON.stringify({
-                                id_livro: idLivro
-                            })
-                        }
-                    );
-
+                const response = await fetch('/marcar-lido', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro })
+                });
 
                 if (response.ok) {
-
+                    botao.style.opacity = '1';
                     botao.classList.add('ativo');
-
-                    botao.innerHTML = `
-                        <span class="action-icon">✓</span>
-                        <span>Lido</span>
-                    `;
-
+                    botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
                     botao.disabled = true;
-
-
-                    alert(
-                        "Livro salvo no seu histórico com sucesso!"
-                    );
-
+                    alert("Livro salvo no seu histórico com sucesso!");
                 } else {
-
-                    alert(
-                        "Erro ao salvar. Tente novamente."
-                    );
-
+                    throw new Error("Erro no servidor");
                 }
-
-
             } catch (error) {
-
-                console.error(
-                    "Erro:",
-                    error
-                );
-
-                alert(
-                    "Erro de conexão."
-                );
-
+                // Se der erro de internet, volta o botão ao normal
+                botao.innerHTML = conteudoOriginal;
+                botao.style.pointerEvents = 'auto';
+                botao.style.opacity = '1';
+                alert("Erro ao salvar. Tente novamente.");
+                console.error("Erro:", error);
             }
-
         }
-
 /* =====================================
            LEITURA EXTERNA
         ===================================== */
@@ -635,163 +592,87 @@ window.addEventListener(
         /* =====================================
            QUERO LER
         ===================================== */
-
-        async function marcarQueroLer(
-            idLivro,
-            botao
-        ) {
+async function marcarQueroLer(idLivro, botao) {
+            // FEEDBACK IMEDIATO
+            const conteudoOriginal = botao.innerHTML;
+            botao.innerHTML = `<span class="action-icon">⏳</span><span>Aguarde...</span>`;
+            botao.style.pointerEvents = 'none';
+            botao.style.opacity = '0.7';
 
             try {
-
-                const response =
-                    await fetch(
-                        '/quero-ler',
-                        {
-                            method: 'POST',
-
-                            headers: {
-                                'Content-Type':
-                                    'application/json'
-                            },
-
-                            body: JSON.stringify({
-                                id_livro: idLivro
-                            })
-                        }
-                    );
-
+                const response = await fetch('/quero-ler', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro })
+                });
 
                 if (response.ok) {
-
+                    botao.style.opacity = '1';
                     botao.classList.add('ativo');
-
-                    botao.innerHTML = `
-                        <span class="action-icon">✓</span>
-                        <span>Na lista</span>
-                    `;
-
+                    botao.innerHTML = `<span class="action-icon">✓</span><span>Na lista</span>`;
                     botao.disabled = true;
-
+                } else {
+                    throw new Error("Erro no servidor");
                 }
-
-
             } catch (error) {
-
-                console.error(
-                    "Erro:",
-                    error
-                );
-
+                botao.innerHTML = conteudoOriginal;
+                botao.style.pointerEvents = 'auto';
+                botao.style.opacity = '1';
+                console.error("Erro:", error);
             }
-
         }
-
-
         /* =====================================
            FAVORITO
         ===================================== */
+async function alternarFavorito(idLivro, botao) {
+            const estaFavoritado = botao.dataset.favoritado === 'true';
+            const novoStatus = !estaFavoritado;
 
-        async function alternarFavorito(
-            idLivro,
-            botao
-        ) {
-
-            const estaFavoritado =
-                botao.dataset.favoritado === 'true';
-
-
-            const novoStatus =
-                !estaFavoritado;
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        '/favoritar',
-                        {
-                            method: 'POST',
-
-                            headers: {
-                                'Content-Type':
-                                    'application/json'
-                            },
-
-                            body: JSON.stringify({
-                                id_livro: idLivro,
-                                favorito: novoStatus
-                            })
-                        }
-                    );
-
-
-                if (response.ok) {
-
-                    botao.dataset.favoritado =
-                        novoStatus;
-
-
-                    if (novoStatus) {
-
-                        botao.classList.add(
-                            'favoritado'
-                        );
-
-                        botao.innerHTML = `
-                            <span class="action-icon">
-                                ♥
-                            </span>
-
-                            <span class="texto-favorito">
-                                Favorito
-                            </span>
-                        `;
-
-                    } else {
-
-                        botao.classList.remove(
-                            'favoritado'
-                        );
-
-                        botao.innerHTML = `
-                            <span class="action-icon">
-                                ♡
-                            </span>
-
-                            <span class="texto-favorito">
-                                Favoritar
-                            </span>
-                        `;
-
-                    }
-
-
-                    /* Pequena animação */
-
-                    botao.classList.remove(
-                        'favorito-animacao'
-                    );
-
-                    void botao.offsetWidth;
-
-                    botao.classList.add(
-                        'favorito-animacao'
-                    );
-
-                }
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erro:",
-                    error
-                );
-
+            // 1. ATUALIZAÇÃO OTIMISTA (Muda o visual NA HORA, parecendo instantâneo)
+            botao.dataset.favoritado = novoStatus;
+            if (novoStatus) {
+                botao.classList.add('favoritado');
+                botao.innerHTML = `<span class="action-icon">♥</span><span class="texto-favorito">Favorito</span>`;
+            } else {
+                botao.classList.remove('favoritado');
+                botao.innerHTML = `<span class="action-icon">♡</span><span class="texto-favorito">Favoritar</span>`;
             }
 
-        }
+            // Animação imediata
+            botao.classList.remove('favorito-animacao');
+            void botao.offsetWidth;
+            botao.classList.add('favorito-animacao');
+            
+            // Evita duplo clique rápido
+            botao.style.pointerEvents = 'none';
 
+            try {
+                // Agora sim ele avisa o banco de dados em silêncio
+                const response = await fetch('/favoritar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro, favorito: novoStatus })
+                });
+
+                if (!response.ok) throw new Error("Falha ao salvar");
+                
+                // Deu certo no banco! Libera o botão para o usuário poder clicar de novo
+                botao.style.pointerEvents = 'auto';
+
+            } catch (error) {
+                // 2. REVERTER (Se a internet cair ou o banco falhar, ele desfaz a pintura)
+                botao.dataset.favoritado = estaFavoritado;
+                if (estaFavoritado) {
+                    botao.classList.add('favoritado');
+                    botao.innerHTML = `<span class="action-icon">♥</span><span class="texto-favorito">Favorito</span>`;
+                } else {
+                    botao.classList.remove('favoritado');
+                    botao.innerHTML = `<span class="action-icon">♡</span><span class="texto-favorito">Favoritar</span>`;
+                }
+                botao.style.pointerEvents = 'auto';
+                console.error("Erro:", error);
+            }
+        }
     </script>
 
 </body>
