@@ -114,6 +114,44 @@
 .btn-toggle-password:hover {
     color: var(--primary-color);
 }
+
+/* =========================================
+   ESTADO DE CARREGAMENTO DO BOTÃO
+========================================= */
+.btn-primary.carregando {
+    pointer-events: none;
+    opacity: 0.75;
+    cursor: wait;
+}
+
+/* Esconde a setinha → enquanto carrega */
+.btn-primary.carregando::after {
+    content: '';
+    display: none;
+}
+
+/* Spinner giratório */
+.btn-primary .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    margin-left: 10px;
+    vertical-align: middle;
+    animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}
+
+/* No alto contraste, o spinner fica preto */
+.alto-contraste .btn-primary .spinner {
+    border-color: rgba(0, 0, 0, 0.25);
+    border-top-color: #000000;
+}
 /* =========================================
    RESPONSIVIDADE (Telas Pequenas e Celulares)
 ========================================= */
