@@ -146,24 +146,45 @@
         }
 
         // Lógica de Validação do Formulário
-        document.getElementById('formRecomendacao').addEventListener('submit', function(e) {
-            const humorSelecionado = document.querySelector('input[name="humor"]:checked');
-            const intencaoSelecionada = document.querySelector('input[name="intencao"]:checked');
-            const boxErro = document.getElementById('mensagemErro');
+document.getElementById('formRecomendacao').addEventListener('submit', function(e) {
+    const humorSelecionado = document.querySelector('input[name="humor"]:checked');
+    const intencaoSelecionada = document.querySelector('input[name="intencao"]:checked');
+    const boxErro = document.getElementById('mensagemErro');
+    const btnSubmit = this.querySelector('button[type="submit"]');
 
-            let erros = [];
-            if (!humorSelecionado) erros.push("seu estado emocional atual");
-            if (!intencaoSelecionada) erros.push("o que você busca nesta leitura");
+    // Trava de segurança: se já está carregando, ignora
+    if (btnSubmit.classList.contains('carregando')) {
+        e.preventDefault();
+        return;
+    }
 
-            if (erros.length > 0) {
-                e.preventDefault(); 
-                boxErro.style.display = 'block';
-                boxErro.innerHTML = '⚠️ <strong>Por favor, selecione:</strong><br>' + erros.join(' e ');
-                boxErro.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                boxErro.style.display = 'none';
-            }
-        });
-    </script>
+    let erros = [];
+    if (!humorSelecionado) erros.push("seu estado emocional atual");
+    if (!intencaoSelecionada) erros.push("o que você busca nesta leitura");
+
+    if (erros.length > 0) {
+        e.preventDefault(); 
+        boxErro.style.display = 'block';
+        boxErro.innerHTML = '⚠️ <strong>Por favor, selecione:</strong><br>' + erros.join(' e ');
+        boxErro.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        boxErro.style.display = 'none';
+
+        // ✅ Tudo certo → ativa o estado de carregamento
+        btnSubmit.classList.add('carregando');
+        btnSubmit.innerHTML = 'Buscando recomendações... <span class="spinner"></span>';
+    }
+});
+
+// Se o usuário voltar pra essa página (botão "voltar" do navegador),
+// garante que o botão volta ao estado normal
+window.addEventListener('pageshow', function() {
+    const btn = document.querySelector('#formRecomendacao button[type="submit"]');
+    if (btn) {
+        btn.classList.remove('carregando');
+        btn.innerHTML = 'Ver Recomendações';
+    }
+});
+      </script>
 </body>
 </html>

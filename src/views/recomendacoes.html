@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>EmotionBooks - Recomendações</title>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/recomendacoes.css">
 </head>
@@ -465,7 +465,7 @@ window.addEventListener(
                             <h3 class="book-title">${livro.titulo}</h3>
                             <p class="book-author">${livro.autor}</p>
                             <div class="book-tags">
-                                <span class="tag-pill">#${textoHumor.toLowerCase()}</span>
+                               
                                 <span class="tag-pill">#${genero.toLowerCase()}</span>
                             </div>
                         </div>
@@ -533,63 +533,98 @@ window.addEventListener(
         /* =====================================
            MARCAR COMO LIDO
         ===================================== */
-
-        /* =====================================
-           MARCAR COMO LIDO
-        ===================================== */
 async function marcarComoLido(idLivro, botao) {
-            const confirmacao = confirm("Deseja realmente marcar este livro como lido? Ele não será mais recomendado para você.");
-            if (!confirmacao) return;
-
-            // FEEDBACK IMEDIATO: Muda para "Salvando..." antes da internet responder
-            const conteudoOriginal = botao.innerHTML;
-            botao.innerHTML = `<span class="action-icon">⏳</span><span>Salvando...</span>`;
-            botao.style.pointerEvents = 'none';
-            botao.style.opacity = '0.7';
-
-            try {
-                const response = await fetch('/marcar-lido', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_livro: idLivro })
-                });
-
-                if (response.ok) {
-                    botao.style.opacity = '1';
-                    botao.classList.add('ativo');
-                    botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
-                    botao.disabled = true;
-                    alert("Livro salvo no seu histórico com sucesso!");
-                } else {
-                    throw new Error("Erro no servidor");
-                }
-            } catch (error) {
-                // Se der erro de internet, volta o botão ao normal
-                botao.innerHTML = conteudoOriginal;
-                botao.style.pointerEvents = 'auto';
-                botao.style.opacity = '1';
-                alert("Erro ao salvar. Tente novamente.");
-                console.error("Erro:", error);
-            }
+    const resultado = await Swal.fire({
+        title: 'Marcar como lido?',
+        text: 'Este livro não será mais recomendado para você.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, marcar como lido',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#8b7355',
+        cancelButtonColor: '#b0a89e',
+        reverseButtons: true,
+        customClass: {
+            popup: 'swal-emocao'
         }
-/* =====================================
+    });
+
+    if (!resultado.isConfirmed) return;
+
+    const conteudoOriginal = botao.innerHTML;
+    botao.innerHTML = `<span class="action-icon">⏳</span><span>Salvando...</span>`;
+    botao.style.pointerEvents = 'none';
+    botao.style.opacity = '0.7';
+
+    try {
+        const response = await fetch('/marcar-lido', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_livro: idLivro })
+        });
+
+        if (response.ok) {
+            botao.style.opacity = '1';
+            botao.classList.add('ativo');
+            botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+            botao.disabled = true;
+
+            Swal.fire({
+                title: 'Salvo!',
+                text: 'Livro adicionado ao seu histórico.',
+                icon: 'success',
+                confirmButtonColor: '#8b7355',
+                timer: 2000,
+                timerProgressBar: true
+            });
+        } else {
+            throw new Error("Erro no servidor");
+        }
+    } catch (error) {
+        botao.innerHTML = conteudoOriginal;
+        botao.style.pointerEvents = 'auto';
+        botao.style.opacity = '1';
+
+        Swal.fire({
+            title: 'Ops!',
+            text: 'Não foi possível salvar. Tente novamente.',
+            icon: 'error',
+            confirmButtonColor: '#8b7355'
+        });
+        console.error("Erro:", error);
+    }
+}
+     /* =====================================
            LEITURA EXTERNA
         ===================================== */
-        function confirmarLeituraExterna(link) {
-            // Verifica se o link realmente existe e não está vazio
-            if (!link || link.trim() === "" || link === "null") {
-                alert("Desculpe, o link de leitura não está disponível para este livro.");
-                return;
-            }
+        async function confirmarLeituraExterna(link) {
+    if (!link || link.trim() === "" || link === "null") {
+        Swal.fire({
+            title: 'Link indisponível',
+            text: 'O link de leitura não está disponível para este livro.',
+            icon: 'info',
+            confirmButtonColor: '#8b7355'
+        });
+        return;
+    }
 
-            // Pergunta se o usuário quer sair do site
-            const confirmar = confirm("Você será direcionado para o site Gutenberg (externo) para ler o livro. Deseja continuar?");
-            
-            if (confirmar) {
-                window.open(link, '_blank'); // Abre em uma nova aba
-            }
-        }
-        /* =====================================
+    const resultado = await Swal.fire({
+        title: 'Sair do EmotionBooks?',
+        text: 'Você será direcionado ao Project Gutenberg (site externo) para ler o livro.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, ir para o Gutenberg',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#8b7355',
+        cancelButtonColor: '#b0a89e',
+        reverseButtons: true
+    });
+
+    if (resultado.isConfirmed) {
+        window.open(link, '_blank');
+    }
+}
+      /* =====================================
            QUERO LER
         ===================================== */
 async function marcarQueroLer(idLivro, botao) {

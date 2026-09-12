@@ -326,11 +326,10 @@ body {
     border-color: #a98f73;
     background: #faf8f6;
 }
-
 .btn-lido.ativo {
-    background: #f5f1ed;
-    border-color: #b6a28d;
-    color: #655345;
+    background: #e8f5e9;
+    border-color: #a5d6a7;
+    color: #eef9ef;
 }
 
 
@@ -696,7 +695,44 @@ body {
 .alto-contraste .acessibilidade-item {
     border-color: #444 !important;
 }
+/* =====================================================
+   SWEETALERT2 - PERSONALIZAÇÃO
+===================================================== */
+.swal2-popup {
+    font-family: 'Poppins', sans-serif !important;
+    border-radius: 18px !important;
+}
 
+.swal2-title {
+    font-family: Georgia, "Times New Roman", serif !important;
+    color: #3f2a1d !important;
+    font-size: 1.4rem !important;
+}
+
+.swal2-html-container {
+    color: #6b5849 !important;
+    font-size: 0.9rem !important;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+    border-radius: 30px !important;
+    padding: 10px 22px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+}
+
+/* Alto contraste */
+.alto-contraste .swal2-popup {
+    background: #1e1e1e !important;
+    color: #fff !important;
+}
+.alto-contraste .swal2-title {
+    color: #ffcc00 !important;
+}
+.alto-contraste .swal2-html-container {
+    color: #ddd !important;
+}
 
 /* =====================================================
    RESPONSIVIDADE

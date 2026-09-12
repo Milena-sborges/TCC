@@ -257,7 +257,32 @@
     border-color: #9575cd;
     background-color: rgba(149, 117, 205, 0.08);
 }
+.btn-primary.carregando {
+    pointer-events: none;
+    opacity: 0.75;
+    cursor: wait;
+}
 
+.btn-primary.carregando::after {
+    content: '';
+    display: none;
+}
+
+.btn-primary .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    margin-left: 10px;
+    vertical-align: middle;
+    animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}
 
 /* =====================================================
    RESPONSIVIDADE
