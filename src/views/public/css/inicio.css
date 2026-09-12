@@ -253,6 +253,10 @@
     display: block;
     margin-bottom: 2px;
 }
+.card-option input[type="radio"][value="tedio"]:checked + label {
+    border-color: #9575cd;
+    background-color: rgba(149, 117, 205, 0.08);
+}
 
 
 /* =====================================================
