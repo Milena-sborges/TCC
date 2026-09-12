@@ -86,7 +86,34 @@
     color: var(--primary-hover);
     text-decoration: underline;
 }
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
+.password-wrapper input {
+    width: 100%;
+    padding-right: 45px; /* Abre espaço para o ícone não ficar em cima do texto */
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8a7e74;
+    transition: color 0.2s ease;
+}
+
+.btn-toggle-password:hover {
+    color: var(--primary-color);
+}
 /* =========================================
    RESPONSIVIDADE (Telas Pequenas e Celulares)
 ========================================= */

@@ -1,9 +1,7 @@
 const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/usuarioModel');
 
-// =============================================
-// PÁGINAS
-// =============================================
+
 
 const carregarPerfil = (req, res) => {
     res.sendFile('perfil.html', { root: './src/views' });
@@ -38,7 +36,7 @@ const cadastrarUsuario = async (req, res) => {
         // Verifica se o e-mail já existe
         const usuarioExistente = await usuarioModel.buscarUsuarioPorEmail(email);
         if (usuarioExistente) {
-            return res.status(400).send("Este e-mail já está cadastrado.");
+            return res.redirect('/cadastro?erro=email_existente');
         }
 
         const senhaCriptografada = await bcrypt.hash(senha, 10);
