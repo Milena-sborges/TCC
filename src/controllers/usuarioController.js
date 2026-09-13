@@ -115,7 +115,8 @@ const marcarComoLido = async (req, res) => {
         res.status(200).json({
             sucesso: true,
             removido: resultado.acao === 'removido' || resultado.acao === 'removido_com_favorito',
-            removeuFavorito: resultado.acao === 'removido_com_favorito'
+            removeuFavorito: resultado.acao === 'removido_com_favorito',
+            voltouParaQueroLer: resultado.acao === 'voltou_para_quero_ler'
         });
     } catch (error) {
         console.error("Erro ao salvar:", error);
