@@ -533,23 +533,24 @@ window.addEventListener(
         /* =====================================
            MARCAR COMO LIDO
         ===================================== */
-async function marcarComoLido(idLivro, botao) {
-    const resultado = await Swal.fire({
-        title: 'Marcar como lido?',
-        text: 'Este livro não será mais recomendado para você.',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sim, marcar como lido',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#8b7355',
-        cancelButtonColor: '#b0a89e',
-        reverseButtons: true,
-        customClass: {
-            popup: 'swal-emocao'
-        }
-    });
+        async function marcarComoLido(idLivro, botao) {
+    const estaAtivo = botao.classList.contains('ativo');
 
-    if (!resultado.isConfirmed) return;
+    // Só pede confirmação quando estiver MARCADO (não ao desmarcar)
+    if (!estaAtivo) {
+        const resultado = await Swal.fire({
+            title: 'Marcar como lido?',
+            text: 'Este livro não será mais recomendado para você.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, marcar como lido',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#8b7355',
+            cancelButtonColor: '#b0a89e',
+            reverseButtons: true
+        });
+        if (!resultado.isConfirmed) return;
+    }
 
     const conteudoOriginal = botao.innerHTML;
     botao.innerHTML = `<span class="action-icon">⏳</span><span>Salvando...</span>`;
@@ -563,11 +564,38 @@ async function marcarComoLido(idLivro, botao) {
             body: JSON.stringify({ id_livro: idLivro })
         });
 
-        if (response.ok) {
-            botao.style.opacity = '1';
+        if (!response.ok) throw new Error("Erro no servidor");
+
+        const data = await response.json();
+        botao.style.opacity = '1';
+        botao.style.pointerEvents = 'auto';
+
+        const card = botao.closest('.book-card');
+        const btnQueroLer = card?.querySelector('.btn-quero-ler');
+
+        if (data.removido) {
+            // DESmarcou
+            botao.classList.remove('ativo');
+            botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+
+            Swal.fire({
+                title: 'Removido',
+                text: 'Livro removido do seu histórico.',
+                icon: 'info',
+                confirmButtonColor: '#8b7355',
+                timer: 1500,
+                timerProgressBar: true
+            });
+        } else {
+            // Marcou como lido
             botao.classList.add('ativo');
             botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
-            botao.disabled = true;
+
+            // Como o status agora é "Lido", desativa "Quero ler"
+            if (btnQueroLer) {
+                btnQueroLer.classList.remove('ativo');
+                btnQueroLer.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+            }
 
             Swal.fire({
                 title: 'Salvo!',
@@ -577,8 +605,6 @@ async function marcarComoLido(idLivro, botao) {
                 timer: 2000,
                 timerProgressBar: true
             });
-        } else {
-            throw new Error("Erro no servidor");
         }
     } catch (error) {
         botao.innerHTML = conteudoOriginal;
@@ -594,7 +620,7 @@ async function marcarComoLido(idLivro, botao) {
         console.error("Erro:", error);
     }
 }
-     /* =====================================
+  /* =====================================
            LEITURA EXTERNA
         ===================================== */
         async function confirmarLeituraExterna(link) {
@@ -628,34 +654,49 @@ async function marcarComoLido(idLivro, botao) {
            QUERO LER
         ===================================== */
 async function marcarQueroLer(idLivro, botao) {
-            // FEEDBACK IMEDIATO
-            const conteudoOriginal = botao.innerHTML;
-            botao.innerHTML = `<span class="action-icon">⏳</span><span>Aguarde...</span>`;
-            botao.style.pointerEvents = 'none';
-            botao.style.opacity = '0.7';
+    const conteudoOriginal = botao.innerHTML;
+    botao.innerHTML = `<span class="action-icon">⏳</span><span>Aguarde...</span>`;
+    botao.style.pointerEvents = 'none';
+    botao.style.opacity = '0.7';
 
-            try {
-                const response = await fetch('/quero-ler', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_livro: idLivro })
-                });
+    try {
+        const response = await fetch('/quero-ler', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_livro: idLivro })
+        });
 
-                if (response.ok) {
-                    botao.style.opacity = '1';
-                    botao.classList.add('ativo');
-                    botao.innerHTML = `<span class="action-icon">✓</span><span>Na lista</span>`;
-                    botao.disabled = true;
-                } else {
-                    throw new Error("Erro no servidor");
-                }
-            } catch (error) {
-                botao.innerHTML = conteudoOriginal;
-                botao.style.pointerEvents = 'auto';
-                botao.style.opacity = '1';
-                console.error("Erro:", error);
+        if (!response.ok) throw new Error("Erro no servidor");
+
+        const data = await response.json();
+        botao.style.opacity = '1';
+        botao.style.pointerEvents = 'auto';
+
+        const card = botao.closest('.book-card');
+        const btnLido = card?.querySelector('.btn-lido');
+
+        if (data.removido) {
+            // DESmarcou
+            botao.classList.remove('ativo');
+            botao.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+        } else {
+            // Marcou como "Quero ler"
+            botao.classList.add('ativo');
+            botao.innerHTML = `<span class="action-icon">✓</span><span>Na lista</span>`;
+
+            // Como o status agora é "Quero ler", desativa "Lido"
+            if (btnLido) {
+                btnLido.classList.remove('ativo');
+                btnLido.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
             }
         }
+    } catch (error) {
+        botao.innerHTML = conteudoOriginal;
+        botao.style.pointerEvents = 'auto';
+        botao.style.opacity = '1';
+        console.error("Erro:", error);
+    }
+}
         /* =====================================
            FAVORITO
         ===================================== */

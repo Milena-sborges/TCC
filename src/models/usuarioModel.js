@@ -20,31 +20,36 @@ const criarUsuario = async (nome, email, senhaCriptografada) => {
 };
 
 // verificação se já existe antes de inserir
-const atualizarStatusLeitura = async (idUsuario, idLivro, status) => {
-    // Verifica se o livro já está na biblioteca do usuário
+const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
     const [existe] = await db.execute(
         'SELECT * FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
         [idUsuario, idLivro]
     );
 
-    if (existe.length > 0) {
-        // Atualiza o status
-        const query = `
-            UPDATE usuario_livro 
-            SET status_leitura = ? 
-            WHERE id_usuario = ? AND id_livro = ?
-        `;
-        const [resultado] = await db.execute(query, [status, idUsuario, idLivro]);
-        return resultado;
-    } else {
-        // Insere novo registro
-        const query = `
-            INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) 
-            VALUES (?, ?, ?, 0)
-        `;
-        const [resultado] = await db.execute(query, [idUsuario, idLivro, status]);
-        return resultado;
+    // Já existe com ESSE status → desmarca (toggle off)
+    if (existe.length > 0 && existe[0].status_leitura === status) {
+        await db.execute(
+            'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
+            [idUsuario, idLivro]
+        );
+        return { acao: 'removido' };
     }
+
+    // Existe com outro status → troca o status
+    if (existe.length > 0) {
+        await db.execute(
+            'UPDATE usuario_livro SET status_leitura = ? WHERE id_usuario = ? AND id_livro = ?',
+            [status, idUsuario, idLivro]
+        );
+        return { acao: 'atualizado' };
+    }
+
+    // Não existe → insere novo
+    await db.execute(
+        'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, ?, 0)',
+        [idUsuario, idLivro, status]
+    );
+    return { acao: 'adicionado' };
 };
 
 const atualizarFavorito = async (idUsuario, idLivro, isFavorito) => {
@@ -145,7 +150,7 @@ module.exports = {
     buscarUsuarioPorEmail,
     buscarUsuarioPorId,
     criarUsuario,
-    atualizarStatusLeitura, 
+    alternarStatusLeitura,
     atualizarFavorito,
     buscarBibliotecaDoUsuario,
     buscarEstatisticasEmocoes,

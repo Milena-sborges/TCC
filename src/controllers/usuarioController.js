@@ -101,6 +101,7 @@ const realizarLogout = (req, res) => {
 // AÇÕES DA BIBLIOTECA
 // =============================================
 
+
 const marcarComoLido = async (req, res) => {
     const { id_livro } = req.body;
     const id_usuario = req.session.usuarioLogado?.id;
@@ -110,8 +111,13 @@ const marcarComoLido = async (req, res) => {
     }
 
     try {
-        await usuarioModel.atualizarStatusLeitura(id_usuario, id_livro, 'Lido');
-        res.status(200).json({ sucesso: true, mensagem: "Marcado como lido!" });
+        const resultado = await usuarioModel.alternarStatusLeitura(id_usuario, id_livro, 'Lido');
+        const removido = resultado.acao === 'removido';
+        res.status(200).json({
+            sucesso: true,
+            removido,
+            mensagem: removido ? "Removido dos lidos." : "Marcado como lido!"
+        });
     } catch (error) {
         console.error("Erro ao salvar:", error);
         res.status(500).json({ erro: "Erro ao salvar no banco." });
@@ -127,8 +133,13 @@ const marcarQueroLer = async (req, res) => {
     }
 
     try {
-        await usuarioModel.atualizarStatusLeitura(id_usuario, id_livro, 'Quero ler');
-        res.status(200).json({ sucesso: true, mensagem: "Adicionado aos Quero Ler!" });
+        const resultado = await usuarioModel.alternarStatusLeitura(id_usuario, id_livro, 'Quero ler');
+        const removido = resultado.acao === 'removido';
+        res.status(200).json({
+            sucesso: true,
+            removido,
+            mensagem: removido ? "Removido dos Quero Ler." : "Adicionado aos Quero Ler!"
+        });
     } catch (error) {
         console.error("Erro ao salvar:", error);
         res.status(500).json({ erro: "Erro ao salvar no banco." });
