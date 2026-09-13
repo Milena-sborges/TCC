@@ -173,6 +173,9 @@ CREATE TABLE `usuario_livro` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+ALTER TABLE usuario_livro 
+MODIFY COLUMN status_leitura VARCHAR(50) NULL DEFAULT NULL;
 --
 -- Dumping data for table `usuario_livro`
 --

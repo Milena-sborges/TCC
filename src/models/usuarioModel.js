@@ -26,14 +26,23 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
         [idUsuario, idLivro]
     );
 
+    // Já tem esse status → desmarca (zera o status, mantém favorito)
     if (existe.length > 0 && existe[0].status_leitura === status) {
         await db.execute(
-            'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
+            'UPDATE usuario_livro SET status_leitura = NULL WHERE id_usuario = ? AND id_livro = ?',
             [idUsuario, idLivro]
         );
+
+        // Se também não é favorito → apaga a linha (linha fantasma)
+        await db.execute(
+            'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ? AND favorito = 0 AND status_leitura IS NULL',
+            [idUsuario, idLivro]
+        );
+
         return { acao: 'removido' };
     }
 
+    // Tem outro status → troca
     if (existe.length > 0) {
         await db.execute(
             'UPDATE usuario_livro SET status_leitura = ? WHERE id_usuario = ? AND id_livro = ?',
@@ -42,6 +51,7 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
         return { acao: 'atualizado' };
     }
 
+    // Não existe → insere com status, favorito = 0
     await db.execute(
         'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, ?, 0)',
         [idUsuario, idLivro, status]
@@ -51,51 +61,49 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
 
 const atualizarFavorito = async (idUsuario, idLivro, isFavorito) => {
     const favoritoValor = isFavorito ? 1 : 0;
-    
-    // Verifica se o livro já está na biblioteca do usuário
+
     const [existe] = await db.execute(
         'SELECT * FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
         [idUsuario, idLivro]
     );
 
     if (existe.length > 0) {
-        // Atualiza o favorito
-        const query = `
-            UPDATE usuario_livro 
-            SET favorito = ? 
-            WHERE id_usuario = ? AND id_livro = ?
-        `;
-        const [resultado] = await db.execute(query, [favoritoValor, idUsuario, idLivro]);
-        return resultado;
+        // Já existe linha → só atualiza a coluna favorito
+        await db.execute(
+            'UPDATE usuario_livro SET favorito = ? WHERE id_usuario = ? AND id_livro = ?',
+            [favoritoValor, idUsuario, idLivro]
+        );
     } else {
-        // Insere novo registro com status padrão 'Quero ler'
-        const query = `
-            INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) 
-            VALUES (?, ?, 'Quero ler', ?)
-        `;
-        const [resultado] = await db.execute(query, [idUsuario, idLivro, favoritoValor]);
-        return resultado;
+        // Não existe → cria a linha SEM status (só favorito)
+        await db.execute(
+            'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, NULL, ?)',
+            [idUsuario, idLivro, favoritoValor]
+        );
     }
+
+    // Se desfavoritou E não tem status → apaga a linha (não faz sentido manter)
+    if (!isFavorito) {
+        await db.execute(
+            'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ? AND favorito = 0 AND status_leitura IS NULL',
+            [idUsuario, idLivro]
+        );
+    }
+
+    return { sucesso: true };
 };
 
 const buscarBibliotecaDoUsuario = async (idUsuario) => {
     const query = `
         SELECT 
-            l.id_livro, 
-            l.titulo, 
-            l.autor, 
-            l.genero,
-            l.sinopse,
-            l.capa_url, 
-            l.link_leitura,
-            ul.status_leitura, 
-            ul.favorito
+            l.id_livro, l.titulo, l.autor, l.genero,
+            l.sinopse, l.capa_url, l.link_leitura,
+            ul.status_leitura, ul.favorito
         FROM livro l
         JOIN usuario_livro ul ON l.id_livro = ul.id_livro
         WHERE ul.id_usuario = ?
+          AND ul.status_leitura IS NOT NULL   -- ⬅️ SÓ quem tem status
         ORDER BY ul.favorito DESC, l.titulo ASC
     `;
-    
     const [livros] = await db.execute(query, [idUsuario]);
     return livros;
 };

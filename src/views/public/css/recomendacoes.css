@@ -171,7 +171,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
-    margin-top: 0.8rem;
+    margin-top: 1rem;
 }
 
 .tag-pill {
@@ -229,8 +229,6 @@ body {
 
 /* =====================================================
    AÇÕES RÁPIDAS
-   - Grupo "Status de leitura" (Quero ler / Lido) à esquerda
-   - Botão "Favoritar" como ícone solto à direita
 ===================================================== */
 
 .quick-actions-container {
@@ -244,91 +242,93 @@ body {
 }
 
 
-/* --- Grupo de status (botões grudados) --- */
+/* =====================================================
+   GRUPO DE STATUS — Segmented control
+   (Quero ler / Lido — visual de seletor único)
+===================================================== */
 
 .status-group {
     display: flex;
     flex: 1;
-    max-width: 220px;
+    max-width: 240px;
+    border: 1px solid #d8cec5;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f5f0ea;
+    box-shadow: inset 0 1px 2px rgba(80, 50, 30, 0.06);
 }
 
 .status-group .btn-action {
     flex: 1;
-    min-height: 34px;
-    padding: 0.35rem 0.6rem;
+    min-height: 38px;
+    padding: 0.5rem 0.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
-    border: 1px solid #e0d8d0;
-    background: #fff;
-    color: #4f4035;
-    font-size: 0.75rem;
-    font-weight: 500;
+    gap: 0.35rem;
+    border: none;
+    background: transparent;
+    color: #6b5849;
+    font-size: 0.78rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Primeiro botão: cantos arredondados só à esquerda */
+/* Divisor entre os dois segmentos */
 .status-group .btn-action:first-child {
-    border-radius: 9px 0 0 9px;
-    border-right: none;
+    border-right: 1px solid #e4d9cc;
 }
 
-/* Último botão: cantos arredondados só à direita */
-.status-group .btn-action:last-child {
-    border-radius: 0 9px 9px 0;
+/* Hover em botão inativo */
+.status-group .btn-action:hover:not(.ativo) {
+    background: rgba(255, 255, 255, 0.6);
+    color: #4a3a2e;
 }
 
-.status-group .btn-action:hover:not(:disabled):not(.ativo) {
-    background: #faf7f4;
-    border-color: #bda991;
+/* ===== ATIVO — Quero ler (âmbar) ===== */
+.status-group .btn-quero-ler.ativo {
+    background: linear-gradient(180deg, #fff7e8 0%, #ffe6bf 100%);
+    color: #8a5a15;
+    box-shadow: inset 0 0 0 1px #d7b27a;
 }
 
+.status-group .btn-quero-ler.ativo:hover {
+    background: linear-gradient(180deg, #fff2d9 0%, #ffdda3 100%);
+}
+
+/* ===== ATIVO — Lido (verde) ===== */
+.status-group .btn-lido.ativo {
+    background: linear-gradient(180deg, #eaf7eb 0%, #c8e6c9 100%);
+    color: #1b5e20;
+    box-shadow: inset 0 0 0 1px #a5d6a7;
+}
+
+.status-group .btn-lido.ativo:hover {
+    background: linear-gradient(180deg, #dcf0de 0%, #b2dfb4 100%);
+}
+
+/* Ícone dentro do grupo */
 .status-group .action-icon {
     font-size: 0.9rem;
     line-height: 1;
-}
-
-/* Quero ler ativo */
-.status-group .btn-quero-ler.ativo {
-    background: #fff5e4;
-    border-color: #d7b27a;
-    color: #98651d;
-    font-weight: 600;
-}
-
-/* Lido ativo — CORRIGIDO (antes o texto ficava invisível) */
-.status-group .btn-lido.ativo {
-    background: #e8f5e9;
-    border-color: #a5d6a7;
-    color: #2e7d32;
-    font-weight: 600;
-}
-
-/* Desabilitado — cinza, sem clique, sem hover */
-.status-group .btn-action:disabled,
-.status-group .btn-action.desabilitado {
-    background: #f5f5f5;
-    color: #b8b0a8;
-    border-color: #e0e0e0;
-    cursor: not-allowed;
-    pointer-events: none;
-    opacity: 0.7;
+    font-weight: 700;
 }
 
 
-/* --- Favoritar: ícone solto à direita --- */
+/* =====================================================
+   FAVORITAR — ícone solto à direita
+===================================================== */
 
 .btn-favorito-icon {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.35rem 0.6rem;
+    padding: 0.4rem 0.7rem;
     border: none;
     background: transparent;
-    color: #9c5360;
-    font-size: 0.78rem;
+    color: #8a4a56;
+    font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
     border-radius: 8px;
@@ -624,7 +624,6 @@ body {
     color: #fff !important;
 }
 
-.alto-contraste .btn-action,
 .alto-contraste .btn-saiba-mais,
 .alto-contraste .btn-voltar-inicio,
 .alto-contraste .btn-finalizar,
@@ -637,7 +636,6 @@ body {
     border-color: #fff !important;
 }
 
-.alto-contraste .btn-action:hover,
 .alto-contraste .btn-saiba-mais:hover,
 .alto-contraste .btn-voltar-inicio:hover,
 .alto-contraste .btn-finalizar:hover,
@@ -646,24 +644,31 @@ body {
     color: #fff !important;
 }
 
-/* Status: grupo de botões no alto contraste */
-.alto-contraste .status-group .btn-action {
-    background: #222 !important;
-    color: #fff !important;
-    border-color: #fff !important;
-}
-
-.alto-contraste .status-group .btn-action.ativo {
-    background: #444 !important;
-    color: #ffd966 !important;
-    border-color: #ffd966 !important;
-}
-
-.alto-contraste .status-group .btn-action:disabled,
-.alto-contraste .status-group .btn-action.desabilitado {
+/* Grupo de status no alto contraste */
+.alto-contraste .status-group {
     background: #1a1a1a !important;
-    color: #666 !important;
-    border-color: #444 !important;
+    border-color: #fff !important;
+    box-shadow: none !important;
+}
+
+.alto-contraste .status-group .btn-action {
+    color: #fff !important;
+}
+
+.alto-contraste .status-group .btn-action:first-child {
+    border-right-color: #555 !important;
+}
+
+.alto-contraste .status-group .btn-quero-ler.ativo {
+    background: #4a3a15 !important;
+    color: #ffd966 !important;
+    box-shadow: inset 0 0 0 1px #ffd966 !important;
+}
+
+.alto-contraste .status-group .btn-lido.ativo {
+    background: #1b3a1d !important;
+    color: #a5ffb0 !important;
+    box-shadow: inset 0 0 0 1px #a5ffb0 !important;
 }
 
 /* Favoritar no alto contraste */
