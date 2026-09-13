@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/biblioteca.css">
+    <script src="/js/logout.js" defer></script>
 </head>
 <body>
 
@@ -16,7 +17,7 @@
             <a href="/">🏠 Início</a>
             <a href="/biblioteca" class="active">📖 Minha Biblioteca</a>
             <a href="/perfil">👤 Perfil</a>
-            <a href="/sair" onclick="return confirm('Deseja sair?')">Sair</a>
+            <a href="/sair" onclick="confirmarSair(event)">Sair</a>
         </div>
     </nav>
 
