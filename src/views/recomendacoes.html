@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>EmotionBooks - Recomendações</title>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/recomendacoes.css">
 </head>
@@ -15,7 +15,6 @@
 
     <!-- NAVBAR -->
     <nav class="navbar">
-
         <div class="logo">
             <h2>📚 EmotionBooks</h2>
         </div>
@@ -24,52 +23,29 @@
             <a href="/">🏠 Início</a>
             <a href="/biblioteca">📖 Minha Biblioteca</a>
             <a href="/perfil">👤 Perfil</a>
-
-            <a href="/sair"
-               onclick="return confirm('Você deseja realmente sair da sua conta?')">
-                Sair
-            </a>
+            <a href="/sair" onclick="return confirm('Você deseja realmente sair da sua conta?')">Sair</a>
         </div>
-
     </nav>
 
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="container">
 
-        <!-- CABEÇALHO -->
         <header class="results-header">
-
             <h1>Recomendações para você</h1>
-
             <p class="results-subtitle">
                 Livros selecionados com base na sua emoção e intenção
             </p>
-
-           
-            <div id="filtrosContainer" class="filtros-container">
-               
-            </div>
-
+            <div id="filtrosContainer" class="filtros-container"></div>
         </header>
 
 
-        <!-- LIVROS -->
-        <section
-            class="books-grid"
-            id="booksContainer"
-            aria-label="Livros recomendados">
-
+        <section class="books-grid" id="booksContainer" aria-label="Livros recomendados">
             <!-- Cards inseridos pelo JavaScript -->
-
         </section>
-   
+
         <div class="rodape-acoes">
-
-            <a href="/" class="btn-voltar-inicio">
-                ← Voltar ao início
-            </a>
-
+            <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
         </div>
 
     </main>
@@ -78,113 +54,63 @@
     <!-- ============================= -->
     <!-- MODAL DE DETALHES -->
     <!-- ============================= -->
-
-    <div
-        class="modal"
-        id="modalDetalhes"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="detalheTitulo">
+    <div class="modal" id="modalDetalhes" role="dialog" aria-modal="true" aria-labelledby="detalheTitulo">
 
         <div class="modal-content modal-detalhes-content">
 
-            <button
-                class="modal-fechar"
-                onclick="fecharModalDetalhes()"
-                aria-label="Fechar">
-                ×
-            </button>
+            <button class="modal-fechar" onclick="fecharModalDetalhes()" aria-label="Fechar">×</button>
 
-            <h2 id="detalheTitulo">
-                Título do Livro
-            </h2>
-
-            <p id="detalheAutor" class="modal-autor">
-                Autor do Livro
-            </p>
+            <h2 id="detalheTitulo">Título do Livro</h2>
+            <p id="detalheAutor" class="modal-autor">Autor do Livro</p>
 
             <div class="sinopse-box">
-
                 <h3>Sinopse</h3>
-
-                <p id="detalheSinopse">
-                    Resumo da história do livro...
-                </p>
-
+                <p id="detalheSinopse">Resumo da história do livro...</p>
             </div>
 
             <div class="modal-actions">
-
-                <button
-                    class="btn-finalizar"
-                    onclick="fecharModalDetalhes()">
-                    Voltar
-                </button>
-
-                <button
-                    class="btn-ler"
-                    id="btnIrParaLeitura">
-                    Ler agora ↗
-                </button>
-
+                <button class="btn-finalizar" onclick="fecharModalDetalhes()">Voltar</button>
+                <button class="btn-ler" id="btnIrParaLeitura">Ler agora ↗</button>
             </div>
 
         </div>
-
     </div>
 
 
     <!-- ============================= -->
     <!-- ACESSIBILIDADE -->
     <!-- ============================= -->
-
-    <button
-        class="btn-acessibilidade-flutuante"
-        onclick="toggleMenuAcessibilidade()"
-        title="Acessibilidade">
-
+    <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade">
         ♿
-
     </button>
 
-
-    <div
-        class="menu-acessibilidade"
-        id="menuAcessibilidade">
+    <div class="menu-acessibilidade" id="menuAcessibilidade">
 
         <h3>Navegação</h3>
-
         <p class="text-desc">
             Personalize a experiência para deixar a leitura mais confortável.
         </p>
 
         <div class="acessibilidade-item">
-
             <span>Tamanho da fonte</span>
-
             <div>
                 <button onclick="alterarFonte(-1)">A-</button>
                 <button onclick="alterarFonte(1)">A+</button>
             </div>
-
         </div>
 
         <div class="acessibilidade-item">
-
             <span>Alto contraste</span>
-
-            <button onclick="toggleContraste()">
-                Ligar/Desligar
-            </button>
-
+            <button onclick="toggleContraste()">Ligar/Desligar</button>
         </div>
 
     </div>
 
 
-
+    <!-- ============================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================= -->
     <script>
-
 
         let livrosAtuais = [];
 
@@ -192,90 +118,55 @@
         /* =====================================
            FUNÇÃO PARA LIMPAR URL DAS IMAGENS
         ===================================== */
-
-       function limparUrlCapa(url) {
-            // Se não tiver URL, retorna placeholder
+        function limparUrlCapa(url) {
             if (!url) return '/img/placeholder.jpg';
-            
-            // Remove espaços extras
+
             url = url.trim();
-            
+
             // Caso 1: Formato Markdown [texto](url)
             if (url.includes('](')) {
                 const match = url.match(/\]\((.*?)\)/);
-                if (match && match[1]) {
-                    return match[1];
-                }
+                if (match && match[1]) return match[1];
             }
-            
+
             // Caso 2: URL com parênteses extras
             if (url.includes('(') && url.includes(')')) {
                 const match = url.match(/\((.*?)\)/);
-                if (match && match[1]) {
-                    return match[1];
-                }
+                if (match && match[1]) return match[1];
             }
-            
+
             // Caso 3: URL com colchetes extras
             if (url.startsWith('[') && url.includes(']')) {
                 const match = url.match(/\[(.*?)\]/);
-                if (match && match[1] && match[1].startsWith('http')) {
-                    return match[1];
-                }
+                if (match && match[1] && match[1].startsWith('http')) return match[1];
             }
-            
-            // Caso 4: Verifica se é uma URL válida
-            if (url.startsWith('http://') || url.startsWith('https://')) {
-                return url;
-            }
-            
-            // Se nada funcionar, retorna placeholder
+
+            // Caso 4: URL válida
+            if (url.startsWith('http://') || url.startsWith('https://')) return url;
+
             return '/img/placeholder.jpg';
         }
-          
 
 
         /* =====================================
            ACESSIBILIDADE
         ===================================== */
-
         function toggleMenuAcessibilidade() {
-
-            const menu =
-                document.getElementById('menuAcessibilidade');
-
-            menu.style.display =
-                menu.style.display === 'block'
-                    ? 'none'
-                    : 'block';
+            const menu = document.getElementById('menuAcessibilidade');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
-
 
         function toggleContraste() {
-
             document.body.classList.toggle('alto-contraste');
-
         }
-
-
-               /* =====================================
-           ACESSIBILIDADE - AJUSTE DE FONTE
-        ===================================== */
 
         let tamanhoAtual = 100;
 
         function alterarFonte(direcao) {
-            // Limites: 80% (mínimo) e 130% (máximo)
-            if (direcao > 0 && tamanhoAtual < 130) {
-                tamanhoAtual += 10;
-            } else if (direcao < 0 && tamanhoAtual > 80) {
-                tamanhoAtual -= 10;
-            }
-            
-            // Aplica o tamanho diretamente no HTML
+            if (direcao > 0 && tamanhoAtual < 130) tamanhoAtual += 10;
+            else if (direcao < 0 && tamanhoAtual > 80) tamanhoAtual -= 10;
+
             document.documentElement.style.fontSize = tamanhoAtual + '%';
-            
-            // Também aplica no body para garantir
             document.body.style.fontSize = tamanhoAtual + '%';
         }
 
@@ -283,7 +174,6 @@
         /* =====================================
            MODAL DE DETALHES
         ===================================== */
-
         function abrirDetalhes(index) {
             const livro = livrosAtuais[index];
 
@@ -292,438 +182,473 @@
             document.getElementById('detalheSinopse').innerText = livro.sinopse || 'Sinopse não disponível.';
 
             const btnLeitura = document.getElementById('btnIrParaLeitura');
-            
+
             btnLeitura.onclick = function () {
-                // 1. Pega o link que veio do banco
                 let linkBruto = livro.link_externo || livro.link_leitura;
 
-                // 2. Limpa a formatação Markdown [texto](url) caso ela exista
                 if (linkBruto && linkBruto.includes('](')) {
                     const match = linkBruto.match(/\]\((.*?)\)/);
-                    if (match && match[1]) {
-                        linkBruto = match[1];
-                    }
+                    if (match && match[1]) linkBruto = match[1];
                 }
 
-                // 3. Manda o link limpo para a função que abre a aba
                 confirmarLeituraExterna(linkBruto);
             };
 
             document.getElementById('modalDetalhes').style.display = 'flex';
         }
 
-
-           
-
         function fecharModalDetalhes() {
-
-            document.getElementById('modalDetalhes').style.display =
-                'none';
-
+            document.getElementById('modalDetalhes').style.display = 'none';
         }
 
-
-        /* Fechar modal clicando fora */
-
         window.addEventListener('click', function (event) {
-
-            const modal =
-                document.getElementById('modalDetalhes');
-
-            if (event.target === modal) {
-
-                fecharModalDetalhes();
-
-            }
-
+            const modal = document.getElementById('modalDetalhes');
+            if (event.target === modal) fecharModalDetalhes();
         });
 
 
         /* =====================================
-   CARREGAR RECOMENDAÇÕES
-===================================== */
-
-window.addEventListener(
-    'DOMContentLoaded',
-    async () => {
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const humor = urlParams.get('humor');
-        const intencao = urlParams.get('intencao');
-
-        /* Verificação */
-        if (!humor || !intencao) {
-            document.getElementById('filtrosContainer').innerHTML = `
-                <p class="mensagem-erro">
-                    Seleção incompleta. Volte à página inicial.
-                </p>
-            `;
-            return;
-        }
-
-        /* Mapas */
-        const mapaHumor = {
-            'tristeza': 'Triste',
-            'felicidade': 'Feliz',
-            'tedio': 'Entediado',
-            'neutro': 'Neutro',
-            'ansiedade': 'Ansioso'
-        };
-
-        const mapaIntencao = {
-            'manter': 'Validar emoção',
-            'alterar': 'Transformar emoção'
-        };
-
-        const textoHumor = mapaHumor[humor.toLowerCase()] || humor;
-        const textoIntencao = mapaIntencao[intencao.toLowerCase()] || intencao;
-
-        /* Mostra os filtros */
-        document.getElementById('filtrosContainer').innerHTML = `
-            <span class="filtro-tag">
-                Emoção: <strong>${textoHumor}</strong>
-            </span>
-            <span class="filtro-tag">
-                Intenção: <strong>${textoIntencao}</strong>
-            </span>
-        `;
-
-        /* =====================================
-           BUSCAR RECOMENDAÇÕES
+           LEITURA EXTERNA
         ===================================== */
-
-      
-      
-
-        const container = document.getElementById('booksContainer');
-
-        // MOSTRA O LOADER ENQUANTO CARREGA
-        container.innerHTML = `
-            <div class="loader-container" id="loaderContainer">
-                <div class="loader-spinner"></div>
-                <p class="loader-text">Buscando livros para você<span class="dots"></span></p>
-            </div>
-        `;
-
-        try {
-            const response = await fetch('/recomendar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ humor, intencao })
-            });
-
-            if (!response.ok) {
-                throw new Error('Erro na resposta do servidor.');
+        async function confirmarLeituraExterna(link) {
+            if (!link || link.trim() === "" || link === "null") {
+                Swal.fire({
+                    title: 'Link indisponível',
+                    text: 'O link de leitura não está disponível para este livro.',
+                    icon: 'info',
+                    confirmButtonColor: '#8b7355'
+                });
+                return;
             }
 
-            const data = await response.json();
-            livrosAtuais = data.recomendacoes || [];
+            const resultado = await Swal.fire({
+                title: 'Sair do EmotionBooks?',
+                text: 'Você será direcionado ao Project Gutenberg (site externo) para ler o livro.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, ir para o Gutenberg',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#8b7355',
+                cancelButtonColor: '#b0a89e',
+                reverseButtons: true
+            });
 
-            // =====================================
-            // NENHUM LIVRO
-            // =====================================
-            if (livrosAtuais.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">📚</div>
-                        <h3>Nenhum livro encontrado</h3>
-                        <p>Não encontramos recomendações para essa combinação no momento.</p>
-                        <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
-                    </div>
+            if (resultado.isConfirmed) {
+                window.open(link, '_blank');
+            }
+        }
+
+
+        /* =====================================
+           CARREGAR RECOMENDAÇÕES
+        ===================================== */
+        window.addEventListener('DOMContentLoaded', async () => {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const humor = urlParams.get('humor');
+            const intencao = urlParams.get('intencao');
+
+            if (!humor || !intencao) {
+                document.getElementById('filtrosContainer').innerHTML = `
+                    <p class="mensagem-erro">
+                        Seleção incompleta. Volte à página inicial.
+                    </p>
                 `;
                 return;
             }
 
-            // =====================================
-            // CRIAR CARDS E MOSTRAR IMEDIATAMENTE
-            // =====================================
-            const fragment = document.createDocumentFragment();
+            const mapaHumor = {
+                'tristeza': 'Triste',
+                'felicidade': 'Feliz',
+                'tedio': 'Entediado',
+                'neutro': 'Neutro',
+                'ansiedade': 'Ansioso'
+            };
 
-            livrosAtuais.forEach((livro, index) => {
-                const div = document.createElement('article');
-                div.className = 'book-card';
-                div.style.opacity = '0'; // Começa invisível para o fade-in
-                div.style.transform = 'translateY(20px)';
+            const mapaIntencao = {
+                'manter': 'Validar emoção',
+                'alterar': 'Transformar emoção'
+            };
 
-                const genero = livro.genero ? livro.genero : 'Leitura';
-                const estaFavorito = livro.favorito === 1 || livro.favorito === true;
-                const capaLimpa = limparUrlCapa(livro.capa_url);
+            const textoHumor = mapaHumor[humor.toLowerCase()] || humor;
+            const textoIntencao = mapaIntencao[intencao.toLowerCase()] || intencao;
 
-                div.innerHTML = `
-                    <div class="book-main-content">
-                        <!-- Imagem com loading lazy e um placeholder da internet caso o Gutenberg bloqueie -->
-                        <img
-                            src="${capaLimpa}"
-                            alt="Capa do livro ${livro.titulo}"
-                            class="book-cover-img"
-                            loading="lazy"
-                            onerror="this.src='https://placehold.co/110x165/f5f1ed/8a7e74?text=Sem+Capa'"
-                        >
-                        <div class="book-info-side">
-                            <h3 class="book-title">${livro.titulo}</h3>
-                            <p class="book-author">${livro.autor}</p>
-                            <div class="book-tags">
-                               
-                                <span class="tag-pill">#${genero.toLowerCase()}</span>
-                            </div>
-                        </div>
-                    </div>
+            document.getElementById('filtrosContainer').innerHTML = `
+                <span class="filtro-tag">
+                    Emoção: <strong>${textoHumor}</strong>
+                </span>
+                <span class="filtro-tag">
+                    Intenção: <strong>${textoIntencao}</strong>
+                </span>
+            `;
 
-                    <button class="btn-saiba-mais" onclick="abrirDetalhes(${index})">
-                        <span>Ver detalhes</span>
-                        <span class="seta">→</span>
-                    </button>
-
-                   <div class="quick-actions-container">
-    <div class="status-group">
-        <button class="btn-action btn-quero-ler" onclick="marcarQueroLer(${livro.id_livro}, this)">
-            <span class="action-icon">+</span>
-            <span>Quero ler</span>
-        </button>
-        <button class="btn-action btn-lido" onclick="marcarComoLido(${livro.id_livro}, this)">
-            <span class="action-icon">✓</span>
-            <span>Lido</span>
-        </button>
-    </div>
-
-    <button class="btn-favorito-icon ${estaFavorito ? 'favoritado' : ''}"
-            data-favoritado="${estaFavorito}"
-            onclick="alternarFavorito(${livro.id_livro}, this)">
-        <span class="action-icon">${estaFavorito ? '♥' : '♡'}</span>
-        <span class="texto-favorito">${estaFavorito ? 'Favorito' : 'Favoritar'}</span>
-    </button>
-</div>
-                      
-                `;
-
-                fragment.appendChild(div);
-            });
-
-            // Adiciona tudo na tela instantaneamente
-            container.innerHTML = '';
-            container.appendChild(fragment);
-
-            // Adiciona a classe "loaded" para ativar a animação
-            container.classList.add('loaded');
-
-            // Faz cada card aparecer com um pequeno delay (efeito cascata)
-            const cards = container.querySelectorAll('.book-card');
-            cards.forEach((card, i) => {
-                setTimeout(() => {
-                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 100 + (i * 150));
-            });
-
-      } catch (err) {
-            console.error("Erro ao buscar as recomendações:", err);
+            const container = document.getElementById('booksContainer');
 
             container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-icon">⚠️</div>
-                    <h3>Não foi possível carregar as recomendações</h3>
-                    <p>Tente novamente em alguns instantes.</p>
-                    <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
+                <div class="loader-container" id="loaderContainer">
+                    <div class="loader-spinner"></div>
+                    <p class="loader-text">Buscando livros para você<span class="dots"></span></p>
                 </div>
             `;
-        }
-    }
-);
+
+            try {
+                const response = await fetch('/recomendar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ humor, intencao })
+                });
+
+                if (!response.ok) throw new Error('Erro na resposta do servidor.');
+
+                const data = await response.json();
+                livrosAtuais = data.recomendacoes || [];
+
+                if (livrosAtuais.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📚</div>
+                            <h3>Nenhum livro encontrado</h3>
+                            <p>Não encontramos recomendações para essa combinação no momento.</p>
+                            <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+
+                livrosAtuais.forEach((livro, index) => {
+                    const div = document.createElement('article');
+                    div.className = 'book-card';
+                    div.style.opacity = '0';
+                    div.style.transform = 'translateY(20px)';
+
+                    const genero = livro.genero ? livro.genero : 'Leitura';
+                    const estaFavorito = livro.favorito === 1 || livro.favorito === true;
+                    const estaLido = livro.status_leitura === 'Lido';
+                    const estaQueroLer = livro.status_leitura === 'Quero ler';
+                    const capaLimpa = limparUrlCapa(livro.capa_url);
+
+                    div.innerHTML = `
+                        <div class="book-main-content">
+                            <img
+                                src="${capaLimpa}"
+                                alt="Capa do livro ${livro.titulo}"
+                                class="book-cover-img"
+                                loading="lazy"
+                                onerror="this.src='https://placehold.co/110x165/f5f1ed/8a7e74?text=Sem+Capa'"
+                            >
+                            <div class="book-info-side">
+                                <h3 class="book-title">${livro.titulo}</h3>
+                                <p class="book-author">${livro.autor}</p>
+                                <div class="book-tags">
+                                    <span class="tag-pill">#${genero.toLowerCase()}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-saiba-mais" onclick="abrirDetalhes(${index})">
+                            <span>Ver detalhes</span>
+                            <span class="seta">→</span>
+                        </button>
+
+                        <div class="quick-actions-container">
+                            <div class="status-group">
+                                <button class="btn-action btn-quero-ler ${estaQueroLer ? 'ativo' : ''}"
+                                        onclick="marcarQueroLer(${livro.id_livro}, this)">
+                                    <span class="action-icon">${estaQueroLer ? '✓' : '+'}</span>
+                                    <span>${estaQueroLer ? 'Na lista' : 'Quero ler'}</span>
+                                </button>
+                                <button class="btn-action btn-lido ${estaLido ? 'ativo' : ''}"
+                                        onclick="marcarComoLido(${livro.id_livro}, this)">
+                                    <span class="action-icon">✓</span>
+                                    <span>Lido</span>
+                                </button>
+                            </div>
+
+                            <button class="btn-favorito-icon ${estaFavorito ? 'favoritado' : ''}"
+                                    data-favoritado="${estaFavorito}"
+                                    onclick="alternarFavorito(${livro.id_livro}, this)">
+                                <span class="action-icon">${estaFavorito ? '♥' : '♡'}</span>
+                                <span class="texto-favorito">${estaFavorito ? 'Favorito' : 'Favoritar'}</span>
+                            </button>
+                        </div>
+                    `;
+
+                    fragment.appendChild(div);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(fragment);
+
+                container.classList.add('loaded');
+
+                const cards = container.querySelectorAll('.book-card');
+                cards.forEach((card, i) => {
+                    setTimeout(() => {
+                        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100 + (i * 150));
+                });
+
+            } catch (err) {
+                console.error("Erro ao buscar as recomendações:", err);
+
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <h3>Não foi possível carregar as recomendações</h3>
+                        <p>Tente novamente em alguns instantes.</p>
+                        <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
+                    </div>
+                `;
+            }
+        });
+
 
         /* =====================================
            MARCAR COMO LIDO
+           - Confirma ao marcar
+           - Avisa se for perder favorito ao desmarcar
+           - Cascateia o favorito quando o backend remove
         ===================================== */
         async function marcarComoLido(idLivro, botao) {
-    const estaAtivo = botao.classList.contains('ativo');
+            const estaAtivo = botao.classList.contains('ativo');
 
-    // Só confirma quando está MARCADO (desmarcar é direto)
-    if (!estaAtivo) {
-        const resultado = await Swal.fire({
-            title: 'Marcar como lido?',
-            text: 'Este livro não será mais recomendado para você.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sim, marcar como lido',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#8b7355',
-            cancelButtonColor: '#b0a89e',
-            reverseButtons: true
-        });
-        if (!resultado.isConfirmed) return;
-    }
+            // ==== DESMARCAR ====
+            if (estaAtivo) {
+                const card = botao.closest('.book-card');
+                const btnFav = card?.querySelector('.btn-favorito-icon');
+                const estaFavoritado = btnFav?.dataset.favoritado === 'true';
 
-    const conteudoOriginal = botao.innerHTML;
-    botao.innerHTML = `<span class="action-icon">⏳</span><span>Salvando...</span>`;
-    botao.style.pointerEvents = 'none';
-    botao.style.opacity = '0.7';
-
-    try {
-        const response = await fetch('/marcar-lido', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_livro: idLivro })
-        });
-
-        if (!response.ok) throw new Error("Erro no servidor");
-
-        const data = await response.json();
-        botao.style.opacity = '1';
-        botao.style.pointerEvents = 'auto';
-
-        const card = botao.closest('.book-card');
-        const btnQueroLer = card?.querySelector('.btn-quero-ler');
-
-        if (data.removido) {
-            // DESMARCOU → o outro já está inativo, nada a fazer
-            botao.classList.remove('ativo');
-            botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
-
-            Swal.fire({
-                title: 'Removido',
-                text: 'Livro removido do seu histórico.',
-                icon: 'info',
-                confirmButtonColor: '#8b7355',
-                timer: 1500,
-                timerProgressBar: true
-            });
-        } else {
-            // MARCOU (ou TROCOU) → ativa este e desativa o outro
-            botao.classList.add('ativo');
-            botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
-
-            // Desativa visualmente o "Quero ler" (sem bloquear)
-            if (btnQueroLer) {
-                btnQueroLer.classList.remove('ativo');
-                btnQueroLer.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+                if (estaFavoritado) {
+                    const r = await Swal.fire({
+                        title: 'Remover o "Lido"?',
+                        text: 'Este livro também será removido dos favoritos.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim, remover tudo',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#8b7355',
+                        cancelButtonColor: '#b0a89e',
+                        reverseButtons: true
+                    });
+                    if (!r.isConfirmed) return;
+                }
+            } else {
+                // ==== MARCAR ====
+                const resultado = await Swal.fire({
+                    title: 'Marcar como lido?',
+                    text: 'Este livro não será mais recomendado para você.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim, marcar como lido',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#8b7355',
+                    cancelButtonColor: '#b0a89e',
+                    reverseButtons: true
+                });
+                if (!resultado.isConfirmed) return;
             }
 
-            Swal.fire({
-                title: 'Salvo!',
-                text: 'Livro adicionado ao seu histórico.',
-                icon: 'success',
-                confirmButtonColor: '#8b7355',
-                timer: 2000,
-                timerProgressBar: true
-            });
-        }
-    } catch (error) {
-        botao.innerHTML = conteudoOriginal;
-        botao.style.pointerEvents = 'auto';
-        botao.style.opacity = '1';
+            const conteudoOriginal = botao.innerHTML;
+            botao.innerHTML = `<span class="action-icon">⏳</span><span>Salvando...</span>`;
+            botao.style.pointerEvents = 'none';
+            botao.style.opacity = '0.7';
 
-        Swal.fire({
-            title: 'Ops!',
-            text: 'Não foi possível salvar. Tente novamente.',
-            icon: 'error',
-            confirmButtonColor: '#8b7355'
-        });
-        console.error("Erro:", error);
-    }
-}
- /* =====================================
-           LEITURA EXTERNA
-        ===================================== */
-        async function confirmarLeituraExterna(link) {
-    if (!link || link.trim() === "" || link === "null") {
-        Swal.fire({
-            title: 'Link indisponível',
-            text: 'O link de leitura não está disponível para este livro.',
-            icon: 'info',
-            confirmButtonColor: '#8b7355'
-        });
-        return;
-    }
+            try {
+                const response = await fetch('/marcar-lido', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro })
+                });
 
-    const resultado = await Swal.fire({
-        title: 'Sair do EmotionBooks?',
-        text: 'Você será direcionado ao Project Gutenberg (site externo) para ler o livro.',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sim, ir para o Gutenberg',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#8b7355',
-        cancelButtonColor: '#b0a89e',
-        reverseButtons: true
-    });
+                if (!response.ok) throw new Error("Erro no servidor");
 
-    if (resultado.isConfirmed) {
-        window.open(link, '_blank');
-    }
-}
-      /* =====================================
-           QUERO LER
-        ===================================== */
-    async function marcarQueroLer(idLivro, botao) {
-    const conteudoOriginal = botao.innerHTML;
-    botao.innerHTML = `<span class="action-icon">⏳</span><span>Aguarde...</span>`;
-    botao.style.pointerEvents = 'none';
-    botao.style.opacity = '0.7';
+                const data = await response.json();
+                botao.style.opacity = '1';
+                botao.style.pointerEvents = 'auto';
 
-    try {
-        const response = await fetch('/quero-ler', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_livro: idLivro })
-        });
+                const card = botao.closest('.book-card');
+                const btnQueroLer = card?.querySelector('.btn-quero-ler');
+                const btnFav = card?.querySelector('.btn-favorito-icon');
 
-        if (!response.ok) throw new Error("Erro no servidor");
+                if (data.removido) {
+                    // DESmarcou o Lido
+                    botao.classList.remove('ativo');
+                    botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
 
-        const data = await response.json();
-        botao.style.opacity = '1';
-        botao.style.pointerEvents = 'auto';
+                    // Se cascateou o favorito, limpa o coração também
+                    if (data.removeuFavorito && btnFav) {
+                        btnFav.dataset.favoritado = 'false';
+                        btnFav.classList.remove('favoritado');
+                        btnFav.innerHTML = `<span class="action-icon">♡</span><span class="texto-favorito">Favoritar</span>`;
+                    }
 
-        const card = botao.closest('.book-card');
-        const btnLido = card?.querySelector('.btn-lido');
+                    Swal.fire({
+                        title: 'Removido',
+                        text: 'Livro removido do seu histórico.',
+                        icon: 'info',
+                        confirmButtonColor: '#8b7355',
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                } else {
+                    // MARCOU como Lido
+                    botao.classList.add('ativo');
+                    botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
 
-        if (data.removido) {
-            // DESMARCOU → só limpa este botão
-            botao.classList.remove('ativo');
-            botao.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
-        } else {
-            // MARCOU (ou TROCOU) → ativa este e desativa o outro
-            botao.classList.add('ativo');
-            botao.innerHTML = `<span class="action-icon">✓</span><span>Na lista</span>`;
+                    // Desativa visualmente "Quero ler"
+                    if (btnQueroLer) {
+                        btnQueroLer.classList.remove('ativo');
+                        btnQueroLer.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+                    }
 
-            if (btnLido) {
-                btnLido.classList.remove('ativo');
-                btnLido.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+                    Swal.fire({
+                        title: 'Salvo!',
+                        text: 'Livro adicionado ao seu histórico.',
+                        icon: 'success',
+                        confirmButtonColor: '#8b7355',
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                }
+            } catch (error) {
+                botao.innerHTML = conteudoOriginal;
+                botao.style.pointerEvents = 'auto';
+                botao.style.opacity = '1';
+
+                Swal.fire({
+                    title: 'Ops!',
+                    text: 'Não foi possível salvar. Tente novamente.',
+                    icon: 'error',
+                    confirmButtonColor: '#8b7355'
+                });
+                console.error("Erro:", error);
             }
         }
-    } catch (error) {
-        botao.innerHTML = conteudoOriginal;
-        botao.style.pointerEvents = 'auto';
-        botao.style.opacity = '1';
-        console.error("Erro:", error);
-    }
-}
+
+
         /* =====================================
-           FAVORITO
+           QUERO LER
+           - Toggle normal (com/sem status)
+           - Se trocar de "Lido" para "Quero ler", limpa o favorito
         ===================================== */
-async function alternarFavorito(idLivro, botao) {
+        async function marcarQueroLer(idLivro, botao) {
+            const conteudoOriginal = botao.innerHTML;
+            botao.innerHTML = `<span class="action-icon">⏳</span><span>Aguarde...</span>`;
+            botao.style.pointerEvents = 'none';
+            botao.style.opacity = '0.7';
+
+            try {
+                const response = await fetch('/quero-ler', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_livro: idLivro })
+                });
+
+                if (!response.ok) throw new Error("Erro no servidor");
+
+                const data = await response.json();
+                botao.style.opacity = '1';
+                botao.style.pointerEvents = 'auto';
+
+                const card = botao.closest('.book-card');
+                const btnLido = card?.querySelector('.btn-lido');
+                const btnFav = card?.querySelector('.btn-favorito-icon');
+
+                if (data.removido) {
+                    // DESMARCOU
+                    botao.classList.remove('ativo');
+                    botao.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+                } else {
+                    // MARCOU ou TROCOU
+                    botao.classList.add('ativo');
+                    botao.innerHTML = `<span class="action-icon">✓</span><span>Na lista</span>`;
+
+                    // Desativa visualmente "Lido"
+                    if (btnLido) {
+                        btnLido.classList.remove('ativo');
+                        btnLido.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+                    }
+
+                    // Se trocou de Lido→Quero ler, o backend removeu o favorito. Limpa visualmente.
+                    if (data.perdeuFavorito && btnFav) {
+                        btnFav.dataset.favoritado = 'false';
+                        btnFav.classList.remove('favoritado');
+                        btnFav.innerHTML = `<span class="action-icon">♡</span><span class="texto-favorito">Favoritar</span>`;
+                    }
+                }
+            } catch (error) {
+                botao.innerHTML = conteudoOriginal;
+                botao.style.pointerEvents = 'auto';
+                botao.style.opacity = '1';
+                console.error("Erro:", error);
+            }
+        }
+
+
+        /* =====================================
+           FAVORITO — Modelo 1
+           Favoritar implica estar "Lido"
+           Se não estiver Lido, pergunta se quer marcar como lido também
+        ===================================== */
+        async function alternarFavorito(idLivro, botao) {
             const estaFavoritado = botao.dataset.favoritado === 'true';
             const novoStatus = !estaFavoritado;
 
-            // 1. ATUALIZAÇÃO OTIMISTA (Muda o visual NA HORA, parecendo instantâneo)
+            const card = botao.closest('.book-card');
+            const btnLido = card?.querySelector('.btn-lido');
+            const btnQueroLer = card?.querySelector('.btn-quero-ler');
+
+            // ==== FAVORITAR ====
+            if (novoStatus) {
+                const jaEstaLido = btnLido?.classList.contains('ativo');
+
+                if (!jaEstaLido) {
+                    const r = await Swal.fire({
+                        title: 'Favoritar este livro?',
+                        text: 'Favoritos são livros que você já leu. Deseja marcar como lido também?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim, favoritar e marcar como lido',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#8b7355',
+                        cancelButtonColor: '#b0a89e',
+                        reverseButtons: true
+                    });
+                    if (!r.isConfirmed) return;
+                }
+            }
+
+            // ==== ATUALIZAÇÃO OTIMISTA ====
             botao.dataset.favoritado = novoStatus;
+
             if (novoStatus) {
                 botao.classList.add('favoritado');
                 botao.innerHTML = `<span class="action-icon">♥</span><span class="texto-favorito">Favorito</span>`;
+
+                // Sincroniza visual: Lido ativa, Quero ler desativa
+                if (btnLido) {
+                    btnLido.classList.add('ativo');
+                    btnLido.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+                }
+                if (btnQueroLer) {
+                    btnQueroLer.classList.remove('ativo');
+                    btnQueroLer.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+                }
             } else {
                 botao.classList.remove('favoritado');
                 botao.innerHTML = `<span class="action-icon">♡</span><span class="texto-favorito">Favoritar</span>`;
             }
 
-            // Animação imediata
             botao.classList.remove('favorito-animacao');
             void botao.offsetWidth;
             botao.classList.add('favorito-animacao');
-            
-            // Evita duplo clique rápido
             botao.style.pointerEvents = 'none';
 
             try {
-                // Agora sim ele avisa o banco de dados em silêncio
                 const response = await fetch('/favoritar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -731,12 +656,10 @@ async function alternarFavorito(idLivro, botao) {
                 });
 
                 if (!response.ok) throw new Error("Falha ao salvar");
-                
-                // Deu certo no banco! Libera o botão para o usuário poder clicar de novo
                 botao.style.pointerEvents = 'auto';
 
             } catch (error) {
-                // 2. REVERTER (Se a internet cair ou o banco falhar, ele desfaz a pintura)
+                // Reverte
                 botao.dataset.favoritado = estaFavoritado;
                 if (estaFavoritado) {
                     botao.classList.add('favoritado');
@@ -749,6 +672,7 @@ async function alternarFavorito(idLivro, botao) {
                 console.error("Erro:", error);
             }
         }
+
     </script>
 
 </body>

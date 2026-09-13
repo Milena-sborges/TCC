@@ -174,8 +174,6 @@ CREATE TABLE `usuario_livro` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-ALTER TABLE usuario_livro 
-MODIFY COLUMN status_leitura VARCHAR(50) NULL DEFAULT NULL;
 --
 -- Dumping data for table `usuario_livro`
 --

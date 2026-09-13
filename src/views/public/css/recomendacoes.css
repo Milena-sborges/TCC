@@ -499,7 +499,15 @@ body {
     color: #fff;
 }
 
+.btn-favorito-icon.bloqueado {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
 
+.btn-favorito-icon.bloqueado:hover {
+    background: transparent;
+    color: #8a4a56;
+}
 /* =====================================================
    ESTADO VAZIO / ERRO
 ===================================================== */

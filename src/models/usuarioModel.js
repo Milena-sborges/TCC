@@ -26,39 +26,50 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
         [idUsuario, idLivro]
     );
 
-    // Já tem esse status → desmarca (zera o status, mantém favorito)
+    // ==== DESMARCAR O MESMO STATUS ====
     if (existe.length > 0 && existe[0].status_leitura === status) {
+        // Se é Lido e tinha favorito → perde os dois
+        const cascatearFavorito = status === 'Lido' && existe[0].favorito === 1;
+
+        if (cascatearFavorito) {
+            await db.execute(
+                'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
+                [idUsuario, idLivro]
+            );
+            return { acao: 'removido_com_favorito' };
+        }
+
+        // Senão só zera o status
         await db.execute(
             'UPDATE usuario_livro SET status_leitura = NULL WHERE id_usuario = ? AND id_livro = ?',
             [idUsuario, idLivro]
         );
-
-        // Se também não é favorito → apaga a linha (linha fantasma)
         await db.execute(
             'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ? AND favorito = 0 AND status_leitura IS NULL',
             [idUsuario, idLivro]
         );
-
         return { acao: 'removido' };
     }
 
-    // Tem outro status → troca
+    // ==== TROCAR / ADICIONAR ====
     if (existe.length > 0) {
+        // Trocando para "Quero ler" tendo favorito → perde favorito
+        const perdeFavorito = status === 'Quero ler' && existe[0].favorito === 1;
+
         await db.execute(
-            'UPDATE usuario_livro SET status_leitura = ? WHERE id_usuario = ? AND id_livro = ?',
-            [status, idUsuario, idLivro]
+            'UPDATE usuario_livro SET status_leitura = ?, favorito = ? WHERE id_usuario = ? AND id_livro = ?',
+            [status, perdeFavorito ? 0 : existe[0].favorito, idUsuario, idLivro]
         );
-        return { acao: 'atualizado' };
+        return { acao: 'atualizado', perdeuFavorito: perdeFavorito };
     }
 
-    // Não existe → insere com status, favorito = 0
+    // Não existia → insere
     await db.execute(
         'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, ?, 0)',
         [idUsuario, idLivro, status]
     );
     return { acao: 'adicionado' };
 };
-
 const atualizarFavorito = async (idUsuario, idLivro, isFavorito) => {
     const favoritoValor = isFavorito ? 1 : 0;
 
@@ -67,29 +78,38 @@ const atualizarFavorito = async (idUsuario, idLivro, isFavorito) => {
         [idUsuario, idLivro]
     );
 
-    if (existe.length > 0) {
-        // Já existe linha → só atualiza a coluna favorito
-        await db.execute(
-            'UPDATE usuario_livro SET favorito = ? WHERE id_usuario = ? AND id_livro = ?',
-            [favoritoValor, idUsuario, idLivro]
-        );
-    } else {
-        // Não existe → cria a linha SEM status (só favorito)
-        await db.execute(
-            'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, NULL, ?)',
-            [idUsuario, idLivro, favoritoValor]
-        );
+    // ==== DESFAVORITAR ====
+    if (!isFavorito) {
+        if (existe.length > 0) {
+            await db.execute(
+                'UPDATE usuario_livro SET favorito = 0 WHERE id_usuario = ? AND id_livro = ?',
+                [idUsuario, idLivro]
+            );
+            // Se não tem status → apaga linha fantasma
+            await db.execute(
+                'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ? AND favorito = 0 AND status_leitura IS NULL',
+                [idUsuario, idLivro]
+            );
+        }
+        return { acao: 'desfavoritado' };
     }
 
-    // Se desfavoritou E não tem status → apaga a linha (não faz sentido manter)
-    if (!isFavorito) {
+    // ==== FAVORITAR — regra: precisa estar Lido ====
+    if (existe.length === 0) {
+        // Não existia: cria já com Lido (veio do "favoritar e marcar como lido")
         await db.execute(
-            'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ? AND favorito = 0 AND status_leitura IS NULL',
+            'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, \'Lido\', 1)',
             [idUsuario, idLivro]
         );
+        return { acao: 'favoritado_com_lido' };
     }
 
-    return { sucesso: true };
+    // Já existia: força status Lido e marca favorito
+    await db.execute(
+        'UPDATE usuario_livro SET favorito = 1, status_leitura = \'Lido\' WHERE id_usuario = ? AND id_livro = ?',
+        [idUsuario, idLivro]
+    );
+    return { acao: 'favoritado' };
 };
 
 const buscarBibliotecaDoUsuario = async (idUsuario) => {
@@ -101,7 +121,7 @@ const buscarBibliotecaDoUsuario = async (idUsuario) => {
         FROM livro l
         JOIN usuario_livro ul ON l.id_livro = ul.id_livro
         WHERE ul.id_usuario = ?
-          AND ul.status_leitura IS NOT NULL   -- ⬅️ SÓ quem tem status
+          AND ul.status_leitura IS NOT NULL
         ORDER BY ul.favorito DESC, l.titulo ASC
     `;
     const [livros] = await db.execute(query, [idUsuario]);

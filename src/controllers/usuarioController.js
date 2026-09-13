@@ -114,8 +114,8 @@ const marcarComoLido = async (req, res) => {
         const resultado = await usuarioModel.alternarStatusLeitura(id_usuario, id_livro, 'Lido');
         res.status(200).json({
             sucesso: true,
-            removido: resultado.acao === 'removido',
-            mensagem: resultado.acao === 'removido' ? "Removido dos lidos." : "Marcado como lido!"
+            removido: resultado.acao === 'removido' || resultado.acao === 'removido_com_favorito',
+            removeuFavorito: resultado.acao === 'removido_com_favorito'
         });
     } catch (error) {
         console.error("Erro ao salvar:", error);
@@ -136,7 +136,7 @@ const marcarQueroLer = async (req, res) => {
         res.status(200).json({
             sucesso: true,
             removido: resultado.acao === 'removido',
-            mensagem: resultado.acao === 'removido' ? "Removido dos Quero Ler." : "Adicionado aos Quero Ler!"
+            perdeuFavorito: resultado.perdeuFavorito || false
         });
     } catch (error) {
         console.error("Erro ao salvar:", error);
@@ -153,14 +153,17 @@ const favoritarLivro = async (req, res) => {
     }
 
     try {
-        await usuarioModel.atualizarFavorito(id_usuario, id_livro, favorito);
-        res.status(200).json({ sucesso: true, mensagem: "Favorito atualizado!" });
+        const resultado = await usuarioModel.atualizarFavorito(id_usuario, id_livro, favorito);
+        res.status(200).json({
+            sucesso: true,
+            acao: resultado.acao,
+            marcouLidoJunto: resultado.acao === 'favoritado_com_lido'
+        });
     } catch (error) {
         console.error("Erro ao favoritar:", error);
         res.status(500).json({ erro: "Erro ao favoritar no banco." });
     }
 };
-
 const removerDaBiblioteca = async (req, res) => {
     const { id_livro } = req.body;
     const id_usuario = req.session.usuarioLogado?.id;
