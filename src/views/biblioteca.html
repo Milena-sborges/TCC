@@ -168,6 +168,7 @@
                 const div = document.createElement('div');
                 div.className = 'livro-item';
                 div.setAttribute('role', 'listitem');
+                div.setAttribute('data-livro-id', livro.id_livro); 
 
                 let capaLimpa = livro.capa_url;
                 if (capaLimpa && capaLimpa.includes('](')) {
@@ -265,47 +266,134 @@
            AÇÃO: FAVORITAR
            Se o livro não está Lido, avisa que vai marcar como Lido também
         ===================================== */
-        async function alternarFavoritoBiblioteca(idLivro, novoStatus, jaEstaLido) {
-            // Se está FAVORITANDO e o livro NÃO está Lido → pede confirmação
-            if (novoStatus && !jaEstaLido) {
-                const r = await Swal.fire({
-                    title: 'Favoritar este livro?',
-                    text: 'Favoritos são livros que você já leu. Deseja marcar como lido também?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sim, favoritar e marcar como lido',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#8b7355',
-                    cancelButtonColor: '#b0a89e',
-                    reverseButtons: true
-                });
-                if (!r.isConfirmed) return;
-            }
+   async function alternarFavoritoBiblioteca(idLivro, novoStatus, jaEstaLido) {
+    // ==== FAVORITAR sem estar Lido → pergunta antes ====
+    if (novoStatus && !jaEstaLido) {
+        const r = await Swal.fire({
+            title: 'Favoritar este livro?',
+            text: 'Favoritos são livros que você já leu. Deseja marcar como lido também?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, favoritar e marcar como lido',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#8b7355',
+            cancelButtonColor: '#b0a89e',
+            reverseButtons: true
+        });
+        if (!r.isConfirmed) return;
+    }
 
-            try {
-                const response = await fetch('/favoritar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_livro: idLivro, favorito: novoStatus })
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    carregarBiblioteca();
-                    if (data.marcouLidoJunto) {
-                        Swal.fire({
-                            title: 'Salvo!',
-                            text: 'Livro marcado como Lido e adicionado aos Favoritos.',
-                            icon: 'success',
-                            confirmButtonColor: '#8b7355',
-                            timer: 2000,
-                            timerProgressBar: true
-                        });
-                    }
-                }
-            } catch (error) { console.error("Erro:", error); }
+    // ==== Encontra o botão do coração e o card ====
+    const card = document.querySelector(`[data-livro-id="${idLivro}"]`);
+    if (!card) return;
+
+    const btnHeart = card.querySelector('.btn-heart-rapido');
+    const btnLido = card.querySelector('.btn-lido-rapido, .btn-desmarcar-lido');
+
+    // ==== ATUALIZAÇÃO OTIMISTA — muda a tela NA HORA ====
+    btnHeart.innerHTML = novoStatus ? '❤️' : '🤍';
+    btnHeart.classList.toggle('ativo', novoStatus);
+    btnHeart.disabled = true;  // evita duplo clique enquanto sincroniza
+
+    // Se favoritou e não estava Lido, marca Lido visualmente também
+    if (novoStatus && !jaEstaLido) {
+        // Troca o botão "✓" para "↺"
+        if (btnLido) {
+            btnLido.className = 'btn-acao-rapida btn-desmarcar-lido';
+            btnLido.innerHTML = '↺';
+            btnLido.setAttribute('onclick', `desmarcarLido(${idLivro}, true)`);
+        }
+        // Atualiza o badge de status
+        const badgeStatus = card.querySelector('.status-badge.status-quero-ler');
+        if (badgeStatus) {
+            badgeStatus.className = 'status-badge status-lido';
+            badgeStatus.textContent = 'Lido';
+        }
+        // Adiciona badge de favorito se não existir
+        const livroInfo = card.querySelector('.livro-info');
+        if (livroInfo && !livroInfo.querySelector('.status-favorito')) {
+            const badgeFav = document.createElement('span');
+            badgeFav.className = 'status-badge status-favorito';
+            badgeFav.textContent = '❤️ Favorito';
+            livroInfo.appendChild(badgeFav);
+        }
+    } else if (!novoStatus) {
+        // Desfavoritou → remove o badge de favorito do DOM
+        const badgeFav = card.querySelector('.status-favorito');
+        if (badgeFav) badgeFav.remove();
+    }
+
+    // ==== Sincroniza com o servidor em paralelo ====
+    try {
+        const response = await fetch('/favoritar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_livro: idLivro, favorito: novoStatus })
+        });
+
+        if (!response.ok) throw new Error("Erro no servidor");
+
+        // Sincroniza o estado global (sem re-renderizar)
+        const livro = todosOsLivros.find(l => l.id_livro === idLivro);
+        if (livro) {
+            livro.favorito = novoStatus ? 1 : 0;
+            if (novoStatus && !jaEstaLido) {
+                livro.status_leitura = 'Lido';
+            }
         }
 
+        btnHeart.disabled = false;
 
+        // Se favoritou e marcou como Lido junto, mostra feedback
+        if (novoStatus && !jaEstaLido) {
+            Swal.fire({
+                title: 'Salvo!',
+                text: 'Livro marcado como Lido e adicionado aos Favoritos.',
+                icon: 'success',
+                confirmButtonColor: '#8b7355',
+                timer: 2000,
+                timerProgressBar: true
+            });
+        }
+
+    } catch (error) {
+        // ==== REVERTER — o servidor falhou, desfaz o que fizemos visualmente ====
+        btnHeart.innerHTML = jaEstaLido || !novoStatus ? (novoStatus ? '🤍' : '❤️') : '🤍';
+        btnHeart.classList.toggle('ativo', !novoStatus);
+        btnHeart.disabled = false;
+
+        // Reverte status se mudou
+        if (novoStatus && !jaEstaLido) {
+            const badgeStatus = card.querySelector('.status-badge.status-lido');
+            if (badgeStatus) {
+                badgeStatus.className = 'status-badge status-quero-ler';
+                badgeStatus.textContent = 'Quero ler';
+            }
+            if (btnLido) {
+                btnLido.className = 'btn-acao-rapida btn-lido-rapido';
+                btnLido.innerHTML = '✓';
+                btnLido.setAttribute('onclick', `marcarComoLido(${idLivro})`);
+            }
+        }
+        if (!novoStatus) {
+            const livroInfo = card.querySelector('.livro-info');
+            if (livroInfo && !livroInfo.querySelector('.status-favorito')) {
+                const badgeFav = document.createElement('span');
+                badgeFav.className = 'status-badge status-favorito';
+                badgeFav.textContent = '❤️ Favorito';
+                livroInfo.appendChild(badgeFav);
+            }
+        }
+
+        Swal.fire({
+            title: 'Ops!',
+            text: 'Não foi possível salvar. Tente novamente.',
+            icon: 'error',
+            confirmButtonColor: '#8b7355'
+        });
+        console.error("Erro:", error);
+    }
+}
         /* =====================================
            AÇÃO: REMOVER DA BIBLIOTECA
         ===================================== */
