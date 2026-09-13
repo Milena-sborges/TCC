@@ -121,6 +121,22 @@
     flex-shrink: 0;
 }
 
+/* Botão Desmarcar Lido */
+.btn-desmarcar-lido {
+    border-color: #e4ddd6;
+    color: #8a7e74;
+}
+.btn-desmarcar-lido:hover {
+    background: #f5f2ef;
+    border-color: #bfb2a6;
+}
+
+/* Alto contraste */
+.alto-contraste .btn-desmarcar-lido {
+    background: #222222 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
 .livro-info {
     flex: 1;
     min-width: 0;
