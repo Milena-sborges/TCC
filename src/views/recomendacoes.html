@@ -182,11 +182,19 @@
     </div>
 
 
-    <!-- ============================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================= -->
 
     <script>
+function desabilitarBotao(btn) {
+    if (!btn) return;
+    btn.disabled = true;
+    btn.classList.add('desabilitado');
+}
+
+function habilitarBotao(btn) {
+    if (!btn) return;
+    btn.disabled = false;
+    btn.classList.remove('desabilitado');
+}
 
         let livrosAtuais = [];
 
@@ -476,23 +484,26 @@ window.addEventListener(
                         <span class="seta">→</span>
                     </button>
 
-                    <div class="quick-actions-container">
-                        <p class="quick-actions-title">Ações rápidas</p>
-                        <div class="quick-actions-buttons">
-                            <button class="btn-action btn-quero-ler" onclick="marcarQueroLer(${livro.id_livro}, this)">
-                                <span class="action-icon">+</span>
-                                <span>Quero ler</span>
-                            </button>
-                            <button class="btn-action btn-lido" onclick="marcarComoLido(${livro.id_livro}, this)">
-                                <span class="action-icon">✓</span>
-                                <span>Lido</span>
-                            </button>
-                            <button class="btn-action btn-favorito ${estaFavorito ? 'favoritado' : ''}" data-favoritado="${estaFavorito}" onclick="alternarFavorito(${livro.id_livro}, this)">
-                                <span class="action-icon">${estaFavorito ? '♥' : '♡'}</span>
-                                <span class="texto-favorito">${estaFavorito ? 'Favorito' : 'Favoritar'}</span>
-                            </button>
-                        </div>
-                    </div>
+                   <div class="quick-actions-container">
+    <div class="status-group">
+        <button class="btn-action btn-quero-ler" onclick="marcarQueroLer(${livro.id_livro}, this)">
+            <span class="action-icon">+</span>
+            <span>Quero ler</span>
+        </button>
+        <button class="btn-action btn-lido" onclick="marcarComoLido(${livro.id_livro}, this)">
+            <span class="action-icon">✓</span>
+            <span>Lido</span>
+        </button>
+    </div>
+
+    <button class="btn-favorito-icon ${estaFavorito ? 'favoritado' : ''}"
+            data-favoritado="${estaFavorito}"
+            onclick="alternarFavorito(${livro.id_livro}, this)">
+        <span class="action-icon">${estaFavorito ? '♥' : '♡'}</span>
+        <span class="texto-favorito">${estaFavorito ? 'Favorito' : 'Favoritar'}</span>
+    </button>
+</div>
+                      
                 `;
 
                 fragment.appendChild(div);
@@ -536,7 +547,6 @@ window.addEventListener(
         async function marcarComoLido(idLivro, botao) {
     const estaAtivo = botao.classList.contains('ativo');
 
-    // Só pede confirmação quando estiver MARCADO (não ao desmarcar)
     if (!estaAtivo) {
         const resultado = await Swal.fire({
             title: 'Marcar como lido?',
@@ -574,9 +584,11 @@ window.addEventListener(
         const btnQueroLer = card?.querySelector('.btn-quero-ler');
 
         if (data.removido) {
-            // DESmarcou
+            // DESmarcou → libera o "Quero ler"
             botao.classList.remove('ativo');
             botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+
+            habilitarBotao(btnQueroLer);   // ⬅️ ADICIONAR
 
             Swal.fire({
                 title: 'Removido',
@@ -587,14 +599,14 @@ window.addEventListener(
                 timerProgressBar: true
             });
         } else {
-            // Marcou como lido
+            // Marcou como lido → bloqueia o "Quero ler"
             botao.classList.add('ativo');
             botao.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
 
-            // Como o status agora é "Lido", desativa "Quero ler"
             if (btnQueroLer) {
                 btnQueroLer.classList.remove('ativo');
                 btnQueroLer.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+                desabilitarBotao(btnQueroLer);   // ⬅️ ADICIONAR
             }
 
             Swal.fire({
@@ -620,7 +632,7 @@ window.addEventListener(
         console.error("Erro:", error);
     }
 }
-  /* =====================================
+ /* =====================================
            LEITURA EXTERNA
         ===================================== */
         async function confirmarLeituraExterna(link) {
@@ -653,7 +665,7 @@ window.addEventListener(
       /* =====================================
            QUERO LER
         ===================================== */
-async function marcarQueroLer(idLivro, botao) {
+        async function marcarQueroLer(idLivro, botao) {
     const conteudoOriginal = botao.innerHTML;
     botao.innerHTML = `<span class="action-icon">⏳</span><span>Aguarde...</span>`;
     botao.style.pointerEvents = 'none';
@@ -676,18 +688,20 @@ async function marcarQueroLer(idLivro, botao) {
         const btnLido = card?.querySelector('.btn-lido');
 
         if (data.removido) {
-            // DESmarcou
+            // DESmarcou → libera o "Lido"
             botao.classList.remove('ativo');
             botao.innerHTML = `<span class="action-icon">+</span><span>Quero ler</span>`;
+
+            habilitarBotao(btnLido);   // ⬅️ ADICIONAR
         } else {
-            // Marcou como "Quero ler"
+            // Marcou como "Quero ler" → bloqueia o "Lido"
             botao.classList.add('ativo');
             botao.innerHTML = `<span class="action-icon">✓</span><span>Na lista</span>`;
 
-            // Como o status agora é "Quero ler", desativa "Lido"
             if (btnLido) {
                 btnLido.classList.remove('ativo');
                 btnLido.innerHTML = `<span class="action-icon">✓</span><span>Lido</span>`;
+                desabilitarBotao(btnLido);   // ⬅️ ADICIONAR
             }
         }
     } catch (error) {
@@ -697,7 +711,7 @@ async function marcarQueroLer(idLivro, botao) {
         console.error("Erro:", error);
     }
 }
-        /* =====================================
+      /* =====================================
            FAVORITO
         ===================================== */
 async function alternarFavorito(idLivro, botao) {

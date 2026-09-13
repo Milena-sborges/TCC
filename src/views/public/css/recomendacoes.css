@@ -1,4 +1,3 @@
-
 html {
     font-size: 100%;
     transition: font-size 0.2s ease;
@@ -35,7 +34,7 @@ body {
 .results-header h1 {
     margin: 0;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 2rem; /* 32px - TAMANHO INTERMEDIÁRIO */
+    font-size: 2rem;
     font-weight: 700;
     color: #3f2a1d;
 }
@@ -43,7 +42,7 @@ body {
 .results-subtitle {
     margin: 0.5rem 0 1.2rem;
     color: #8a7e74;
-    font-size: 0.9rem; /* 14.4px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.9rem;
 }
 
 
@@ -68,7 +67,7 @@ body {
     border-radius: 30px;
     background: #fff;
     color: #6b5849;
-    font-size: 0.8rem; /* 12.8px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.8rem;
     box-shadow: 0 2px 8px rgba(80, 50, 30, 0.04);
 }
 
@@ -151,7 +150,7 @@ body {
 .book-title {
     margin: 0.2rem 0 0.3rem;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.20rem; /* 18.4px - TAMANHO INTERMEDIÁRIO */
+    font-size: 1.20rem;
     line-height: 1.25;
     color: #3f2a1d;
 }
@@ -159,7 +158,7 @@ body {
 .book-author {
     margin: 0;
     color: #8a7e74;
-    font-size: 0.9rem; /* 12.8px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.9rem;
     line-height: 1.4;
 }
 
@@ -181,7 +180,7 @@ body {
     border-radius: 12px;
     background: #f5f1ed;
     color: #806957;
-    font-size: 0.7rem; /* 10.4px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.7rem;
     line-height: 1;
     font-weight: 500;
 }
@@ -205,7 +204,7 @@ body {
     border-radius: 10px;
     background: #fff;
     color: #76502d;
-    font-size: 0.85rem; /* 13.6px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
@@ -230,147 +229,136 @@ body {
 
 /* =====================================================
    AÇÕES RÁPIDAS
+   - Grupo "Status de leitura" (Quero ler / Lido) à esquerda
+   - Botão "Favoritar" como ícone solto à direita
 ===================================================== */
 
 .quick-actions-container {
-    margin-top: 0.8rem;
-}
-
-.quick-actions-title {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin: 0 0 0.5rem;
-    color: #8a7e74;
-    font-size: 0.65rem; /* 10.4px - TAMANHO INTERMEDIÁRIO */
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #eee5dc;
 }
 
-.quick-actions-title::after {
-    content: "";
+
+/* --- Grupo de status (botões grudados) --- */
+
+.status-group {
+    display: flex;
     flex: 1;
-    height: 1px;
-    background: #eee5dc;
+    max-width: 220px;
 }
 
-
-/* =====================================================
-   BOTÕES DE AÇÃO
-===================================================== */
-
-.quick-actions-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.4rem;
-}
-
-.btn-action {
-    min-height: 36px;
-    padding: 0.3rem 0.3rem;
+.status-group .btn-action {
+    flex: 1;
+    min-height: 34px;
+    padding: 0.35rem 0.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
     border: 1px solid #e0d8d0;
-    border-radius: 9px;
     background: #fff;
     color: #4f4035;
-    font-size: 0.8rem; /* 11.2px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.75rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-action:hover {
+/* Primeiro botão: cantos arredondados só à esquerda */
+.status-group .btn-action:first-child {
+    border-radius: 9px 0 0 9px;
+    border-right: none;
+}
+
+/* Último botão: cantos arredondados só à direita */
+.status-group .btn-action:last-child {
+    border-radius: 0 9px 9px 0;
+}
+
+.status-group .btn-action:hover:not(:disabled):not(.ativo) {
     background: #faf7f4;
     border-color: #bda991;
-    transform: translateY(-1px);
 }
 
-.btn-action:disabled {
-    cursor: default;
-    opacity: 0.85;
-    transform: none;
-}
-
-.action-icon {
-    font-size: 0.9rem; /* 14.4px - TAMANHO INTERMEDIÁRIO */
+.status-group .action-icon {
+    font-size: 0.9rem;
     line-height: 1;
 }
 
-
-/* =====================================================
-   QUERO LER
-===================================================== */
-
-.btn-quero-ler:hover {
-    border-color: #c99b52;
-    color: #98651d;
-    background: #fffaf2;
-}
-
-.btn-quero-ler.ativo {
+/* Quero ler ativo */
+.status-group .btn-quero-ler.ativo {
     background: #fff5e4;
     border-color: #d7b27a;
     color: #98651d;
+    font-weight: 600;
 }
 
-
-/* =====================================================
-   LIDO
-===================================================== */
-
-.btn-lido:hover {
-    border-color: #a98f73;
-    background: #faf8f6;
-}
-.btn-lido.ativo {
+/* Lido ativo — CORRIGIDO (antes o texto ficava invisível) */
+.status-group .btn-lido.ativo {
     background: #e8f5e9;
     border-color: #a5d6a7;
     color: #2e7d32;
+    font-weight: 600;
+}
+
+/* Desabilitado — cinza, sem clique, sem hover */
+.status-group .btn-action:disabled,
+.status-group .btn-action.desabilitado {
+    background: #f5f5f5;
+    color: #b8b0a8;
+    border-color: #e0e0e0;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.7;
 }
 
 
-/* =====================================================
-   FAVORITO
-===================================================== */
+/* --- Favoritar: ícone solto à direita --- */
 
-.btn-favorito {
+.btn-favorito-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.6rem;
+    border: none;
+    background: transparent;
     color: #9c5360;
-    border-color: #e5c7cb;
-    background: #fff;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
-.btn-favorito:hover {
+.btn-favorito-icon:hover {
     background: #fff5f6;
-    border-color: #e6a9b1;
     color: #c43850;
 }
 
-.btn-favorito .action-icon {
-    font-size: 0.95rem;
-}
-
-.btn-favorito.favoritado {
-    background: #fff1f3;
-    border-color: #e5a0a9;
+.btn-favorito-icon.favoritado {
     color: #c72f48;
+    font-weight: 600;
 }
 
+.btn-favorito-icon .action-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
 
-/* =====================================================
-   ANIMAÇÃO DO FAVORITO
-===================================================== */
-
-.favorito-animacao {
+/* Animação do coração */
+.btn-favorito-icon.favorito-animacao {
     animation: favoritoPulse 0.25s ease;
 }
 
 @keyframes favoritoPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.15); }
     100% { transform: scale(1); }
 }
 
@@ -396,7 +384,7 @@ body {
     background: #fff;
     color: #76502d;
     text-decoration: none;
-    font-size: 0.8rem; /* 12.8px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.8rem;
     font-weight: 600;
     transition: background 0.2s ease, transform 0.2s ease;
 }
@@ -452,13 +440,13 @@ body {
     margin: 0 35px 4px 0;
     font-family: Georgia, "Times New Roman", serif;
     color: #3f2a1d;
-    font-size: 1.4rem; /* 22.4px - TAMANHO INTERMEDIÁRIO */
+    font-size: 1.4rem;
 }
 
 .modal-autor {
     margin: 0 0 1rem;
     color: #8a7e74;
-    font-size: 0.85rem; /* 13.6px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.85rem;
 }
 
 .sinopse-box {
@@ -471,14 +459,14 @@ body {
 .sinopse-box h3 {
     margin: 0 0 0.5rem;
     color: #65452d;
-    font-size: 0.9rem; /* 14.4px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.9rem;
 }
 
 .sinopse-box p {
     margin: 0;
     color: #51463e;
     line-height: 1.6;
-    font-size: 0.85rem; /* 13.6px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.85rem;
 }
 
 .modal-actions {
@@ -494,7 +482,7 @@ body {
     padding: 0.5rem 1.2rem;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.8rem; /* 12.8px - TAMANHO INTERMEDIÁRIO */
+    font-size: 0.8rem;
     text-decoration: none;
     font-weight: 500;
 }
@@ -636,11 +624,6 @@ body {
     color: #fff !important;
 }
 
-
-/* =====================================================
-   CORREÇÃO: BOTÕES NO ALTO CONTRASTE
-===================================================== */
-
 .alto-contraste .btn-action,
 .alto-contraste .btn-saiba-mais,
 .alto-contraste .btn-voltar-inicio,
@@ -663,6 +646,40 @@ body {
     color: #fff !important;
 }
 
+/* Status: grupo de botões no alto contraste */
+.alto-contraste .status-group .btn-action {
+    background: #222 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.alto-contraste .status-group .btn-action.ativo {
+    background: #444 !important;
+    color: #ffd966 !important;
+    border-color: #ffd966 !important;
+}
+
+.alto-contraste .status-group .btn-action:disabled,
+.alto-contraste .status-group .btn-action.desabilitado {
+    background: #1a1a1a !important;
+    color: #666 !important;
+    border-color: #444 !important;
+}
+
+/* Favoritar no alto contraste */
+.alto-contraste .btn-favorito-icon {
+    color: #ff8aa0 !important;
+    background: transparent !important;
+}
+
+.alto-contraste .btn-favorito-icon:hover {
+    background: #2a1a1e !important;
+}
+
+.alto-contraste .btn-favorito-icon.favoritado {
+    color: #ff5c7c !important;
+}
+
 .alto-contraste .filtro-tag,
 .alto-contraste .sinopse-box {
     background: #111 !important;
@@ -675,18 +692,6 @@ body {
     color: #fff !important;
 }
 
-.alto-contraste .quick-actions-title::after {
-    background: #555 !important;
-}
-
-.alto-contraste .btn-quero-ler.ativo,
-.alto-contraste .btn-lido.ativo,
-.alto-contraste .btn-favorito.favoritado {
-    background: #333 !important;
-    color: #fff !important;
-    border-color: #fff !important;
-}
-
 .alto-contraste .menu-acessibilidade {
     background: #111 !important;
     border-color: #fff !important;
@@ -695,9 +700,12 @@ body {
 .alto-contraste .acessibilidade-item {
     border-color: #444 !important;
 }
+
+
 /* =====================================================
-   SWEETALERT2 - PERSONALIZAÇÃO
+   SWEETALERT2
 ===================================================== */
+
 .swal2-popup {
     font-family: 'Poppins', sans-serif !important;
     border-radius: 18px !important;
@@ -722,7 +730,6 @@ body {
     font-size: 0.85rem !important;
 }
 
-/* Alto contraste */
 .alto-contraste .swal2-popup {
     background: #1e1e1e !important;
     color: #fff !important;
@@ -733,6 +740,64 @@ body {
 .alto-contraste .swal2-html-container {
     color: #ddd !important;
 }
+
+
+/* =====================================================
+   LOADER DE CARREGAMENTO
+===================================================== */
+
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    gap: 20px;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f0ece8;
+    border-top: 4px solid #8b7355;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loader-text {
+    color: #8a7e74;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+.loader-text .dots::after {
+    content: '';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes dots {
+    0%   { content: ''; }
+    25%  { content: '.'; }
+    50%  { content: '..'; }
+    75%  { content: '...'; }
+}
+
+.books-grid.loaded {
+    animation: fadeInBooks 0.5s ease;
+}
+
+@keyframes fadeInBooks {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 
 /* =====================================================
    RESPONSIVIDADE
@@ -793,12 +858,21 @@ body {
         font-size: 0.75rem;
     }
 
-    .quick-actions-buttons {
-        grid-template-columns: 1fr;
+    /* Em telas pequenas, empilha o grupo de status + favoritar */
+    .quick-actions-container {
+        flex-wrap: wrap;
     }
 
-    .btn-action {
+    .status-group {
+        max-width: 100%;
         width: 100%;
+        flex-basis: 100%;
+    }
+
+    .btn-favorito-icon {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.4rem;
     }
 
     .modal-content {
@@ -812,67 +886,5 @@ body {
     .btn-finalizar,
     .btn-ler {
         width: 100%;
-    }
-}
-/* =====================================================
-   LOADER DE CARREGAMENTO
-===================================================== */
-
-.loader-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    grid-column: 1 / -1;
-    padding: 60px 20px;
-    gap: 20px;
-}
-
-.loader-spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid #f0ece8;
-    border-top: 4px solid #8b7355;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-.loader-text {
-    color: #8a7e74;
-    font-size: 0.95rem;
-    font-weight: 400;
-    letter-spacing: 0.3px;
-}
-
-.loader-text .dots::after {
-    content: '';
-    animation: dots 1.5s steps(4, end) infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes dots {
-    0% { content: ''; }
-    25% { content: '.'; }
-    50% { content: '..'; }
-    75% { content: '...'; }
-}
-
-/* Quando os livros aparecerem, faz um fade-in suave */
-.books-grid.loaded {
-    animation: fadeInBooks 0.5s ease;
-}
-
-@keyframes fadeInBooks {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
     }
 }

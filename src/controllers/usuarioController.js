@@ -112,11 +112,10 @@ const marcarComoLido = async (req, res) => {
 
     try {
         const resultado = await usuarioModel.alternarStatusLeitura(id_usuario, id_livro, 'Lido');
-        const removido = resultado.acao === 'removido';
         res.status(200).json({
             sucesso: true,
-            removido,
-            mensagem: removido ? "Removido dos lidos." : "Marcado como lido!"
+            removido: resultado.acao === 'removido',
+            mensagem: resultado.acao === 'removido' ? "Removido dos lidos." : "Marcado como lido!"
         });
     } catch (error) {
         console.error("Erro ao salvar:", error);
@@ -134,11 +133,10 @@ const marcarQueroLer = async (req, res) => {
 
     try {
         const resultado = await usuarioModel.alternarStatusLeitura(id_usuario, id_livro, 'Quero ler');
-        const removido = resultado.acao === 'removido';
         res.status(200).json({
             sucesso: true,
-            removido,
-            mensagem: removido ? "Removido dos Quero Ler." : "Adicionado aos Quero Ler!"
+            removido: resultado.acao === 'removido',
+            mensagem: resultado.acao === 'removido' ? "Removido dos Quero Ler." : "Adicionado aos Quero Ler!"
         });
     } catch (error) {
         console.error("Erro ao salvar:", error);

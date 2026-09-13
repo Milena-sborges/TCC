@@ -26,7 +26,6 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
         [idUsuario, idLivro]
     );
 
-    // Já existe com ESSE status → desmarca (toggle off)
     if (existe.length > 0 && existe[0].status_leitura === status) {
         await db.execute(
             'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
@@ -35,7 +34,6 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
         return { acao: 'removido' };
     }
 
-    // Existe com outro status → troca o status
     if (existe.length > 0) {
         await db.execute(
             'UPDATE usuario_livro SET status_leitura = ? WHERE id_usuario = ? AND id_livro = ?',
@@ -44,7 +42,6 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
         return { acao: 'atualizado' };
     }
 
-    // Não existe → insere novo
     await db.execute(
         'INSERT INTO usuario_livro (id_usuario, id_livro, status_leitura, favorito) VALUES (?, ?, ?, 0)',
         [idUsuario, idLivro, status]
