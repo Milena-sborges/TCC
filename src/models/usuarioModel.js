@@ -29,25 +29,25 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
     // ==== DESMARCAR O MESMO STATUS ====
     if (existe.length > 0 && existe[0].status_leitura === status) {
 
-        // Se é Lido e tinha favorito → cascateia o favorito E volta pra "Quero ler"
+        // Se é Lido COM favorito → perde favorito e volta pra "Quero ler"
         if (status === 'Lido' && existe[0].favorito === 1) {
             await db.execute(
-                'UPDATE usuario_livro SET status_leitura = \'Quero ler\', favorito = 0 WHERE id_usuario = ? AND id_livro = ?',
+                "UPDATE usuario_livro SET status_leitura = 'Quero ler', favorito = 0 WHERE id_usuario = ? AND id_livro = ?",
                 [idUsuario, idLivro]
             );
             return { acao: 'removido_com_favorito' };
         }
 
-        // Se é Lido sem favorito → volta pra "Quero ler"
+        // Se é Lido SEM favorito → volta pra "Quero ler"
         if (status === 'Lido') {
             await db.execute(
-                'UPDATE usuario_livro SET status_leitura = \'Quero ler\' WHERE id_usuario = ? AND id_livro = ?',
+                "UPDATE usuario_livro SET status_leitura = 'Quero ler' WHERE id_usuario = ? AND id_livro = ?",
                 [idUsuario, idLivro]
             );
             return { acao: 'voltou_para_quero_ler' };
         }
 
-        // Se é "Quero ler" → aí sim desmarca de vez (a linha some)
+        // Se é "Quero ler" → aí sim deleta de vez
         await db.execute(
             'DELETE FROM usuario_livro WHERE id_usuario = ? AND id_livro = ?',
             [idUsuario, idLivro]
@@ -57,7 +57,6 @@ const alternarStatusLeitura = async (idUsuario, idLivro, status) => {
 
     // ==== TROCAR / ADICIONAR ====
     if (existe.length > 0) {
-        // Trocando para "Quero ler" tendo favorito → perde favorito
         const perdeFavorito = status === 'Quero ler' && existe[0].favorito === 1;
 
         await db.execute(

@@ -3,12 +3,11 @@ const db = require('./db');
 const buscarPorContextoEmocional = async (humor, intencao, idUsuario) => {
     let tagAlvo = "";
 
-    // Motor de Recomendação melhorado
     const mapaRecomendacao = {
-        'tristeza': { alterar: 'Felicidade', manter: 'Tristeza' },
+        'tristeza':   { alterar: 'Felicidade', manter: 'Tristeza' },
         'felicidade': { alterar: 'Felicidade', manter: 'Felicidade' },
-        'ansiedade': { alterar: 'Felicidade', manter: 'Ansiedade' },
-        'tedio': { alterar: 'Felicidade', manter: 'Tédio' }
+        'ansiedade':  { alterar: 'Felicidade', manter: 'Ansiedade' },
+        'tedio':      { alterar: 'Felicidade', manter: 'Tédio' }
     };
 
     tagAlvo = mapaRecomendacao[humor]?.[intencao] || 'Neutro';
@@ -16,29 +15,35 @@ const buscarPorContextoEmocional = async (humor, intencao, idUsuario) => {
     const mapaTags = { "Felicidade": 1, "Tristeza": 2, "Ansiedade": 3, "Tédio": 4, "Neutro": 5 };
     const idTagAlvo = mapaTags[tagAlvo];
 
+    // ⬇️ NOVO: mapeia a EMOÇÃO SENTIDA (o que o usuário escolheu) para a tag do histórico
+    const mapaEmocaoSentida = {
+        'tristeza':   2,
+        'felicidade': 1,
+        'ansiedade':  3,
+        'tedio':      4,
+        'neutro':     5
+    };
+    const idEmocaoSentida = mapaEmocaoSentida[humor.toLowerCase()];
+
     if (!idTagAlvo) {
         console.error("Tag não encontrada para:", tagAlvo);
         return [];
     }
 
     try {
-        // Registra o comportamento no histórico
-        if (idUsuario && idTagAlvo) {
+        // ⬇️ CORRIGIDO: registra a EMOÇÃO SENTIDA, não a tag alvo
+        if (idUsuario && idEmocaoSentida) {
             await db.execute(
                 'INSERT INTO historico (id_usuario, id_tag) VALUES (?, ?)',
-                [idUsuario, idTagAlvo]
+                [idUsuario, idEmocaoSentida]
             );
         }
 
-        // Busca livros da tag alvo que o usuário NÃO tem
+        // Busca livros da tag alvo (recomendação continua igual)
         const [linhas] = await db.execute(`
             SELECT 
-                l.id_livro, 
-                l.titulo, 
-                l.autor, 
-                l.genero, 
-                l.sinopse, 
-                l.capa_url,
+                l.id_livro, l.titulo, l.autor, l.genero,
+                l.sinopse, l.capa_url,
                 l.link_leitura AS link_externo
             FROM livro l
             JOIN livro_tag lt ON l.id_livro = lt.id_livro
@@ -47,33 +52,28 @@ const buscarPorContextoEmocional = async (humor, intencao, idUsuario) => {
             AND l.id_livro NOT IN (
                 SELECT id_livro FROM usuario_livro WHERE id_usuario = ?
             )
-            ORDER BY RAND() 
+            ORDER BY RAND()
             LIMIT 3
         `, [idTagAlvo, idUsuario]);
 
-        // Se não encontrar livros, busca recomendações genéricas
         if (linhas.length === 0) {
             const [fallback] = await db.execute(`
                 SELECT 
-                    l.id_livro, 
-                    l.titulo, 
-                    l.autor, 
-                    l.genero, 
-                    l.sinopse, 
-                    l.capa_url,
+                    l.id_livro, l.titulo, l.autor, l.genero,
+                    l.sinopse, l.capa_url,
                     l.link_leitura AS link_externo
                 FROM livro l
                 WHERE l.id_livro NOT IN (
                     SELECT id_livro FROM usuario_livro WHERE id_usuario = ?
                 )
-                ORDER BY RAND() 
+                ORDER BY RAND()
                 LIMIT 3
             `, [idUsuario]);
             return fallback;
         }
 
         return linhas;
-        
+
     } catch (error) {
         console.error("Erro ao buscar livros no banco:", error);
         throw error;
