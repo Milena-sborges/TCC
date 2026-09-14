@@ -1,35 +1,46 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const mysql = require('mysql2');                         
 const MySQLStore = require('express-mysql-session')(session);
+
+require('dotenv').config();
 
 const rotasRecomendacao = require('./src/routes/recomendacaoRoutes');
 const rotasUsuario = require('./src/routes/usuarioRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const isProduction = process.env.NODE_ENV === 'production';
 
 // =============================================
-// SESSÃO PERSISTENTE NO TiDB
-// (usa os MESMOS nomes de env do seu db.js)
+// POOL EXCLUSIVO PARA SESSÕES (com SSL do TiDB)
 // =============================================
 
-const sessionStore = new MySQLStore({
+const sessionPool = mysql.createPool({
     host:     process.env.DB_HOST,
-    port:     process.env.DB_PORT,
-    user:     process.env.DB_USERNAME,      // ⬅️ igual ao db.js
+    user:     process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,      // ⬅️ igual ao db.js
-    ssl: {                                   // ⬅️ TiDB Cloud EXIGE SSL
+    database: process.env.DB_DATABASE,
+    port:     process.env.DB_PORT,
+    waitForConnections: true,
+    connectionLimit: 5,
+    queueLimit: 0,
+    ssl: {
         minVersion: 'TLSv1.2',
         rejectUnauthorized: true
-    },
+    }
+});
+
+const sessionStore = new MySQLStore({
     createDatabaseTable: true,
     clearExpired: true,
     checkExpirationInterval: 900000,
     expiration: 1000 * 60 * 60 * 24 * 7
-});
+}, sessionPool);   // ⬅️ passa o pool pronto
+
+// =============================================
+// SESSÃO
+// =============================================
 
 app.use(session({
     key: 'connect.sid',
@@ -38,7 +49,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,           // ⬅️ deixa FALSE pra funcionar no localhost e no Render free
+        secure: false,
         httpOnly: true,
         sameSite: 'lax',
         maxAge: 1000 * 60 * 60 * 24 * 7
