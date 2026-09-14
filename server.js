@@ -11,19 +11,24 @@ const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
 // =============================================
-// CONFIGURAÇÃO DE SESSÃO PERSISTENTE (MySQL)
+// SESSÃO PERSISTENTE NO TiDB
+// (usa os MESMOS nomes de env do seu db.js)
 // =============================================
 
 const sessionStore = new MySQLStore({
-    host:     process.env.DB_HOST     || 'localhost',
-    port:     process.env.DB_PORT     || 3306,
-    user:     process.env.DB_USER     || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME     || 'biblioteca_emocional_bd',
-    createDatabaseTable: true,   // cria a tabela "sessions" sozinho na primeira execução
+    host:     process.env.DB_HOST,
+    port:     process.env.DB_PORT,
+    user:     process.env.DB_USERNAME,      // ⬅️ igual ao db.js
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,      // ⬅️ igual ao db.js
+    ssl: {                                   // ⬅️ TiDB Cloud EXIGE SSL
+        minVersion: 'TLSv1.2',
+        rejectUnauthorized: true
+    },
+    createDatabaseTable: true,
     clearExpired: true,
-    checkExpirationInterval: 900000,  // limpa sessões expiradas a cada 15 min
-    expiration: 1000 * 60 * 60 * 24 * 7  // 7 dias
+    checkExpirationInterval: 900000,
+    expiration: 1000 * 60 * 60 * 24 * 7
 });
 
 app.use(session({
@@ -33,10 +38,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: isProduction,      // true no Render (HTTPS), false no localhost
+        secure: false,           // ⬅️ deixa FALSE pra funcionar no localhost e no Render free
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 1000 * 60 * 60 * 24 * 7  // 7 dias
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
 
