@@ -1,0 +1,172 @@
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #ffffff;
+    border-bottom: 1px solid #ece8e4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar .logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar .logo h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.4rem;
+    color: #3f2a1d;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: #4f4035;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-links a:hover {
+    background: #faf5ef;
+    color: #8a5a15;
+}
+
+.nav-links a.active {
+    color: #8a5a15;
+    font-weight: 600;
+    background: #fff7e8;
+}
+
+/* Botão "Entrar" com destaque */
+.btn-nav-login {
+    background: #8b7355 !important;
+    color: #ffffff !important;
+    padding: 0.5rem 1.1rem !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+}
+
+.btn-nav-login:hover {
+    background: #76502d !important;
+    color: #ffffff !important;
+}
+
+
+/* ============== RODAPÉ ============== */
+.site-footer {
+    margin-top: 4rem;
+    padding: 1.5rem 2rem;
+    background: #faf7f3;
+    border-top: 1px solid #ece8e4;
+    text-align: center;
+}
+
+.footer-copy {
+    margin: 0 0 0.5rem 0;
+    color: #6b5849;
+    font-size: 0.85rem;
+}
+
+.footer-links {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #a89c92;
+}
+
+.footer-links a {
+    color: #8a7e74;
+    text-decoration: none;
+    padding: 0 0.2rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #8a5a15;
+    text-decoration: underline;
+}
+
+.footer-links span {
+    color: #d5cdc4;
+    padding: 0 0.3rem;
+}
+
+
+/* ============== ALTO CONTRASTE ============== */
+.alto-contraste .navbar {
+    background: #111 !important;
+    border-bottom-color: #fff !important;
+}
+
+.alto-contraste .navbar .logo h2 {
+    color: #fff !important;
+}
+
+.alto-contraste .nav-links a {
+    color: #fff !important;
+}
+
+.alto-contraste .nav-links a:hover {
+    background: #333 !important;
+    color: #ffd966 !important;
+}
+
+.alto-contraste .nav-links a.active {
+    background: #4a3a15 !important;
+    color: #ffd966 !important;
+}
+
+.alto-contraste .btn-nav-login {
+    background: #ffd966 !important;
+    color: #000 !important;
+}
+
+.alto-contraste .site-footer {
+    background: #111 !important;
+    border-top-color: #fff !important;
+}
+
+.alto-contraste .footer-copy,
+.alto-contraste .footer-links a {
+    color: #fff !important;
+}
+
+.alto-contraste .footer-links a:hover {
+    color: #ffd966 !important;
+}
+
+
+
+@media (max-width: 900px) {
+    .navbar {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+        padding: 0.35rem 0.5rem;
+    }
+}

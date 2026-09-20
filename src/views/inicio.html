@@ -5,24 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EmotionBooks - Início</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/inicio.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="logout.js" defer></script>
+    <script src="/js/logout.js" defer></script>
+    <script src="/js/components.js" defer></script>
 </head>
 <body>
 
-    <!-- Navbar Superior -->
-    <nav class="navbar">
-        <div class="logo">
-            <h2>📚 EmotionBooks</h2>
-        </div>
-        <div class="nav-links">
-            <a href="/" class="active">🏠 Início</a>
-            <a href="/biblioteca">📖 Minha Biblioteca</a>
-            <a href="/perfil">👤 Perfil</a>
-            <a href="/sair" onclick="confirmarSair(event)">Sair</a>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
 
     <!-- Conteúdo Principal -->
     <div class="container">
@@ -129,6 +120,8 @@
             <button onclick="toggleContraste()">Ligar/Desligar</button>
         </div>
     </div>
+
+        <div id="footer-container"></div>
 
     <script>
         // Lógica do Menu de Acessibilidade

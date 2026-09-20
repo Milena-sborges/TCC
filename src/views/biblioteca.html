@@ -7,19 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/biblioteca.css">
-    <script src="logout.js" defer></script>
+    <script src="/js/components.js" defer></script>
+    <script src="/js/logout.js" defer></script>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo"><h2 style="margin:0; font-size: 1.4rem;">📚 EmotionBooks</h2></div>
-        <div class="nav-links">
-            <a href="/">🏠 Início</a>
-            <a href="/biblioteca" class="active">📖 Minha Biblioteca</a>
-            <a href="/perfil">👤 Perfil</a>
-            <a href="/sair" onclick="confirmarSair(event)">Sair</a>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
 
     <div class="container biblioteca-wrapper">
         <div class="header-biblioteca">
@@ -65,7 +58,7 @@
             <button onclick="toggleContraste()" aria-label="Ativar ou desativar alto contraste">Ligar/Desligar</button>
         </div>
     </div>
-
+    <div id="footer-container"></div>
     <script>
         /* =====================================
            ACESSIBILIDADE
