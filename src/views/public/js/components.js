@@ -46,7 +46,7 @@ const navbarDeslogado = `
 const rodapeHTML = `
     <footer class="site-footer">
         <p class="footer-copy">
-            ©️ 2026 EmotionBooks. Todos os direitos reservados.
+            © 2026 EmotionBooks. Todos os direitos reservados.
         </p>
         <p class="footer-links">
             <a href="/sobre">Sobre nós</a>
