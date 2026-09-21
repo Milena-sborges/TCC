@@ -1,9 +1,6 @@
 /* =====================================================
    COMPONENTS — Navbar + Rodapé compartilhados
-   Uso em qualquer página:
-     <div id="navbar-container"></div>
-     <div id="footer-container"></div>
-     <script src="/js/components.js" defer></script>
+   Com cache para carregamento instantâneo
 ===================================================== */
 
 // ============== NAVBAR LOGADO ==============
@@ -15,10 +12,10 @@ const navbarLogado = `
             </a>
         </div>
         <div class="nav-links">
-            <a href="/">🏠 Início</a>
-            <a href="/recomendacoes.html">✨ Recomendar</a>
-            <a href="/biblioteca">📖 Biblioteca</a>
-            <a href="/perfil">👤 Perfil</a>
+            <a href="/">Início</a>
+            <a href="/recomendacoes.html">Recomendar</a>
+            <a href="/biblioteca">Biblioteca</a>
+            <a href="/perfil">Perfil</a>
             <a href="/sobre">Sobre</a>
             <a href="/ajuda">Ajuda</a>
             <a href="/contato">Contato</a>
@@ -32,11 +29,11 @@ const navbarDeslogado = `
     <nav class="navbar">
         <div class="logo">
             <a href="/" class="logo-link">
-                <h2>📚 EmotionBooks</h2>
+                <h2📚 EmotionBooks</h2>
             </a>
         </div>
         <div class="nav-links">
-            <a href="/">🏠 Início</a>
+            <a href="/">Início</a>
             <a href="/sobre">Sobre</a>
             <a href="/ajuda">Ajuda</a>
             <a href="/contato">Contato</a>
@@ -45,7 +42,7 @@ const navbarDeslogado = `
     </nav>
 `;
 
-// ============== RODAPÉ (igual nos dois) ==============
+// ============== RODAPÉ ==============
 const rodapeHTML = `
     <footer class="site-footer">
         <p class="footer-copy">
@@ -66,25 +63,60 @@ async function montarComponentes() {
     const navContainer = document.getElementById('navbar-container');
     const footContainer = document.getElementById('footer-container');
 
+    // ---- NAVBAR ----
     if (navContainer) {
-        try {
-            const r = await fetch('/minha-biblioteca');
-            // 401 = deslogado, qualquer outra coisa = logado
-            if (r.status === 401) {
-                navContainer.innerHTML = navbarDeslogado;
-            } else {
-                navContainer.innerHTML = navbarLogado;
-            }
-        } catch (e) {
-            // Se der erro de rede, mostra a deslogada (mais seguro)
+        // 1. Tenta ler do cache PRIMEIRO (instantâneo)
+        const cache = sessionStorage.getItem('eb_navbar_logado');
+
+        if (cache === 'true') {
+            navContainer.innerHTML = navbarLogado;
+        } else if (cache === 'false') {
             navContainer.innerHTML = navbarDeslogado;
+        } else {
+            // 2. Não tem cache → mostra um placeholder bege até decidir
+            navContainer.innerHTML = `
+                <nav class="navbar navbar-placeholder">
+                    <div class="logo">
+                        <a href="/" class="logo-link">
+                            <h2>EmotionBooks</h2>
+                        </a>
+                    </div>
+                </nav>
+            `;
         }
+
+        // 3. Em background, verifica o status real e atualiza se preciso
+        fetch('/minha-biblioteca')
+            .then(r => {
+                const logado = r.status !== 401;
+                sessionStorage.setItem('eb_navbar_logado', logado ? 'true' : 'false');
+
+                // Só re-renderiza se o cache estava errado/vazio
+                const esperado = logado ? navbarLogado : navbarDeslogado;
+                if (navContainer.innerHTML !== esperado) {
+                    navContainer.innerHTML = esperado;
+                }
+            })
+            .catch(() => {
+                // Se falhar, assume deslogado e guarda
+                sessionStorage.setItem('eb_navbar_logado', 'false');
+                navContainer.innerHTML = navbarDeslogado;
+            });
     }
 
+    // ---- RODAPÉ ----
     if (footContainer) {
         footContainer.innerHTML = rodapeHTML;
     }
 }
+
+// Limpa o cache quando o usuário sai (pro "Sair" funcionar de verdade)
+window.addEventListener('beforeunload', (e) => {
+    // Se estiver indo pra /sair, limpa o cache
+    if (window.location.pathname === '/sair' || document.activeElement?.href?.includes('/sair')) {
+        sessionStorage.removeItem('eb_navbar_logado');
+    }
+});
 
 // Espera o DOM carregar e monta
 document.addEventListener('DOMContentLoaded', montarComponentes);
