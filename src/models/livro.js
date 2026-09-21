@@ -75,7 +75,7 @@ const buscarPorContextoEmocional = async (humor, intencao, idUsuario) => {
                 SELECT id_livro FROM usuario_livro WHERE id_usuario = ?
             )
             ORDER BY RAND()
-            LIMIT 3
+            LIMIT 6
         `, [idTagAlvo, idUsuario]);
 
         if (linhas.length === 0) {
@@ -89,7 +89,7 @@ const buscarPorContextoEmocional = async (humor, intencao, idUsuario) => {
                     SELECT id_livro FROM usuario_livro WHERE id_usuario = ?
                 )
                 ORDER BY RAND()
-                LIMIT 3
+                LIMIT 6
             `, [idUsuario]);
             return fallback;
         }

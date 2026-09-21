@@ -1,4 +1,4 @@
-/* css/login.css */
+
 .login-wrapper {
     display: flex;
     min-height: 100vh;
@@ -60,6 +60,19 @@
     background: #f9f9f9;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+/* Chrome/Edge (webkit) */
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
 }
 
 /* --- Novas classes adicionadas --- */
