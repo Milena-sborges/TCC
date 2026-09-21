@@ -104,7 +104,7 @@ const realizarLogin = async (req, res) => {
         };
 
         console.log(`Usuário ${usuario.nome} fez login com sucesso!`);
-        res.redirect('/');
+        res.redirect('/descobrir');  
 
     } catch (error) {
         console.error("Erro ao realizar login:", error);
