@@ -187,7 +187,16 @@
             ${livro.link_leitura ? `<a href="#" onclick="abrirLeitura('${livro.link_leitura.replace(/'/g, "\\'")}', '${livro.titulo.replace(/'/g, "\\'")}'); return false;" class="livro-link-leitura">Ler agora ↗</a>` : ''}
         </div>
     </div>
-                `;
+
+    <div class="livro-acoes">
+        ${botaoLidoHtml}
+        <button class="btn-acao-rapida btn-heart-rapido ${ehFavorito ? 'ativo' : ''}" onclick="alternarFavoritoBiblioteca(${livro.id_livro}, ${!ehFavorito}, ${ehLido})" title="${ehFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" aria-label="${ehFavorito ? 'Remover' : 'Adicionar'} ${livro.titulo} dos favoritos">
+            ${ehFavorito ? '❤️' : '🤍'}
+        </button>
+        <button class="btn-acao-rapida btn-remover" onclick="removerLivro(${livro.id_livro}, '${livro.titulo.replace(/'/g, "\\'")}')" title="Remover da biblioteca" aria-label="Remover ${livro.titulo} da biblioteca">🗑️</button>
+    </div>
+`;
+                
                 container.appendChild(div);
             });
         }
