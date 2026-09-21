@@ -1,54 +1,75 @@
-/* ============================================================
-   EMOTIONBOOKS — STYLE.CSS
-   Base do sistema: variáveis, reset, tipografia, acessibilidade
-============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================
    1. VARIÁVEIS
 ============================================================ */
 :root {
+    /* ---- Fundos ---- */
     --bg-color: #f7f3ee;
     --surface: #ffffff;
     --surface-soft: #fbf9f6;
     --card-bg: #ffffff;
 
+    /* ---- Textos ---- */
     --text-color: #302a26;
     --text-light: #8a7e74;
     --text-secondary: #756b63;
     --text-muted: #9b9189;
 
+    /* ---- Cor principal (caramelo/madeira) ---- */
     --primary-color: #8a6a47;
     --primary-hover: #705236;
     --primary-light: rgba(138, 106, 71, 0.12);
 
+    /* ---- Borda ---- */
     --border-color: #e9e1d9;
 
+    /* ---- Sombras ---- */
+    --shadow: 0 2px 8px rgba(52, 39, 28, 0.04);
     --shadow-sm: 0 2px 8px rgba(52, 39, 28, 0.04);
     --shadow-md: 0 8px 30px rgba(52, 39, 28, 0.07);
+    --shadow-hover: 0 8px 24px rgba(52, 39, 28, 0.08);
 
+    /* ---- Raios ---- */
+    --radius: 16px;
     --radius-sm: 10px;
     --radius-md: 16px;
     --radius-lg: 22px;
 
+    /* ---- Transição ---- */
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ============================================================
+   2. ALTO CONTRASTE — variáveis
+============================================================ */
 body.alto-contraste {
     --bg-color: #121212;
+    --surface: #1a1a1a;
+    --surface-soft: #1e1e1e;
+    --card-bg: #1e1e1e;
+
     --text-color: #ffffff;
     --text-light: #aaaaaa;
-    --text-secondary: #aaaaaa;
-    --card-bg: #1e1e1e;
-    --border-color: #333333;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+
     --primary-color: #ffcc00;
     --primary-hover: #e6b800;
     --primary-light: rgba(255, 204, 0, 0.15);
+
+    --border-color: #333333;
+
+    --shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    --shadow-sm: 0 2px 8px rgba(255, 255, 255, 0.05);
+    --shadow-md: 0 8px 30px rgba(255, 255, 255, 0.08);
+    --shadow-hover: 0 8px 24px rgba(255, 255, 255, 0.10);
 }
 
 /* ============================================================
-   2. RESET E BASE
+   3. RESET E BASE
 ============================================================ */
 * {
     box-sizing: border-box;
@@ -65,14 +86,25 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    transition: var(--transition);
+    transition: background-color 0.25s ease, color 0.25s ease;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3 {
     font-family: 'Playfair Display', serif;
+    letter-spacing: -0.3px;
 }
 
+a {
+    color: var(--primary-color);
+    transition: color 0.2s ease;
+}
+
+/* ============================================================
+   4. CONTAINER GENÉRICO
+============================================================ */
 .container {
     width: min(1100px, calc(100% - 40px));
     margin: 0 auto;
@@ -80,7 +112,7 @@ h1, h2, h3 {
 }
 
 /* ============================================================
-   3. ACESSIBILIDADE
+   5. ACESSIBILIDADE — botão flutuante + menu
 ============================================================ */
 .btn-acessibilidade-flutuante {
     position: fixed;
@@ -177,7 +209,7 @@ h1, h2, h3 {
 }
 
 /* ============================================================
-   4. ALTO CONTRASTE
+   6. ALTO CONTRASTE — ajustes gerais
 ============================================================ */
 .alto-contraste .btn-acessibilidade-flutuante {
     background-color: #ffcc00;
@@ -190,8 +222,32 @@ h1, h2, h3 {
     border-color: #ffcc00;
 }
 
+.alto-contraste .menu-acessibilidade {
+    background: #111;
+    border-color: #fff;
+}
+
+.alto-contraste .menu-acessibilidade h3,
+.alto-contraste .acessibilidade-item span {
+    color: #ffffff;
+}
+
+.alto-contraste .menu-acessibilidade .text-desc {
+    color: #cccccc;
+}
+
+.alto-contraste .acessibilidade-item {
+    border-color: #444;
+}
+
+.alto-contraste .acessibilidade-item button {
+    background: #222;
+    color: #fff;
+    border-color: #fff;
+}
+
 /* ============================================================
-   5. RESPONSIVIDADE GLOBAL
+   7. RESPONSIVIDADE GLOBAL
 ============================================================ */
 @media (max-width: 768px) {
     .container {

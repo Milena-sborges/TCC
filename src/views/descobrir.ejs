@@ -7,28 +7,38 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/descobrir.css">
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   <script src="/js/logout.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/logout.js" defer></script>
 </head>
 <body>
 
     <%- include('partials/navbar', { logado: logado }) %>
 
-    <!-- Conteúdo Principal -->
-   <main class="container home-page">
-        <div class="header-text">
-            <h1>Encontre leituras que conversem com o seu <span class="highlight">momento</span>.</h1>
-            <p>Um espaço para transformar emoções em leituras.</p>
-        </div>
+    <main class="container descobrir-page">
 
-        <!-- Formulário e Validação -->
+        <!-- HERO EDITORIAL -->
+        <header class="discover-hero">
+            <span class="discover-tag">EmotionBooks · Descobrir</span>
+            <h1>Uma leitura para o seu <span class="highlight">momento</span>.</h1>
+            <p>Descubra livros que combinam com o que você sente e com o que deseja encontrar em uma leitura.</p>
+        </header>
+
+        <!-- Validação -->
         <div id="mensagemErro" class="mensagem-erro"></div>
 
-       <form action="/recomendacoes" method="GET" id="formRecomendacao">
-        
-            <h3 class="section-title">Como você está se sentindo agora?</h3>
+        <form action="/recomendacoes" method="GET" id="formRecomendacao">
+
+            <!-- ETAPA 1 -->
+            <div class="step-header">
+                <span class="step-number">1</span>
+                <div class="step-text">
+                    <h3 class="section-title">Como você está se sentindo agora?</h3>
+                    <p class="step-hint">Escolha o seu estado emocional atual.</p>
+                </div>
+            </div>
+
             <div class="grid-cards">
-                
+
                 <div class="card-option">
                     <input type="radio" id="humor-tristeza" name="humor" value="tristeza">
                     <label for="humor-tristeza">
@@ -60,52 +70,66 @@
                         <span class="title">Neutro</span>
                     </label>
                 </div>
+
                 <div class="card-option">
-    <input type="radio" id="humor-tedio" name="humor" value="tedio">
-    <label for="humor-tedio">
-        <span class="icon">🥱</span>
-        <span class="title">Entediado</span>
-    </label>
-</div>
+                    <input type="radio" id="humor-tedio" name="humor" value="tedio">
+                    <label for="humor-tedio">
+                        <span class="icon">🥱</span>
+                        <span class="title">Entediado</span>
+                    </label>
+                </div>
 
             </div>
 
             <hr class="section-divider">
 
-            <h3 class="section-title">O que você busca nesta leitura?</h3>
+            <!-- ETAPA 2 -->
+            <div class="step-header">
+                <span class="step-number">2</span>
+                <div class="step-text">
+                    <h3 class="section-title">O que você busca nesta leitura?</h3>
+                    <p class="step-hint">Escolha o tipo de experiência que deseja encontrar.</p>
+                </div>
+            </div>
+
             <div class="grid-cards grid-cards-2">
-                
-                <div class="card-option">
+
+                <div class="card-option card-intencao">
                     <input type="radio" id="intencao-manter" name="intencao" value="manter">
                     <label for="intencao-manter">
                         <span class="icon">✨</span>
                         <span class="title">Validar meu estado</span>
-                        <span class="desc">Quero ler algo que combine com o que sinto agora.</span>
+                        <span class="desc">Uma leitura que combina com o que sinto agora.</span>
                     </label>
                 </div>
 
-                <div class="card-option">
+                <div class="card-option card-intencao">
                     <input type="radio" id="intencao-alterar" name="intencao" value="alterar">
                     <label for="intencao-alterar">
                         <span class="icon">🔄</span>
                         <span class="title">Transformar emoção</span>
-                        <span class="desc">Quero uma leitura para mudar meu estado de espírito.</span>
+                        <span class="desc">Uma leitura que me ajude a explorar outro estado de espírito.</span>
                     </label>
                 </div>
 
             </div>
 
-            <button type="submit" class="btn-primary">Ver Recomendações</button>
-        </form>
-   </main>
+            <button type="submit" class="btn-primary">
+                Encontrar minhas leituras
+                <span aria-hidden="true">→</span>
+            </button>
 
-    <!-- Menu de Acessibilidade -->
+        </form>
+
+    </main>
+
+    <!-- ACESSIBILIDADE -->
     <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade">♿</button>
-    
+
     <div class="menu-acessibilidade" id="menuAcessibilidade">
         <h3>Navegação</h3>
         <p class="text-desc">Personalize a experiência para deixar a leitura mais confortável.</p>
-        
+
         <div class="acessibilidade-item">
             <span>Tamanho da fonte</span>
             <div>
@@ -120,11 +144,10 @@
         </div>
     </div>
 
-     <%- include('partials/footer') %>
-
+    <%- include('partials/footer') %>
 
     <script>
-        // Lógica do Menu de Acessibilidade
+        // ========= ACESSIBILIDADE =========
         function toggleMenuAcessibilidade() {
             const menu = document.getElementById('menuAcessibilidade');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
@@ -140,46 +163,42 @@
             document.body.style.fontSize = tamanhoAtual + '%';
         }
 
-        // Lógica de Validação do Formulário
-document.getElementById('formRecomendacao').addEventListener('submit', function(e) {
-    const humorSelecionado = document.querySelector('input[name="humor"]:checked');
-    const intencaoSelecionada = document.querySelector('input[name="intencao"]:checked');
-    const boxErro = document.getElementById('mensagemErro');
-    const btnSubmit = this.querySelector('button[type="submit"]');
+        // ========= VALIDAÇÃO =========
+        document.getElementById('formRecomendacao').addEventListener('submit', function(e) {
+            const humorSelecionado = document.querySelector('input[name="humor"]:checked');
+            const intencaoSelecionada = document.querySelector('input[name="intencao"]:checked');
+            const boxErro = document.getElementById('mensagemErro');
+            const btnSubmit = this.querySelector('button[type="submit"]');
 
-    // Trava de segurança: se já está carregando, ignora
-    if (btnSubmit.classList.contains('carregando')) {
-        e.preventDefault();
-        return;
-    }
+            if (btnSubmit.classList.contains('carregando')) {
+                e.preventDefault();
+                return;
+            }
 
-    let erros = [];
-    if (!humorSelecionado) erros.push("seu estado emocional atual");
-    if (!intencaoSelecionada) erros.push("o que você busca nesta leitura");
+            let erros = [];
+            if (!humorSelecionado) erros.push("seu estado emocional atual");
+            if (!intencaoSelecionada) erros.push("o que você busca nesta leitura");
 
-    if (erros.length > 0) {
-        e.preventDefault(); 
-        boxErro.style.display = 'block';
-        boxErro.innerHTML = '⚠️ <strong>Por favor, selecione:</strong><br>' + erros.join(' e ');
-        boxErro.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        boxErro.style.display = 'none';
+            if (erros.length > 0) {
+                e.preventDefault();
+                boxErro.style.display = 'block';
+                boxErro.innerHTML = '⚠️ <strong>Por favor, selecione:</strong><br>' + erros.join(' e ');
+                boxErro.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                boxErro.style.display = 'none';
+                btnSubmit.classList.add('carregando');
+                btnSubmit.innerHTML = 'Buscando recomendações... <span class="spinner"></span>';
+            }
+        });
 
-        // ✅ Tudo certo → ativa o estado de carregamento
-        btnSubmit.classList.add('carregando');
-        btnSubmit.innerHTML = 'Buscando recomendações... <span class="spinner"></span>';
-    }
-});
+        window.addEventListener('pageshow', function() {
+            const btn = document.querySelector('#formRecomendacao button[type="submit"]');
+            if (btn) {
+                btn.classList.remove('carregando');
+                btn.innerHTML = 'Encontrar minhas leituras <span aria-hidden="true">→</span>';
+            }
+        });
+    </script>
 
-// Se o usuário voltar pra essa página (botão "voltar" do navegador),
-// garante que o botão volta ao estado normal
-window.addEventListener('pageshow', function() {
-    const btn = document.querySelector('#formRecomendacao button[type="submit"]');
-    if (btn) {
-        btn.classList.remove('carregando');
-        btn.innerHTML = 'Ver Recomendações';
-    }
-});
-      </script>
 </body>
 </html>
