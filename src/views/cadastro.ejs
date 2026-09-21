@@ -7,23 +7,15 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/login.css">
-    <script src="/js/logout.js" defer></script>
-
 </head>
 <body>
-    <div class="login-wrapper">
-        
-        <!-- Lado Esquerdo: Mensagem de Boas-Vindas -->
-        <div class="login-info">
-            <div class="tag-leitura">🌱 Comece sua jornada</div>
-            <h1>Crie sua conta e descubra o poder da leitura para suas emoções.</h1>
-            <p>Junte-se a nós para ter um histórico personalizado de leituras e salvar os livros que mais conversam com o seu momento.</p>
-        </div>
 
-        <!-- Lado Direito: Formulário de Cadastro -->
-        <div class="login-form-container">
+    <%- include('partials/navbar', { logado: logado }) %>
+
+    <main class="auth-page">
+        <div class="auth-card">
             <h2>Criar nova conta</h2>
-            <p>Preencha seus dados para acessar o ambiente.</p>
+            <p class="auth-subtitle">Preencha seus dados para acessar o ambiente.</p>
 
             <form action="/cadastrar" method="POST" class="form-login">
                 <div class="input-group">
@@ -35,7 +27,7 @@
                     <label for="email">E-mail</label>
                     <input type="email" id="email" name="email" placeholder="ana@aurora.com" required>
                 </div>
-                
+
                 <div class="input-group">
                     <label for="senha">Crie uma senha</label>
                     <input type="password" id="senha" name="senha" placeholder="Mínimo de 6 caracteres" required minlength="6">
@@ -48,37 +40,27 @@
                 <p>Já tem uma conta? <a href="/login">Faça login aqui</a></p>
             </div>
         </div>
+    </main>
 
-    </div>
-       
+    <%- include('partials/footer') %>
+
     <script>
-    // Pega os parâmetros da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const formContainer = document.querySelector('.form-login');
+        const urlParams = new URLSearchParams(window.location.search);
+        const formContainer = document.querySelector('.form-login');
 
-    // Se o e-mail já estiver em uso 
-    if (urlParams.get('erro') === 'email_existente') {
-        const mensagemErro = document.createElement('div');
-        mensagemErro.style.cssText = 'background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #fecaca;';
-        mensagemErro.innerText = '⚠️ Este e-mail já está em uso. Tente fazer login!';
-        formContainer.parentNode.insertBefore(mensagemErro, formContainer);
-    }
+        if (urlParams.get('erro') === 'email_existente') {
+            const mensagemErro = document.createElement('div');
+            mensagemErro.style.cssText = 'background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #fecaca;';
+            mensagemErro.innerText = '⚠️ Este e-mail já está em uso. Tente fazer login!';
+            formContainer.parentNode.insertBefore(mensagemErro, formContainer);
+        }
 
-    // ==========================================
-    // FEEDBACK VISUAL NO BOTÃO DE CADASTRAR
-    // ==========================================
-    formContainer.addEventListener('submit', function() {
-        const btnSubmit = formContainer.querySelector('button[type="submit"]');
-
-        // Evita duplo clique
-        if (btnSubmit.classList.contains('carregando')) return;
-
-        // Marca como carregando
-        btnSubmit.classList.add('carregando');
-
-        // Troca o texto e adiciona o spinner
-        btnSubmit.innerHTML = 'Cadastrando... <span class="spinner"></span>';
-    });
-</script>
+        formContainer.addEventListener('submit', function() {
+            const btnSubmit = formContainer.querySelector('button[type="submit"]');
+            if (btnSubmit.classList.contains('carregando')) return;
+            btnSubmit.classList.add('carregando');
+            btnSubmit.innerHTML = 'Cadastrando... <span class="spinner"></span>';
+        });
+    </script>
 </body>
 </html>

@@ -1,44 +1,35 @@
+/* ============================================================
+   EMOTIONBOOKS — LOGIN.CSS
+   Layout de autenticação (login + cadastro)
+============================================================ */
 
-.login-wrapper {
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    gap: 60px;
-    padding: 40px;
-    max-width: 1200px;
+.auth-page {
+    width: 100%;
+    max-width: 480px;
     margin: 0 auto;
+    padding: 60px 20px 80px;
 }
 
-.login-info {
-    flex: 1;
-    max-width: 500px;
-}
-
-.tag-leitura {
-    background: rgba(139, 115, 85, 0.1);
-    color: var(--primary-color);
-    padding: 8px 16px;
-    border-radius: 20px;
-    display: inline-block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 20px;
-}
-
-.login-info h1 {
-    font-size: 2.8rem;
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-.login-form-container {
-    flex: 1;
+.auth-card {
     background: var(--card-bg);
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+}
+
+.auth-card h2 {
+    margin: 0 0 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text-color);
+}
+
+.auth-subtitle {
+    margin: 0 0 28px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .input-group {
@@ -50,6 +41,7 @@
     margin-bottom: 8px;
     font-weight: 500;
     font-size: 0.9rem;
+    color: var(--text-color);
 }
 
 .input-group input {
@@ -60,45 +52,22 @@
     background: #f9f9f9;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, background 0.2s;
 }
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: #ffffff;
+}
+
+/* Esconde o "olho" nativo do navegador */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
     display: none;
 }
 
-/* Chrome/Edge (webkit) */
-input[type="password"]::-webkit-credentials-auto-fill-button,
-input[type="password"]::-webkit-textfield-decoration-container {
-    visibility: hidden;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-}
-
-/* --- Novas classes adicionadas --- */
-.btn-full-width {
-    width: 100%;
-    margin-top: 10px;
-}
-
-.register-link {
-    text-align: center;
-    margin-top: 25px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.register-link a {
-    color: var(--primary-color);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.register-link a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
 .password-wrapper {
     position: relative;
     display: flex;
@@ -107,7 +76,7 @@ input[type="password"]::-webkit-textfield-decoration-container {
 
 .password-wrapper input {
     width: 100%;
-    padding-right: 45px; /* Abre espaço para o ícone não ficar em cima do texto */
+    padding-right: 45px;
 }
 
 .btn-toggle-password {
@@ -128,30 +97,48 @@ input[type="password"]::-webkit-textfield-decoration-container {
     color: var(--primary-color);
 }
 
-/* =========================================
-   ESTADO DE CARREGAMENTO DO BOTÃO
-========================================= */
+/* Botão full width */
+.btn-full-width {
+    width: 100%;
+    max-width: 100%;
+    margin: 10px 0 0;
+}
+
+/* Link de cadastro/login */
+.register-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.register-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.register-link a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* Loading do botão */
 .btn-primary.carregando {
     pointer-events: none;
-    opacity: 0.75;
+    opacity: 0.8;
     cursor: wait;
 }
 
-/* Esconde a setinha → enquanto carrega */
-.btn-primary.carregando::after {
-    content: '';
-    display: none;
-}
-
-/* Spinner giratório */
 .btn-primary .spinner {
     display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 2.5px solid rgba(255, 255, 255, 0.4);
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
     border-top-color: #ffffff;
     border-radius: 50%;
-    margin-left: 10px;
+    margin-left: 8px;
     vertical-align: middle;
     animation: girar 0.7s linear infinite;
 }
@@ -160,28 +147,50 @@ input[type="password"]::-webkit-textfield-decoration-container {
     to { transform: rotate(360deg); }
 }
 
-/* No alto contraste, o spinner fica preto */
-.alto-contraste .btn-primary .spinner {
-    border-color: rgba(0, 0, 0, 0.25);
-    border-top-color: #000000;
+/* Autofill - remove o azul do Chrome */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #f9f9f9 inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
-/* =========================================
-   RESPONSIVIDADE (Telas Pequenas e Celulares)
-========================================= */
-@media (max-width: 850px) {
-    .login-wrapper {
-        flex-direction: column; /* Empilha o texto e o formulário */
-        text-align: center; /* Centraliza os textos */
-        gap: 30px;
-        padding: 20px;
+
+/* Alto contraste */
+.alto-contraste .auth-card {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+}
+
+.alto-contraste .auth-card h2,
+.alto-contraste .input-group label {
+    color: #ffffff !important;
+}
+
+.alto-contraste .auth-subtitle,
+.alto-contraste .register-link {
+    color: #cccccc !important;
+}
+
+.alto-contraste .input-group input {
+    background: #222 !important;
+    color: #ffffff !important;
+    border-color: #444 !important;
+}
+
+/* ============================================================
+   RESPONSIVO
+============================================================ */
+@media (max-width: 500px) {
+    .auth-page {
+        padding: 40px 16px 60px;
     }
 
-    .login-info h1 {
-        font-size: 2rem; /* Diminui um pouco o título para caber na tela */
+    .auth-card {
+        padding: 28px 22px;
     }
 
-    .login-form-container {
-        width: 100%; /* Faz o formulário ocupar o espaço disponível */
-        padding: 30px 20px;
+    .auth-card h2 {
+        font-size: 1.35rem;
     }
 }

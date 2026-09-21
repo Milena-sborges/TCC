@@ -3,17 +3,15 @@ const router = express.Router();
 const RecomendacaoController = require('../controllers/recomendacaoController');
 const verificarSessao = require('../middlewares/authMiddleware');
 
-// interface principal 
-router.get('/', verificarSessao, (req, res) => {
-    res.render('inicio', { logado: true }); 
-});
+// Rota da página de recomendações (frontend)
 router.get('/recomendacoes', verificarSessao, (req, res) => {
     res.render('recomendacoes', { logado: true });
 });
-// validar/transformar
+
+// API para o motor
 router.post('/recomendar', verificarSessao, RecomendacaoController.gerarRecomendacao);
 
-// testes e listagem geral
+// Listagem geral
 router.get('/livros', verificarSessao, RecomendacaoController.listarLivros);
 
 module.exports = router;

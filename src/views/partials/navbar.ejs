@@ -8,7 +8,7 @@
     <% if (typeof logado !== 'undefined' && logado) { %>
         <!-- NAVBAR LOGADO -->
         <div class="nav-links">
-            <a href="/">Início</a>
+            <a href="/descobrir">Descobrir</a>
             <a href="/biblioteca">Biblioteca</a>
             <a href="/perfil">Perfil</a>
             <a href="/sobre">Sobre</a>
@@ -18,12 +18,14 @@
         </div>
     <% } else { %>
         <!-- NAVBAR DESLOGADO -->
-        <div class="nav-links">
-            <a href="/">Início</a>
-            <a href="/sobre">Sobre</a>
-            <a href="/ajuda">Ajuda</a>
-            <a href="/contato">Contato</a>
-            <a href="/login" class="btn-nav-login">Entrar</a>
+        
+          <div class="nav-links">
+        <a href="/">Início</a>
+        <a href="/sobre">Sobre</a>
+        <a href="/ajuda">Ajuda</a>
+        <a href="/contato">Contato</a>
+        <a href="/login" class="btn-nav-login">Entrar</a>
+    
         </div>
     <% } %>
 </nav>

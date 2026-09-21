@@ -7,35 +7,27 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/login.css">
-   
-   
 </head>
 <body>
-    <div class="login-wrapper">
-        
-   
-        <div class="login-info">
-            <div class="tag-leitura">📖 Leitura guiada pelo seu momento</div>
-            <h1>Um espaço acolhedor para transformar emoções em boas leituras.</h1>
-            <p>Entre no seu ambiente e descubra recomendações de livros pensadas para o que você sente agora.</p>
-        </div>
 
-        <div class="login-form-container">
+    <%- include('partials/navbar', { logado: logado }) %>
+
+    <main class="auth-page">
+        <div class="auth-card">
             <h2>Acesso ao Ambiente</h2>
-            <p>Faça login para continuar sua jornada de leitura e bem-estar.</p>
+            <p class="auth-subtitle">Faça login para continuar sua jornada de leitura e bem-estar.</p>
 
-           <form action="/login" method="POST" class="form-login">
+            <form action="/login" method="POST" class="form-login">
                 <div class="input-group">
                     <label for="email">E-mail</label>
                     <input type="email" id="email" name="email" placeholder="ana@aurora.com" required>
                 </div>
-                
+
                 <div class="input-group">
                     <label for="senha">Senha</label>
                     <div class="password-wrapper">
                         <input type="password" id="senha" name="senha" placeholder="••••••••" required>
                         <button type="button" class="btn-toggle-password" id="btnTogglePassword" aria-label="Mostrar senha" title="Mostrar senha">
-                            <!-- Ícone de Olho Aberto (SVG) -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -44,25 +36,21 @@
                     </div>
                 </div>
 
-              
                 <button type="submit" class="btn-primary btn-full-width">Entrar e continuar</button>
             </form>
 
-            
             <div class="register-link">
                 <p>Ainda não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></p>
             </div>
-           
         </div>
+    </main>
 
-    </div>
-     
+    <%- include('partials/footer') %>
+
     <script>
-        // Pega os parâmetros da URL
         const urlParams = new URLSearchParams(window.location.search);
         const formContainer = document.querySelector('.form-login');
 
-        // Se o cadastro foi um sucesso (Caixa Verde)
         if (urlParams.get('cadastro') === 'sucesso') {
             const mensagem = document.createElement('div');
             mensagem.style.cssText = 'background: #dcfce7; color: #166534; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #bbf7d0;';
@@ -70,39 +58,28 @@
             formContainer.parentNode.insertBefore(mensagem, formContainer);
         }
 
-        // Se errou a senha ou e-mail (Caixa Vermelha)
         if (urlParams.get('erro') === 'credenciais') {
             const mensagemErro = document.createElement('div');
             mensagemErro.style.cssText = 'background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-weight: 500; border: 1px solid #fecaca;';
             mensagemErro.innerText = '⚠️ E-mail ou senha incorretos. Tente novamente.';
             formContainer.parentNode.insertBefore(mensagemErro, formContainer);
         }
-        // ==========================================
-        // FEEDBACK VISUAL NA HORA DO LOGIN
-        // ==========================================
+
         formContainer.addEventListener('submit', function() {
-            // Pega o botão de entrar
             const btnSubmit = formContainer.querySelector('button[type="submit"]');
-            
-            // Muda o texto e o visual para mostrar que está pensando
             btnSubmit.innerText = 'Conectando...';
             btnSubmit.style.opacity = '0.7';
-            
-            // Trava o botão para o usuário não clicar duas vezes sem querer
             btnSubmit.style.pointerEvents = 'none';
         });
+
         const btnTogglePassword = document.getElementById('btnTogglePassword');
         const inputSenha = document.getElementById('senha');
 
         btnTogglePassword.addEventListener('click', function() {
-            // Verifica se a senha está escondida
             const tipoAtual = inputSenha.getAttribute('type');
-            
+
             if (tipoAtual === 'password') {
-                // Muda para texto (mostra a senha)
                 inputSenha.setAttribute('type', 'text');
-                
-                // Troca para o ícone de Olho Fechado (riscado)
                 btnTogglePassword.innerHTML = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
@@ -110,12 +87,8 @@
                     </svg>
                 `;
                 btnTogglePassword.setAttribute('aria-label', 'Ocultar senha');
-                btnTogglePassword.setAttribute('title', 'Ocultar senha');
             } else {
-                // Muda de volta para pontinhos (esconde a senha)
                 inputSenha.setAttribute('type', 'password');
-                
-                // Troca para o ícone de Olho Aberto
                 btnTogglePassword.innerHTML = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -123,7 +96,6 @@
                     </svg>
                 `;
                 btnTogglePassword.setAttribute('aria-label', 'Mostrar senha');
-                btnTogglePassword.setAttribute('title', 'Mostrar senha');
             }
         });
     </script>

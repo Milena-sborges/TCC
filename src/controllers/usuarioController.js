@@ -1,7 +1,15 @@
 const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/usuarioModel');
 
+const carregarHome = (req, res) => {
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('home', { logado });
+};
 
+const carregarDescobrir = (req, res) => {
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('descobrir', { logado });
+};
 const carregarPerfil = (req, res) => {
     const logado = !!(req.session && req.session.usuarioLogado);
     res.render('perfil', { logado });
@@ -227,6 +235,8 @@ const listarMinhaBiblioteca = async (req, res) => {
 };
 
 module.exports = {
+    carregarHome,
+    carregarDescobrir,
     carregarPerfil,
     carregarLogin,
     carregarCadastro,

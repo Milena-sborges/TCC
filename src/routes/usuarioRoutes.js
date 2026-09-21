@@ -5,7 +5,7 @@ const verificarSessao = require('../middlewares/authMiddleware');
 
 router.get('/login', usuarioController.carregarLogin);
 router.get('/cadastro', usuarioController.carregarCadastro);
-router.get('/perfil', usuarioController.carregarPerfil); // (O nosso futuro Dashboard!)
+router.get('/perfil', usuarioController.carregarPerfil); 
 router.get('/sair', usuarioController.realizarLogout);
 router.get('/minha-biblioteca', verificarSessao, usuarioController.listarMinhaBiblioteca);
 router.get('/biblioteca', verificarSessao, usuarioController.carregarBiblioteca);
