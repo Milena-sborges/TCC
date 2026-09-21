@@ -13,7 +13,7 @@ const navbarLogado = `
         </div>
         <div class="nav-links">
             <a href="/">Início</a>
-            <a href="/recomendacoes.html">Recomendar</a>
+           
             <a href="/biblioteca">Biblioteca</a>
             <a href="/perfil">Perfil</a>
             <a href="/sobre">Sobre</a>
