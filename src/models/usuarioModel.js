@@ -139,17 +139,7 @@ const buscarEstatisticasEmocoes = async (idUsuario) => {
         [idUsuario]
     );
 
-    // 2. Emoção mais frequente
-    const [frequenteResult] = await db.execute(`
-        SELECT t.nome 
-        FROM historico h
-        JOIN tag_emocional t ON h.id_tag = t.id_tag
-        WHERE h.id_usuario = ?
-        GROUP BY t.id_tag, t.nome
-        ORDER BY COUNT(*) DESC
-        LIMIT 1
-    `, [idUsuario]);
-
+  
     // 3. Últimas 3 emoções
     const [ultimasResult] = await db.execute(`
         SELECT t.nome 
@@ -179,8 +169,7 @@ const buscarEstatisticasEmocoes = async (idUsuario) => {
 
     return {
         total: totalResult[0].total,
-        maisFrequente: frequenteResult.length > 0 ? frequenteResult[0].nome : "Nenhuma",
-        ultimas: ultimasEmocoes,
+     ultimas: ultimasEmocoes,
         contagem: contagem
     };
 };

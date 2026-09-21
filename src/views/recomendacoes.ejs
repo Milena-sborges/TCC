@@ -36,7 +36,7 @@
         </section>
 
         <div class="rodape-acoes">
-            <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
+            <a href="/descobrir" class="btn-voltar-inicio">← Voltar ao início</a>
         </div>
 
     </main>
@@ -242,7 +242,7 @@
             if (!humor || !intencao) {
                 document.getElementById('filtrosContainer').innerHTML = `
                     <p class="mensagem-erro">
-                        Seleção incompleta. Volte à página inicial.
+                        Seleção incompleta. Volte à página de descoberta.
                     </p>
                 `;
                 return;
@@ -300,7 +300,7 @@
                             <div class="empty-icon">📚</div>
                             <h3>Nenhum livro encontrado</h3>
                             <p>Não encontramos recomendações para essa combinação no momento.</p>
-                            <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
+                            <a href="/descobrir" class="btn-voltar-inicio">← Voltar ao início</a>
                         </div>
                     `;
                     return;
@@ -391,7 +391,7 @@
                         <div class="empty-icon">⚠️</div>
                         <h3>Não foi possível carregar as recomendações</h3>
                         <p>Tente novamente em alguns instantes.</p>
-                        <a href="/" class="btn-voltar-inicio">← Voltar ao início</a>
+                        <a href="/descobrir" class="btn-voltar-inicio">← Voltar ao início</a>
                     </div>
                 `;
             }

@@ -49,22 +49,15 @@
 
         <!-- Dashboard de Comportamento -->
         <div class="dashboard-comportamento">
-            <h3>📊 Dashboard de comportamento</h3>
-
-            <div class="comportamento-grid">
-                <div class="emocao-destaque">
-                    <p>Emoção mais selecionada:</p>
-                    <h4 id="emocaoDestaque">Em breve</h4>
-                </div>
-
-                <div class="emocao-historico">
-                    <p class="emocao-historico-titulo">Últimas buscas:</p>
-                    <div id="ultimasEmocoesContainer" class="emocao-historico-tags">
-                        <span class="emocao-vazia">Carregando...</span>
-                    </div>
-                </div>
-            </div>
+    <h3>📊 Histórico de emoções</h3>
+    
+    <div class="emocao-historico">
+        <p class="emocao-historico-titulo">Últimas buscas:</p>
+        <div id="ultimasEmocoesContainer" class="emocao-historico-tags">
+            <span class="emocao-vazia">Carregando...</span>
         </div>
+    </div>
+</div>
 
         <!-- Gráfico de Emoções -->
         <div class="dashboard-grafico">
@@ -259,8 +252,7 @@
                 // 3. Estatísticas de emoções
                 if (data.emocoes) {
                     document.getElementById('numEmocoes').innerText = data.emocoes.total;
-                    document.getElementById('emocaoDestaque').innerText = data.emocoes.maisFrequente;
-
+                   
                     // Tags das últimas emoções
                     const ultimasContainer = document.getElementById('ultimasEmocoesContainer');
                     ultimasContainer.innerHTML = '';
@@ -297,7 +289,7 @@
                     bibliotecaContainer.innerHTML = `
                         <div class="biblioteca-vazia">
                             <p>Sua biblioteca está vazia. Busque recomendações!</p>
-                            <a href="/">← Voltar ao início</a>
+                            <a href="/descobrir">Volte à página de descoberta</a>.
                         </div>
                     `;
                 } else {

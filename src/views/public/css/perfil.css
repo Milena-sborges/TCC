@@ -124,11 +124,6 @@
     font-size: 1.2rem;
 }
 
-.comportamento-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
 
 .emocao-destaque p {
     margin: 0 0 4px 0;
@@ -505,7 +500,23 @@
     color: #ffffff !important;
     border: 1px solid #ffffff;
 }
+.emocao-historico {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
+.emocao-historico-titulo {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #8a7e74;
+}
+
+.emocao-historico-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
 
 /* =====================================================
    RESPONSIVIDADE
@@ -517,12 +528,6 @@
     }
 }
 
-@media (max-width: 700px) {
-    .comportamento-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-}
 
 @media (max-width: 600px) {
     .perfil-header {

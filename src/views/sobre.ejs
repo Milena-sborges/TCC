@@ -93,11 +93,16 @@
 
         <!-- CTA FINAL -->
         <section class="sobre-cta">
-            <h3>Pronto para começar?</h3>
-            <p>Descubra uma leitura pensada para o seu momento.</p>
-            <a href="/" class="btn-primary sobre-cta-btn">Ver recomendações →</a>
-        </section>
-
+    <% if (logado) { %>
+        <h3>Que tal descobrir uma nova leitura?</h3>
+        <p>Escolha como você está se sentindo e encontre livros pensados para o seu momento.</p>
+        <a href="/descobrir" class="btn-primary sobre-cta-btn">Descobrir livros →</a>
+    <% } else { %>
+        <h3>Pronto para começar?</h3>
+        <p>Crie sua conta gratuitamente e descubra leituras pensadas para o seu momento.</p>
+        <a href="/cadastro" class="btn-primary sobre-cta-btn">Criar conta →</a>
+    <% } %>
+</section>
     </main>
 
     <%- include('partials/footer') %>
