@@ -3,6 +3,8 @@ const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 const verificarSessao = require('../middlewares/authMiddleware');
 
+router.get('/', usuarioController.carregarHome);
+router.get('/descobrir', verificarSessao, usuarioController.carregarDescobrir);
 router.get('/login', usuarioController.carregarLogin);
 router.get('/cadastro', usuarioController.carregarCadastro);
 router.get('/perfil', usuarioController.carregarPerfil); 
