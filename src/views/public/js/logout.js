@@ -1,6 +1,4 @@
-/* =====================================================
-   CONFIRMAÇÃO DE SAIR — compartilhada entre páginas
-===================================================== */
+
 async function confirmarSair(event) {
     event.preventDefault();
 
@@ -11,13 +9,12 @@ async function confirmarSair(event) {
         showCancelButton: true,
         confirmButtonText: 'Sim, sair',
         cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#8b7355',
+        confirmButtonColor: '#8a6a47',
         cancelButtonColor: '#b0a89e',
         reverseButtons: true
     });
 
     if (r.isConfirmed) {
-        sessionStorage.removeItem('eb_navbar_logado');
         window.location.href = '/sair';
     }
 }

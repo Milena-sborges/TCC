@@ -5,10 +5,11 @@ const verificarSessao = require('../middlewares/authMiddleware');
 
 // interface principal 
 router.get('/', verificarSessao, (req, res) => {
-    
-    res.sendFile('inicio.html', { root: './src/views' }); 
+    res.render('inicio', { logado: true }); 
 });
-
+router.get('/recomendacoes', verificarSessao, (req, res) => {
+    res.render('recomendacoes', { logado: true });
+});
 // validar/transformar
 router.post('/recomendar', verificarSessao, RecomendacaoController.gerarRecomendacao);
 

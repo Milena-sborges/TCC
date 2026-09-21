@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/biblioteca.css">
-    <script src="/js/components.js" defer></script>
     <script src="/js/logout.js" defer></script>
+
 </head>
 <body>
 
-    <div id="navbar-container"></div>
+    <%- include('partials/navbar', { logado: logado }) %>
 
     <div class="container biblioteca-wrapper">
         <div class="header-biblioteca">
@@ -59,7 +59,7 @@
             <button onclick="toggleContraste()" aria-label="Ativar ou desativar alto contraste">Ligar/Desligar</button>
         </div>
     </div>
-    <div id="footer-container"></div>
+    <%- include('partials/footer') %>
     <script>
         /* =====================================
            ACESSIBILIDADE

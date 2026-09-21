@@ -8,12 +8,11 @@
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/inicio.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js/logout.js" defer></script>
-    <script src="/js/components.js" defer></script>
+   <script src="/js/logout.js" defer></script>
 </head>
 <body>
 
-    <div id="navbar-container"></div>
+    <%- include('partials/navbar', { logado: logado }) %>
 
     <!-- Conteúdo Principal -->
    <main class="container home-page">
@@ -25,8 +24,8 @@
         <!-- Formulário e Validação -->
         <div id="mensagemErro" class="mensagem-erro"></div>
 
-        <form action="/recomendacoes.html" method="GET" id="formRecomendacao">
-            
+       <form action="/recomendacoes" method="GET" id="formRecomendacao">
+        
             <h3 class="section-title">Como você está se sentindo agora?</h3>
             <div class="grid-cards">
                 
@@ -121,7 +120,7 @@
         </div>
     </div>
 
-        <div id="footer-container"></div>
+        <%- include('partials/footer') %>
 
     <script>
         // Lógica do Menu de Acessibilidade

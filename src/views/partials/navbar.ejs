@@ -1,0 +1,30 @@
+<nav class="navbar">
+    <div class="logo">
+        <a href="/" class="logo-link">
+            <h2>EmotionBooks</h2>
+        </a>
+    </div>
+
+    <% if (typeof logado !== 'undefined' && logado) { %>
+        <!-- NAVBAR LOGADO -->
+        <div class="nav-links">
+            <a href="/">Início</a>
+            <a href="/recomendacoes">Recomendar</a>
+            <a href="/biblioteca">Biblioteca</a>
+            <a href="/perfil">Perfil</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/ajuda">Ajuda</a>
+            <a href="/contato">Contato</a>
+            <a href="/sair" onclick="confirmarSair(event)">Sair</a>
+        </div>
+    <% } else { %>
+        <!-- NAVBAR DESLOGADO -->
+        <div class="nav-links">
+            <a href="/">Início</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/ajuda">Ajuda</a>
+            <a href="/contato">Contato</a>
+            <a href="/login" class="btn-nav-login">Entrar</a>
+        </div>
+    <% } %>
+</nav>

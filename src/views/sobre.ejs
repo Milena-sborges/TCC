@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="/css/sobre.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/js/logout.js" defer></script>
-    <script src="/js/components.js" defer></script>
 </head>
 <body>
 
-    <div id="navbar-container"></div>
+    <%- include('partials/navbar', { logado: logado }) %>
 
     <main class="container sobre-page">
 
@@ -101,7 +100,7 @@
 
     </main>
 
-    <div id="footer-container"></div>
+    <%- include('partials/footer') %>
 
 </body>
 </html>

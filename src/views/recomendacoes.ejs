@@ -11,13 +11,12 @@
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/recomendacoes.css">
     <script src="/js/logout.js" defer></script>
-    <script src="/js/components.js" defer></script>
 </head>
 
 <body>
 
     <!-- NAVBAR -->
-    <div id="navbar-container"></div>
+    <%- include('partials/navbar', { logado: logado }) %>
 
 
     <!-- CONTEÚDO PRINCIPAL -->
@@ -98,7 +97,7 @@
 
     </div>
 
-<div id="footer-container"></div>
+<%- include('partials/footer') %>
     <!-- ============================= -->
     <!-- JAVASCRIPT -->
     <!-- ============================= -->

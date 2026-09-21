@@ -2,35 +2,43 @@ const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/usuarioModel');
 
 
-
 const carregarPerfil = (req, res) => {
-    res.sendFile('perfil.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('perfil', { logado });
 };
 
 const carregarLogin = (req, res) => {
-    const erro = req.query.erro;
-    const cadastro = req.query.cadastro;
-    res.sendFile('login.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('login', { logado });
 };
 
 const carregarCadastro = (req, res) => {
-    res.sendFile('cadastro.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('cadastro', { logado });
 };
 
 const carregarBiblioteca = (req, res) => {
-    res.sendFile('biblioteca.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('biblioteca', { logado });
 };
+
 const carregarSobre = (req, res) => {
-    res.sendFile('sobre.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('sobre', { logado });
 };
 
 const carregarAjuda = (req, res) => {
-    res.sendFile('ajuda.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('ajuda', { logado });
 };
 
 const carregarContato = (req, res) => {
-    res.sendFile('contato.html', { root: './src/views' });
+    const logado = !!(req.session && req.session.usuarioLogado);
+    res.render('contato', { logado });
 };
+
+
+
 // =============================================
 // AUTENTICAÇÃO
 // =============================================
