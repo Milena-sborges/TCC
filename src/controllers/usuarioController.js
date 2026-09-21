@@ -119,7 +119,7 @@ const realizarLogout = (req, res) => {
             return res.status(500).send("Erro ao tentar sair.");
         }
         res.clearCookie('connect.sid');
-        res.redirect('/login');
+           res.redirect('/'); 
     });
 };
 
