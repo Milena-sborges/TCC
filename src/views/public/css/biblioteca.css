@@ -88,7 +88,49 @@
     color: #ffffff;
     border-color: #4a4038;
 }
+/* =====================================================
+   LINK DE LEITURA EXTERNA
+===================================================== */
+.livro-info-extra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
 
+.livro-link-leitura {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #8a6a47;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border: 1px solid #e0d5c5;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.livro-link-leitura:hover {
+    background: rgba(138, 106, 71, 0.08);
+    border-color: #8a6a47;
+    text-decoration: none;
+    color: #8a6a47;
+}
+
+/* Alto contraste */
+.alto-contraste .livro-link-leitura {
+    background: #222 !important;
+    color: #ffd966 !important;
+    border-color: #ffd966 !important;
+}
+
+.alto-contraste .livro-link-leitura:hover {
+    background: #333 !important;
+}
 
 /* =====================================================
    LISTA DE LIVROS
