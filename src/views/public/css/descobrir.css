@@ -1,104 +1,146 @@
 /* ============================================================
-   EMOTIONBOOKS — INICIO.CSS
-   Responsabilidades:
-   - Hero (título + subtítulo)
-   - Títulos de seção
-   - Cards de emoção e intenção
-   - Divisor entre seções
+   EMOTIONBOOKS — DESCOBRIR.CSS
+   Tela de descoberta de livros por emoção + intenção
 ============================================================ */
 
 /* ============================================================
-   1. HERO (título principal)
+   1. FUNDO DA PÁGINA (gradiente sépia quente, sem imagem)
 ============================================================ */
-.header-text {
+.descobrir-page {
+    position: relative;
+    padding: 32px 0 80px;
+}
+
+.descobrir-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(138, 106, 71, 0.06), transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(214, 185, 140, 0.10), transparent 50%),
+        linear-gradient(180deg, #f7f1e8 0%, #f2eadf 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ============================================================
+   2. HERO EDITORIAL
+============================================================ */
+.discover-hero {
     text-align: center;
-    max-width: 760px;
-    margin: 0 auto 30px;
+    max-width: 720px;
+    margin: 0 auto 48px;
     padding-top: 8px;
 }
 
-
-
-.header-text h1 {
-    margin: 0 0 8px;
-    font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3vw, 2.25rem);
-    line-height: 1.15;
-
-    font-weight: 700;
-    color: var(--text-color);
-    letter-spacing: -0.3px;
-}
-
-.header-text h1 .highlight {
-    position: relative;
+.discover-tag {
+    display: inline-block;
     color: var(--primary-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
 }
 
-.header-text h1 .highlight::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 1px;
-    height: 5px;
-    background: #d7c2aa;
-    border-radius: 10px;
-    opacity: 0.55;
-    z-index: -1;
+.discover-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+    line-height: 1.15;
+    letter-spacing: -0.8px;
+    margin: 0 0 16px;
+    color: var(--text-color);
+    font-weight: 700;
 }
 
-.header-text p {
-    margin: 0;
-   font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--text-light);
-    font-weight: 400;
+.discover-hero h1 .highlight {
+    color: var(--primary-color);
+    font-style: italic;
+    font-weight: 700;
+}
+
+.discover-hero p {
+    max-width: 520px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.65;
 }
 
 /* ============================================================
-   2. TÍTULOS DAS SEÇÕES
+   3. CABEÇALHO DE ETAPA (numeração + título + hint)
 ============================================================ */
-.section-title {
+.step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin: 0 0 18px;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
-    margin: 0 0 14px;
+    justify-content: center;
+    background: var(--primary-color);
+    color: #ffffff;
+    border-radius: 50%;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(138, 106, 71, 0.28);
+}
+
+.step-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-title {
+    margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.02rem;
     font-weight: 600;
     color: var(--text-color);
+    line-height: 1.3;
 }
 
 .section-title::before {
-    content: '';
-    width: 4px;
-    height: 18px;
-    margin-right: 9px;
-    background: var(--primary-color);
-    border-radius: 10px;
+    display: none; /* remove a barra lateral antiga */
+}
+
+.step-hint {
+    margin: 4px 0 0;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    font-weight: 400;
 }
 
 .section-divider {
     border: 0;
-    height: 34px;
+    height: 40px;
     margin: 0;
 }
 
 /* ============================================================
-   3. GRIDS
+   4. GRIDS
 ============================================================ */
 .grid-cards {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 14px;
 }
 
 .grid-cards-2 {
     grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
 }
 
 /* ============================================================
-   4. CARD DE OPÇÃO (emoção / intenção)
+   5. CARDS DE OPÇÃO
 ============================================================ */
 .card-option {
     position: relative;
@@ -112,67 +154,98 @@
 }
 
 .card-option label {
+    position: relative;
     width: 100%;
-    min-height: 125px;
+    min-height: 148px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 18px 14px;
+    padding: 20px 14px 44px; /* espaço pro indicador embaixo */
     text-align: center;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border: 1.5px solid var(--border-color);
     border-radius: 18px;
     cursor: pointer;
-    box-shadow: 0 3px 14px rgba(50, 38, 28, 0.04);
+    box-shadow: 0 2px 10px rgba(50, 38, 28, 0.04);
     transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease;
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease;
 }
 
 /* Ícone dentro do círculo */
 .card-option label .icon {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 9px;
-    font-size: 1.65rem;
+    margin-bottom: 10px;
+    font-size: 1.7rem;
     background: #f8f4ef;
     border-radius: 50%;
-    transition: transform 0.25s ease;
+    transition: transform 0.22s ease, background 0.22s ease;
 }
 
 .card-option label .title {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--text-color);
+    line-height: 1.2;
 }
 
 .card-option label .desc {
-    margin-top: 5px;
-    max-width: 250px;
-    font-size: 0.7rem;
-    line-height: 1.4;
+    margin-top: 6px;
+    max-width: 220px;
+    font-size: 0.72rem;
+    line-height: 1.45;
     color: var(--text-light);
 }
 
 /* ============================================================
-   5. HOVER E FOCO
+   6. INDICADOR DE SELEÇÃO (○ → ✓)
+============================================================ */
+.card-option label::after {
+    content: '○';
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #c9bdb0;
+    border-radius: 50%;
+    transition: all 0.22s ease;
+}
+
+.card-option input:checked + label::after {
+    content: '✓';
+    background: var(--primary-color);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 3px 8px rgba(138, 106, 71, 0.32);
+}
+
+/* ============================================================
+   7. HOVER / FOCO
 ============================================================ */
 .card-option label:hover {
-   transform: translateY(-3px);
+    transform: translateY(-3px);
     border-color: #d6c5b3;
-    box-shadow: 0 8px 24px rgba(50, 38, 28, 0.08);
+    box-shadow: 0 10px 26px rgba(50, 38, 28, 0.08);
 }
 
 .card-option label:hover .icon {
-    transform: scale(1.08);
+    transform: scale(1.06);
 }
 
 .card-option input[type="radio"]:focus-visible + label {
@@ -181,146 +254,170 @@
 }
 
 /* ============================================================
-   6. SELECIONADO
+   8. SELECIONADO
 ============================================================ */
-.card-option input[type="radio"]:checked + label {
-    transform: translateY(-3px);
+.card-option input:checked + label {
     border-color: var(--primary-color);
-    background: var(--primary-light);
-    box-shadow: 0 9px 25px rgba(139, 115, 85, 0.13);
+    background: linear-gradient(180deg, #fffaf2 0%, #f7ecdb 100%);
+    box-shadow:
+        0 0 0 3px rgba(138, 106, 71, 0.10),
+        0 10px 26px rgba(138, 106, 71, 0.14);
+    transform: translateY(-3px);
 }
 
-.card-option input[type="radio"]:checked + label .icon {
-    transform: scale(1.1);
+.card-option input:checked + label .title {
+    color: var(--primary-hover);
+    font-weight: 700;
+}
+
+.card-option input:checked + label .icon {
+    background: rgba(138, 106, 71, 0.14);
+    transform: scale(1.08);
 }
 
 /* ============================================================
-   7. CORES DAS EMOÇÕES (quando selecionadas)
+   9. CORES POR EMOÇÃO (só quando selecionado)
 ============================================================ */
 .card-option input[value="tristeza"]:checked + label {
     border-color: #7180c8;
-    background: rgba(92, 107, 192, 0.08);
+    background: linear-gradient(180deg, #f4f5fc 0%, #e6e9f8 100%);
+    box-shadow: 0 0 0 3px rgba(113, 128, 200, 0.10), 0 10px 26px rgba(113, 128, 200, 0.14);
 }
+.card-option input[value="tristeza"]:checked + label .icon { background: rgba(113, 128, 200, 0.14); }
 
 .card-option input[value="ansiedade"]:checked + label {
     border-color: #f28a68;
-    background: rgba(255, 112, 67, 0.08);
+    background: linear-gradient(180deg, #fff4ef 0%, #ffe6dc 100%);
+    box-shadow: 0 0 0 3px rgba(242, 138, 104, 0.10), 0 10px 26px rgba(242, 138, 104, 0.14);
 }
+.card-option input[value="ansiedade"]:checked + label .icon { background: rgba(242, 138, 104, 0.16); }
 
 .card-option input[value="felicidade"]:checked + label {
     border-color: #76b979;
-    background: rgba(102, 187, 106, 0.08);
+    background: linear-gradient(180deg, #f1faf1 0%, #e2f3e3 100%);
+    box-shadow: 0 0 0 3px rgba(118, 185, 121, 0.10), 0 10px 26px rgba(118, 185, 121, 0.14);
 }
+.card-option input[value="felicidade"]:checked + label .icon { background: rgba(118, 185, 121, 0.16); }
 
 .card-option input[value="neutro"]:checked + label {
     border-color: #84979e;
-    background: rgba(120, 144, 156, 0.08);
+    background: linear-gradient(180deg, #f5f8f9 0%, #e7eef1 100%);
+    box-shadow: 0 0 0 3px rgba(132, 151, 158, 0.10), 0 10px 26px rgba(132, 151, 158, 0.14);
 }
+.card-option input[value="neutro"]:checked + label .icon { background: rgba(132, 151, 158, 0.16); }
 
 .card-option input[value="tedio"]:checked + label {
     border-color: #a184d0;
-    background: rgba(149, 117, 205, 0.08);
+    background: linear-gradient(180deg, #f8f4fc 0%, #ede5f7 100%);
+    box-shadow: 0 0 0 3px rgba(161, 132, 208, 0.10), 0 10px 26px rgba(161, 132, 208, 0.14);
 }
+.card-option input[value="tedio"]:checked + label .icon { background: rgba(161, 132, 208, 0.16); }
 
 /* ============================================================
-   8. SEGUNDO GRUPO (intenção)
+   10. SEGUNDO GRUPO (intenção) — cards maiores
 ============================================================ */
-.grid-cards-2 .card-option label {
-    min-height: 150px;
+.card-intencao label {
+    min-height: 168px;
+    padding: 22px 20px 46px;
 }
 
-.grid-cards-2 .card-option label .icon {
-    width: 54px;
-    height: 54px;
-    font-size: 1.8rem;
+.card-intencao label .icon {
+    width: 56px;
+    height: 56px;
+    font-size: 1.85rem;
     background: var(--primary-light);
 }
 
-/* ============================================================
-   9. ESTADO DE CARREGAMENTO DO BOTÃO
-============================================================ */
-.btn-primary.carregando {
-    pointer-events: none;
-    opacity: 0.8;
-    cursor: wait;
+.card-intencao label .title {
+    font-size: 0.95rem;
 }
 
-.btn-primary.carregando::after {
-    content: '';
-    display: none;
-}
-
-.btn-primary .spinner {
-    display: inline-block;
-    width: 17px;
-    height: 17px;
-    border: 2px solid rgba(255, 255, 255, 0.35);
-    border-top-color: #ffffff;
-    border-radius: 50%;
-    margin-left: 10px;
-    vertical-align: middle;
-    animation: girar 0.7s linear infinite;
-}
-/* =====================================================
-   LINK DE LEITURA EXTERNA
-===================================================== */
-.livro-info-extra {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-}
-
-.livro-link-leitura {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    color: var(--primary-color, #8a6a47);
-    text-decoration: none;
+.card-intencao label .desc {
     font-size: 0.78rem;
-    font-weight: 600;
-    padding: 3px 10px;
-    border: 1px solid #e0d5c5;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.livro-link-leitura:hover {
-    background: rgba(138, 106, 71, 0.08);
-    border-color: var(--primary-color, #8a6a47);
-    text-decoration: none;
-}
-
-/* Alto contraste */
-.alto-contraste .livro-link-leitura {
-    background: #222 !important;
-    color: #ffd966 !important;
-    border-color: #ffd966 !important;
-}
-
-.alto-contraste .livro-link-leitura:hover {
-    background: #333 !important;
-}
-@keyframes girar {
-    to { transform: rotate(360deg); }
+    max-width: 260px;
 }
 
 /* ============================================================
-   10. RESPONSIVIDADE
+   11. ALTO CONTRASTE
 ============================================================ */
-@media (max-width: 800px) {
-    .header-text {
-        margin-bottom: 28px;
+body.alto-contraste .descobrir-page::before {
+    background: #0e0e0e !important;
+}
+
+.alto-contraste .discover-tag {
+    color: #ffcc00 !important;
+}
+
+.alto-contraste .step-number {
+    background: #ffcc00 !important;
+    color: #000000 !important;
+}
+
+.alto-contraste .discover-hero h1,
+.alto-contraste .section-title {
+    color: #ffffff !important;
+}
+
+.alto-contraste .discover-hero h1 .highlight {
+    color: #ffcc00 !important;
+}
+
+.alto-contraste .discover-hero p,
+.alto-contraste .step-hint,
+.alto-contraste .card-option label .desc {
+    color: #cccccc !important;
+}
+
+.alto-contraste .card-option label {
+    background: #1a1a1a !important;
+    border-color: #444 !important;
+    color: #ffffff !important;
+}
+
+.alto-contraste .card-option label .icon {
+    background: #222 !important;
+}
+
+.alto-contraste .card-option label .title {
+    color: #ffffff !important;
+}
+
+.alto-contraste .card-option input:checked + label {
+    background: #2a2a2a !important;
+    border-color: #ffcc00 !important;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.20) !important;
+}
+
+.alto-contraste .card-option input:checked + label .title {
+    color: #ffcc00 !important;
+}
+
+.alto-contraste .card-option input:checked + label::after {
+    background: #ffcc00 !important;
+    color: #000000 !important;
+}
+
+/* ============================================================
+   12. RESPONSIVIDADE
+============================================================ */
+@media (max-width: 900px) {
+    .grid-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .discover-hero {
+        margin-bottom: 36px;
     }
 
-    .header-text h1 {
-        font-size: 1.8rem;
+    .discover-hero h1 {
+        font-size: 1.85rem;
     }
 
     .grid-cards {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .grid-cards-2 {
@@ -328,49 +425,55 @@
     }
 
     .card-option label {
-        min-height: 118px;
+        min-height: 138px;
+        padding: 18px 12px 42px;
+    }
+
+    .card-intencao label {
+        min-height: 150px;
     }
 }
 
 @media (max-width: 480px) {
-    .header-text h1 {
-        font-size: 1.5rem;
+    .descobrir-page {
+        padding: 20px 0 60px;
     }
 
-    .header-text p {
+    .discover-hero h1 {
+        font-size: 1.55rem;
+    }
+
+    .discover-hero p {
+        font-size: 0.88rem;
+    }
+
+    .step-number {
+        width: 28px;
+        height: 28px;
         font-size: 0.85rem;
     }
 
-    .grid-cards {
-        gap: 8px;
+    .section-title {
+        font-size: 0.95rem;
+    }
+
+    .step-hint {
+        font-size: 0.78rem;
     }
 
     .card-option label {
-        min-height: 100px;
-        padding: 14px 10px;
+        min-height: 120px;
+        padding: 16px 10px 40px;
         border-radius: 15px;
     }
 
     .card-option label .icon {
-        width: 42px;
-        height: 42px;
-        font-size: 1.35rem;
-        margin-bottom: 6px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
     }
 
     .card-option label .title {
-        font-size: 0.75rem;
-    }
-
-    .grid-cards-2 .card-option label {
-        min-height: 120px;
-    }
-
-    .section-title {
-        font-size: 0.85rem;
-    }
-
-    .section-divider {
-        height: 24px;
+        font-size: 0.78rem;
     }
 }
