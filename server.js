@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const session = require('express-session');
-const mysql = require('mysql2');                         
+const mysql = require('mysql2');
 const MySQLStore = require('express-mysql-session')(session);
 
 require('dotenv').config();
@@ -15,6 +16,9 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 
+const caCert = fs.readFileSync(
+    path.join(__dirname, 'src', 'certs', 'isrgrootx1.pem')
+);
 
 // =============================================
 // POOL EXCLUSIVO PARA SESSÕES (com SSL do TiDB)
@@ -31,7 +35,8 @@ const sessionPool = mysql.createPool({
     queueLimit: 0,
     ssl: {
         minVersion: 'TLSv1.2',
-        rejectUnauthorized: true
+        rejectUnauthorized: true,
+        ca: caCert
     }
 });
 
