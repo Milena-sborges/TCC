@@ -190,9 +190,12 @@
 
     <div class="livro-acoes">
         ${botaoLidoHtml}
-        <button class="btn-acao-rapida btn-heart-rapido ${ehFavorito ? 'ativo' : ''}" onclick="alternarFavoritoBiblioteca(${livro.id_livro}, ${!ehFavorito}, ${ehLido})" title="${ehFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" aria-label="${ehFavorito ? 'Remover' : 'Adicionar'} ${livro.titulo} dos favoritos">
-            ${ehFavorito ? '❤️' : '🤍'}
-        </button>
+       <button class="btn-acao-rapida btn-heart-rapido ${ehFavorito ? 'ativo' : ''}" 
+        onclick="alternarFavoritoBiblioteca(${livro.id_livro})" 
+        title="${ehFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" 
+        aria-label="${ehFavorito ? 'Remover' : 'Adicionar'} ${livro.titulo} dos favoritos">
+    ${ehFavorito ? '❤️' : '🤍'}
+</button>
         <button class="btn-acao-rapida btn-remover" onclick="removerLivro(${livro.id_livro}, '${livro.titulo.replace(/'/g, "\\'")}')" title="Remover da biblioteca" aria-label="Remover ${livro.titulo} da biblioteca">🗑️</button>
     </div>
 `;
@@ -402,20 +405,19 @@ async function abrirLeitura(link, titulo) {
            AÇÃO: FAVORITAR
            Se o livro não está Lido, avisa que vai marcar como Lido também
         ===================================== */
-   async function alternarFavoritoBiblioteca(idLivro, novoStatus, jaEstaLido) {
-// ==== Lê o estado REAL do card (não confia no parâmetro antigo) ====
+  async function alternarFavoritoBiblioteca(idLivro) {
+// ==== Lê o estado REAL do card ====
     const card = document.querySelector(`[data-livro-id="${idLivro}"]`);
     if (!card) return;
 
     const btnHeart = card.querySelector('.btn-heart-rapido');
-    const btnLido = card.querySelector('.btn-lido-rapido, .btn-desmarcar-lido');
+    const btnLido  = card.querySelector('.btn-lido-rapido, .btn-desmarcar-lido');
 
-    const jaEstaLido = !!card.querySelector('.status-lido');
+    const jaEstaLido     = !!card.querySelector('.status-lido');
     const estaFavoritado = btnHeart.classList.contains('ativo');
-    const novoStatus = !estaFavoritado;
+    const novoStatus     = !estaFavoritado;
 
     // ==== FAVORITAR sem estar Lido → pergunta antes ====
-    
     if (novoStatus && !jaEstaLido) {
         const r = await Swal.fire({
             title: 'Favoritar este livro?',
@@ -431,12 +433,11 @@ async function abrirLeitura(link, titulo) {
         if (!r.isConfirmed) return;
     }
 
-
-
-    // ==== ATUALIZAÇÃO OTIMISTA — muda a tela NA HORA ====
+    // ==== ATUALIZAÇÃO OTIMISTA ====
     btnHeart.innerHTML = novoStatus ? '❤️' : '🤍';
     btnHeart.classList.toggle('ativo', novoStatus);
- 
+
+    
 
     // Se favoritou e não estava Lido, marca Lido visualmente também
     if (novoStatus && !jaEstaLido) {
