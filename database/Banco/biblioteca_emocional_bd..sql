@@ -193,3 +193,11 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-08-13  0:00:26
+
+UPDATE livro 
+SET link_leitura = SUBSTRING_INDEX(SUBSTRING_INDEX(link_leitura, '](', -1), ')', 1)
+WHERE link_leitura LIKE '%](%';
+
+UPDATE livro 
+SET capa_url = SUBSTRING_INDEX(SUBSTRING_INDEX(capa_url, '](', -1), ')', 1)
+WHERE capa_url LIKE '%](%';

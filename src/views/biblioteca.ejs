@@ -176,28 +176,52 @@
                     : `<button class="btn-acao-rapida btn-desmarcar-lido" onclick="desmarcarLido(${livro.id_livro}, ${ehFavorito})" title="Desmarcar Lido" aria-label="Desmarcar ${livro.titulo} como lido">↺</button>`;
 
                 div.innerHTML = `
-                    <img src="${capaLimpa || '/img/placeholder.jpg'}" alt="Capa do livro ${livro.titulo}" class="livro-capa" onerror="this.src='/img/placeholder.jpg'">
+    <img src="${capaLimpa || '/img/placeholder.jpg'}" alt="Capa do livro ${livro.titulo}" class="livro-capa" onerror="this.src='/img/placeholder.jpg'">
 
-                    <div class="livro-info">
-                        <h4>${livro.titulo}</h4>
-                        <p>${livro.autor}</p>
-                        <span class="status-badge ${ehLido ? 'status-lido' : 'status-quero-ler'}">${livro.status_leitura}</span>
-                        ${ehFavorito ? '<span class="status-badge status-favorito">❤️ Favorito</span>' : ''}
-                    </div>
-
-                    <div class="livro-acoes">
-                        ${botaoLidoHtml}
-                        <button class="btn-acao-rapida btn-heart-rapido ${ehFavorito ? 'ativo' : ''}" onclick="alternarFavoritoBiblioteca(${livro.id_livro}, ${!ehFavorito}, ${ehLido})" title="${ehFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" aria-label="${ehFavorito ? 'Remover' : 'Adicionar'} ${livro.titulo} dos favoritos">
-                            ${ehFavorito ? '❤️' : '🤍'}
-                        </button>
-                        <button class="btn-acao-rapida btn-remover" onclick="removerLivro(${livro.id_livro}, '${livro.titulo.replace(/'/g, "\\'")}')" title="Remover da biblioteca" aria-label="Remover ${livro.titulo} da biblioteca">🗑️</button>
-                    </div>
+    <div class="livro-info">
+        <h4>${livro.titulo}</h4>
+        <p>${livro.autor}</p>
+        <div class="livro-info-extra">
+            <span class="status-badge ${ehLido ? 'status-lido' : 'status-quero-ler'}">${livro.status_leitura}</span>
+            ${ehFavorito ? '<span class="status-badge status-favorito">❤️ Favorito</span>' : ''}
+            ${livro.link_leitura ? `<a href="#" onclick="abrirLeitura('${livro.link_leitura.replace(/'/g, "\\'")}', '${livro.titulo.replace(/'/g, "\\'")}'); return false;" class="livro-link-leitura">Ler agora ↗</a>` : ''}
+        </div>
+    </div>
                 `;
                 container.appendChild(div);
             });
         }
 
+/* =====================================
+   ABRIR LEITURA EXTERNA (Project Gutenberg)
+===================================== */
+async function abrirLeitura(link, titulo) {
+    if (!link || link.trim() === "" || link === "null" || link === "undefined") {
+        Swal.fire({
+            title: 'Link indisponível',
+            text: 'O link de leitura não está disponível para este livro.',
+            icon: 'info',
+            confirmButtonColor: '#8a6a47'
+        });
+        return;
+    }
 
+    const r = await Swal.fire({
+        title: 'Sair do EmotionBooks?',
+        text: 'Você será direcionado ao Project Gutenberg (site externo) para ler o livro.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, ir para o Gutenberg',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#8a6a47',
+        cancelButtonColor: '#b0a89e',
+        reverseButtons: true
+    });
+
+    if (r.isConfirmed) {
+        window.open(link, '_blank');
+    }
+}
         /* =====================================
            AÇÃO: MARCAR COMO LIDO
         ===================================== */
@@ -420,12 +444,17 @@
             badgeFav.textContent = '❤️ Favorito';
             livroInfo.appendChild(badgeFav);
         }
-    } else if (!novoStatus) {
-        // Desfavoritou → remove o badge de favorito do DOM
-        const badgeFav = card.querySelector('.status-favorito');
-        if (badgeFav) badgeFav.remove();
-    }
+   } else if (!novoStatus) {
+    // Desfavoritou 
+    const badgeFav = card.querySelector('.status-favorito');
+    if (badgeFav) badgeFav.remove();
 
+    // Desativa o botão do coração
+    if (btnHeart) {
+        btnHeart.innerHTML = '🤍';
+        btnHeart.classList.remove('ativo');
+    }
+}
     // ==== Sincroniza com o servidor em paralelo ====
     try {
         const response = await fetch('/favoritar', {
