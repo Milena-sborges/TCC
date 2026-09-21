@@ -403,7 +403,19 @@ async function abrirLeitura(link, titulo) {
            Se o livro não está Lido, avisa que vai marcar como Lido também
         ===================================== */
    async function alternarFavoritoBiblioteca(idLivro, novoStatus, jaEstaLido) {
+// ==== Lê o estado REAL do card (não confia no parâmetro antigo) ====
+    const card = document.querySelector(`[data-livro-id="${idLivro}"]`);
+    if (!card) return;
+
+    const btnHeart = card.querySelector('.btn-heart-rapido');
+    const btnLido = card.querySelector('.btn-lido-rapido, .btn-desmarcar-lido');
+
+    const jaEstaLido = !!card.querySelector('.status-lido');
+    const estaFavoritado = btnHeart.classList.contains('ativo');
+    const novoStatus = !estaFavoritado;
+
     // ==== FAVORITAR sem estar Lido → pergunta antes ====
+    
     if (novoStatus && !jaEstaLido) {
         const r = await Swal.fire({
             title: 'Favoritar este livro?',
@@ -419,12 +431,7 @@ async function abrirLeitura(link, titulo) {
         if (!r.isConfirmed) return;
     }
 
-    // ==== Encontra o botão do coração e o card ====
-    const card = document.querySelector(`[data-livro-id="${idLivro}"]`);
-    if (!card) return;
 
-    const btnHeart = card.querySelector('.btn-heart-rapido');
-    const btnLido = card.querySelector('.btn-lido-rapido, .btn-desmarcar-lido');
 
     // ==== ATUALIZAÇÃO OTIMISTA — muda a tela NA HORA ====
     btnHeart.innerHTML = novoStatus ? '❤️' : '🤍';
