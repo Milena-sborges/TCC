@@ -1,0 +1,215 @@
+/* ============================================================
+   EMOTIONBOOKS — CONTATO.CSS
+============================================================ */
+
+.contato-page {
+    max-width: 880px;
+}
+
+/* ============================================================
+   1. HERO
+============================================================ */
+.contato-hero {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 48px;
+}
+
+.contato-tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.contato-hero h1 {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 12px;
+    color: var(--text-color);
+}
+
+.contato-hero p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
+/* ============================================================
+   2. GRID DE CARDS
+============================================================ */
+.contato-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 44px;
+}
+
+.contato-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px 26px;
+    text-align: center;
+    box-shadow: 0 3px 14px rgba(50, 38, 28, 0.045);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contato-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(50, 38, 28, 0.08);
+}
+
+.contato-avatar {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #8a6a47, #705236);
+    box-shadow: 0 4px 14px rgba(138, 106, 71, 0.28);
+}
+
+.contato-avatar-alt {
+    background: linear-gradient(135deg, #a184d0, #7e62b3);
+    box-shadow: 0 4px 14px rgba(161, 132, 208, 0.28);
+}
+
+.contato-card h2 {
+    margin: 0 0 4px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--text-color);
+}
+
+.contato-role {
+    margin: 0 0 14px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contato-desc {
+    margin: 0 0 22px;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text-light);
+    min-height: 52px;
+}
+
+/* Botão de e-mail */
+.contato-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 26px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 5px 18px rgba(138, 106, 71, 0.22);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contato-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 26px rgba(138, 106, 71, 0.32);
+}
+
+.contato-btn-icon {
+    font-size: 1rem;
+}
+
+/* ============================================================
+   3. INFO EXTRA
+============================================================ */
+.contato-info {
+    background: linear-gradient(135deg, rgba(138, 106, 71, 0.06), rgba(138, 106, 71, 0.12));
+    border: 1px solid rgba(138, 106, 71, 0.15);
+    border-radius: 18px;
+    padding: 28px 30px;
+    text-align: center;
+}
+
+.contato-info h3 {
+    margin: 0 0 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.contato-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.87rem;
+    line-height: 1.65;
+}
+
+/* ============================================================
+   4. ALTO CONTRASTE
+============================================================ */
+.alto-contraste .contato-card {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+}
+
+.alto-contraste .contato-card h2,
+.alto-contraste .contato-hero h1,
+.alto-contraste .contato-info h3 {
+    color: #ffffff !important;
+}
+
+.alto-contraste .contato-hero p,
+.alto-contraste .contato-desc,
+.alto-contraste .contato-info p {
+    color: #cccccc !important;
+}
+
+.alto-contraste .contato-info {
+    background: #1a1a1a !important;
+    border-color: #333 !important;
+}
+
+.alto-contraste .contato-btn {
+    background: #ffcc00 !important;
+    color: #000000 !important;
+}
+
+/* ============================================================
+   5. RESPONSIVIDADE
+============================================================ */
+@media (max-width: 700px) {
+    .contato-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contato-hero {
+        margin-bottom: 36px;
+    }
+
+    .contato-card {
+        padding: 26px 22px;
+    }
+
+    .contato-info {
+        padding: 24px 22px;
+    }
+}

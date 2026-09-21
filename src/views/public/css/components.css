@@ -1,16 +1,26 @@
+/* ============================================================
+   EMOTIONBOOKS — COMPONENTS.CSS
+   Responsabilidades:
+   - Navbar (logada e deslogada)
+   - Rodapé
+   - Botão "Entrar" da navbar
+============================================================ */
 
+/* ============================================================
+   1. NAVBAR
+============================================================ */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: #f0eae0;   
+    background: #f0eae0;
     border-bottom: 1px solid #ece8e4;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     position: sticky;
     top: 0;
     z-index: 100;
-    min-height: 68px; 
+    min-height: 68px;
 }
 
 .navbar-placeholder {
@@ -58,7 +68,6 @@
     background: #fff7e8;
 }
 
-/* Botão "Entrar" com destaque */
 .btn-nav-login {
     background: #8b7355 !important;
     color: #ffffff !important;
@@ -72,12 +81,13 @@
     color: #ffffff !important;
 }
 
-
-/* ============== RODAPÉ ============== */
+/* ============================================================
+   2. RODAPÉ
+============================================================ */
 .site-footer {
     margin-top: 4rem;
     padding: 1.5rem 2rem;
-    background: #f0eae0;   
+    background: #f0eae0;
     border-top: 1px solid #ece8e4;
     text-align: center;
 }
@@ -111,8 +121,9 @@
     padding: 0 0.3rem;
 }
 
-
-/* ============== ALTO CONTRASTE ============== */
+/* ============================================================
+   3. ALTO CONTRASTE
+============================================================ */
 .alto-contraste .navbar {
     background: #111 !important;
     border-bottom-color: #fff !important;
@@ -155,8 +166,9 @@
     color: #ffd966 !important;
 }
 
-
-
+/* ============================================================
+   4. RESPONSIVIDADE
+============================================================ */
 @media (max-width: 900px) {
     .navbar {
         flex-direction: column;

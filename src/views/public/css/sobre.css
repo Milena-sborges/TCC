@@ -1,0 +1,271 @@
+/* ============================================================
+   EMOTIONBOOKS — SOBRE.CSS
+============================================================ */
+
+.sobre-page {
+    max-width: 960px;
+}
+
+/* ============================================================
+   1. HERO
+============================================================ */
+.sobre-hero {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 56px;
+}
+
+.sobre-tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.sobre-hero h1 {
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 12px;
+    color: var(--text-color);
+}
+
+.sobre-hero p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+   2. SEÇÕES
+============================================================ */
+.sobre-section {
+    margin-bottom: 56px;
+}
+
+.sobre-section-title {
+    display: flex;
+    align-items: center;
+    margin: 0 0 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.sobre-section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    margin-right: 10px;
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.sobre-section-desc {
+    margin: 0 0 24px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+/* ============================================================
+   3. CARDS DE PESSOAS
+============================================================ */
+.sobre-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.sobre-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.sobre-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 3px 14px rgba(50, 38, 28, 0.045);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sobre-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(50, 38, 28, 0.08);
+}
+
+.sobre-card-destaque {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Avatar com inicial */
+.sobre-avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #8a6a47, #705236);
+    box-shadow: 0 4px 14px rgba(138, 106, 71, 0.28);
+}
+
+.sobre-avatar-alt {
+    background: linear-gradient(135deg, #a184d0, #7e62b3);
+    box-shadow: 0 4px 14px rgba(161, 132, 208, 0.28);
+}
+
+.sobre-avatar-prof {
+    background: linear-gradient(135deg, #7180c8, #4d5a9e);
+    box-shadow: 0 4px 14px rgba(113, 128, 200, 0.28);
+}
+
+.sobre-card h3 {
+    margin: 0 0 4px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--text-color);
+}
+
+.sobre-role {
+    margin: 0 0 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sobre-bio {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text-light);
+}
+
+/* ============================================================
+   4. TEXTO DO PROJETO
+============================================================ */
+.sobre-projeto {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 28px 32px;
+    box-shadow: 0 3px 14px rgba(50, 38, 28, 0.045);
+}
+
+.sobre-projeto p {
+    margin: 0 0 16px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.sobre-projeto p:last-child {
+    margin-bottom: 0;
+}
+
+.sobre-projeto strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* ============================================================
+   5. CTA FINAL
+============================================================ */
+.sobre-cta {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(138, 106, 71, 0.06), rgba(138, 106, 71, 0.12));
+    border: 1px solid rgba(138, 106, 71, 0.15);
+    border-radius: 22px;
+    padding: 40px 28px;
+    margin-top: 8px;
+}
+
+.sobre-cta h3 {
+    margin: 0 0 6px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: var(--text-color);
+}
+
+.sobre-cta p {
+    margin: 0 0 22px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.sobre-cta-btn {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 12px 32px !important;
+    text-decoration: none;
+}
+
+/* ============================================================
+   6. ALTO CONTRASTE
+============================================================ */
+.alto-contraste .sobre-projeto,
+.alto-contraste .sobre-card {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+}
+
+.alto-contraste .sobre-hero h1,
+.alto-contraste .sobre-section-title,
+.alto-contraste .sobre-card h3,
+.alto-contraste .sobre-cta h3 {
+    color: #ffffff !important;
+}
+
+.alto-contraste .sobre-hero p,
+.alto-contraste .sobre-section-desc,
+.alto-contraste .sobre-bio,
+.alto-contraste .sobre-projeto p,
+.alto-contraste .sobre-cta p {
+    color: #cccccc !important;
+}
+
+.alto-contraste .sobre-cta {
+    background: #1a1a1a !important;
+    border-color: #333 !important;
+}
+
+/* ============================================================
+   7. RESPONSIVIDADE
+============================================================ */
+@media (max-width: 700px) {
+    .sobre-hero {
+        margin-bottom: 42px;
+    }
+
+    .sobre-section {
+        margin-bottom: 44px;
+    }
+
+    .sobre-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .sobre-projeto {
+        padding: 24px 22px;
+    }
+
+    .sobre-cta {
+        padding: 32px 22px;
+    }
+}

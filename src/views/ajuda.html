@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionBooks - Ajuda</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/ajuda.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/logout.js" defer></script>
+    <script src="/js/components.js" defer></script>
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="container ajuda-page">
+
+        <!-- HERO -->
+        <header class="ajuda-hero">
+            <span class="ajuda-tag">Central de Ajuda</span>
+            <h1>Perguntas frequentes</h1>
+            <p>Tudo o que você precisa saber para aproveitar o EmotionBooks.</p>
+        </header>
+
+
+        <!-- FAQ (accordion com <details>) -->
+        <section class="ajuda-faq">
+
+            <details class="faq-item">
+                <summary>
+                    <span>Como funciona o EmotionBooks?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>O EmotionBooks é um sistema de recomendação de livros baseado no seu estado emocional. Você escolhe como está se sentindo e o que busca nesta leitura, e o sistema sugere livros que combinam com o seu momento.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>Como escolher meu estado emocional?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>Na página inicial, você verá cinco opções: Triste, Ansioso, Feliz, Neutro e Entediado. Basta clicar na que melhor representa como você está se sentindo agora. Não existe certo ou errado — é a sua percepção do momento.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>O que significa "Validar meu estado"?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>Ao escolher "Validar meu estado", você está pedindo uma leitura que <strong>combine com a emoção que você está sentindo</strong>. Se você está triste, por exemplo, o sistema recomendará livros que acolhem essa tristeza em vez de tentar mudá-la.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>O que significa "Transformar emoção"?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>Ao escolher "Transformar emoção", você está pedindo uma leitura que <strong>ajude a mudar o seu estado atual</strong>. Se você está ansioso, por exemplo, o sistema pode recomendar livros que trazem calma ou uma leitura mais leve.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>Como o sistema escolhe os livros recomendados?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>Cada livro do acervo está associado a uma ou mais tags emocionais (Felicidade, Tristeza, Ansiedade, Tédio e Neutro). A partir da sua escolha, o sistema seleciona livros com a tag mais adequada ao seu momento — e nunca repete livros que você já tem na biblioteca.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>De onde vêm os livros disponíveis no sistema?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>Todo o acervo é composto por obras de <strong>domínio público</strong>, disponíveis gratuitamente pelo Project Gutenberg. Isso significa que você pode ler qualquer um dos livros recomendados sem nenhum custo.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>
+                    <span>Preciso estar cadastrado para usar o sistema?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    <p>Sim. Para receber recomendações personalizadas, salvar livros na sua biblioteca e acompanhar seu histórico emocional, é necessário criar uma conta. O cadastro é rápido e gratuito.</p>
+                </div>
+            </details>
+
+        </section>
+
+
+        <!-- CTA FINAL -->
+        <section class="ajuda-cta">
+            <h3>Ainda ficou com alguma dúvida?</h3>
+            <p>Se você não encontrou a resposta que procurava, fale com a gente.</p>
+            <a href="/contato" class="btn-primary ajuda-cta-btn">Fale conosco →</a>
+        </section>
+
+    </main>
+
+    <div id="footer-container"></div>
+
+    <!-- Script do accordion (só pra controlar o ícone +/-) -->
+    <script>
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const icon = item.querySelector('.faq-icon');
+            item.addEventListener('toggle', () => {
+                icon.textContent = item.open ? '−' : '+';
+            });
+        });
+    </script>
+
+</body>
+</html>

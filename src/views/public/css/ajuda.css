@@ -1,0 +1,230 @@
+/* ============================================================
+   EMOTIONBOOKS — AJUDA.CSS
+============================================================ */
+
+.ajuda-page {
+    max-width: 780px;
+}
+
+/* ============================================================
+   1. HERO
+============================================================ */
+.ajuda-hero {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 44px;
+}
+
+.ajuda-tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 18px;
+}
+
+.ajuda-hero h1 {
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 10px;
+    color: var(--text-color);
+}
+
+.ajuda-hero p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   2. FAQ ACCORDION
+============================================================ */
+.ajuda-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 56px;
+}
+
+.faq-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.faq-item[open] {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 22px rgba(138, 106, 71, 0.08);
+}
+
+.faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-color);
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary:hover {
+    background: rgba(138, 106, 71, 0.04);
+}
+
+.faq-icon {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 700;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.faq-item[open] .faq-icon {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+.faq-content {
+    padding: 0 22px 20px;
+    animation: faqSlide 0.25s ease;
+}
+
+.faq-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.87rem;
+    line-height: 1.65;
+}
+
+.faq-content strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+@keyframes faqSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   3. CTA FINAL
+============================================================ */
+.ajuda-cta {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(138, 106, 71, 0.06), rgba(138, 106, 71, 0.12));
+    border: 1px solid rgba(138, 106, 71, 0.15);
+    border-radius: 22px;
+    padding: 36px 28px;
+}
+
+.ajuda-cta h3 {
+    margin: 0 0 6px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
+.ajuda-cta p {
+    margin: 0 0 20px;
+    color: var(--text-light);
+    font-size: 0.88rem;
+}
+
+.ajuda-cta-btn {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 12px 30px !important;
+    text-decoration: none;
+}
+
+/* ============================================================
+   4. ALTO CONTRASTE
+============================================================ */
+.alto-contraste .faq-item {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+}
+
+.alto-contraste .faq-item[open] {
+    border-color: #ffcc00 !important;
+}
+
+.alto-contraste .faq-item summary {
+    color: #ffffff !important;
+}
+
+.alto-contraste .faq-item summary:hover {
+    background: #2a2a2a !important;
+}
+
+.alto-contraste .faq-content p {
+    color: #cccccc !important;
+}
+
+.alto-contraste .faq-content strong {
+    color: #ffffff !important;
+}
+
+.alto-contraste .ajuda-hero h1,
+.alto-contraste .ajuda-cta h3 {
+    color: #ffffff !important;
+}
+
+.alto-contraste .ajuda-hero p,
+.alto-contraste .ajuda-cta p {
+    color: #cccccc !important;
+}
+
+.alto-contraste .ajuda-cta {
+    background: #1a1a1a !important;
+    border-color: #333 !important;
+}
+
+/* ============================================================
+   5. RESPONSIVIDADE
+============================================================ */
+@media (max-width: 600px) {
+    .faq-item summary {
+        padding: 16px 18px;
+        font-size: 0.88rem;
+    }
+
+    .faq-content {
+        padding: 0 18px 18px;
+    }
+
+    .ajuda-cta {
+        padding: 30px 22px;
+    }
+}

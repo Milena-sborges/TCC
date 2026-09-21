@@ -29,7 +29,7 @@ const navbarDeslogado = `
     <nav class="navbar">
         <div class="logo">
             <a href="/" class="logo-link">
-                <h2📚 EmotionBooks</h2>
+                <h2📚> EmotionBooks</h2>
             </a>
         </div>
         <div class="nav-links">
