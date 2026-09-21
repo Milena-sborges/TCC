@@ -170,7 +170,202 @@
     transform: scale(1.05);
 }
 
+/* =====================================================
+   GRÁFICO DE EMOÇÕES
+===================================================== */
+.dashboard-grafico {
+    background: #ffffff;
+    padding: 28px 32px;
+    border-radius: 16px;
+    border: 1px solid #ece8e4;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    margin-top: 30px;
+}
 
+.dashboard-grafico h3 {
+    margin: 0 0 20px 0;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #2d2a27;
+    font-size: 1.2rem;
+}
+
+.grafico-container {
+    position: relative;
+    width: 100%;
+    height: 320px;
+}
+
+.grafico-vazio {
+    display: none;
+    text-align: center;
+    color: #8a7e74;
+    padding: 40px 20px;
+    margin: 0;
+}
+
+/* =====================================================
+   RESUMO DA BIBLIOTECA
+===================================================== */
+.minha-biblioteca-resumo {
+    margin-top: 40px;
+}
+
+.biblioteca-resumo-titulo {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #2d2a27;
+    margin-bottom: 16px;
+}
+
+.biblioteca-resumo-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.biblioteca-carregando {
+    color: #8a7e74;
+    text-align: center;
+}
+
+.biblioteca-vazia {
+    text-align: center;
+    padding: 20px;
+    color: #8a7e74;
+    background: #f8f6f4;
+    border-radius: 12px;
+}
+
+.biblioteca-vazia a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #8a6a47;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.biblioteca-erro {
+    text-align: center;
+    padding: 20px;
+    color: #a34a4a;
+    background: #fef2f2;
+    border-radius: 12px;
+}
+
+.biblioteca-ver-todos {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.biblioteca-ver-todos a {
+    color: #8a6a47;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* =====================================================
+   ITEM DA BIBLIOTECA (RESUMO)
+===================================================== */
+.livro-resumo-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: #ffffff;
+    border: 1px solid #ece8e4;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.livro-resumo-item:hover {
+    border-color: #d5cdc4;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.livro-capa-mini {
+    width: 50px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.livro-capa-placeholder {
+    width: 50px;
+    height: 75px;
+    background: #f0ece8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #8a7e74;
+    flex-shrink: 0;
+}
+
+.livro-resumo-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.livro-resumo-info h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #2d2a27;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.livro-resumo-info p {
+    margin: 2px 0 0 0;
+    font-size: 0.8rem;
+    color: #8a7e74;
+}
+
+.livro-resumo-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.livro-resumo-fav {
+    font-size: 0.9rem;
+}
+
+/* =====================================================
+   TAG-PILL (ÚLTIMAS EMOÇÕES)
+===================================================== */
+.emocao-historico-titulo {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: #8a7e74;
+}
+
+.emocao-historico-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.emocao-vazia {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.tag-pill:hover {
+    transform: scale(1.05);
+}
 /* =====================================================
    ACESSIBILIDADE
 ===================================================== */

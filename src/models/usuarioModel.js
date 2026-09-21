@@ -133,10 +133,13 @@ const buscarBibliotecaDoUsuario = async (idUsuario) => {
 
 // Busca as estatísticas de emoções do usuário
 const buscarEstatisticasEmocoes = async (idUsuario) => {
-    // 1. Conta o total de emoções buscadas
-    const [totalResult] = await db.execute('SELECT COUNT(*) as total FROM historico WHERE id_usuario = ?', [idUsuario]);
-    
-    // 2. Descobre qual emoção ele mais pesquisou (A Campeã)
+    // 1. Total de emoções buscadas
+    const [totalResult] = await db.execute(
+        'SELECT COUNT(*) as total FROM historico WHERE id_usuario = ?',
+        [idUsuario]
+    );
+
+    // 2. Emoção mais frequente
     const [frequenteResult] = await db.execute(`
         SELECT t.nome 
         FROM historico h
@@ -147,8 +150,7 @@ const buscarEstatisticasEmocoes = async (idUsuario) => {
         LIMIT 1
     `, [idUsuario]);
 
-    // 3. NOVO: Puxa as 3 últimas emoções pesquisadas
-    // Usamos id_historico DESC para pegar os mais recentes
+    // 3. Últimas 3 emoções
     const [ultimasResult] = await db.execute(`
         SELECT t.nome 
         FROM historico h
@@ -158,13 +160,28 @@ const buscarEstatisticasEmocoes = async (idUsuario) => {
         LIMIT 3
     `, [idUsuario]);
 
-    // Transforma o resultado do banco em uma lista simples (Array)
     const ultimasEmocoes = ultimasResult.map(linha => linha.nome);
+
+    // 4. ⬅️ NOVO: contagem completa por emoção (para o gráfico)
+    const [contagemResult] = await db.execute(`
+        SELECT t.nome, COUNT(*) AS qtd
+        FROM historico h
+        JOIN tag_emocional t ON h.id_tag = t.id_tag
+        WHERE h.id_usuario = ?
+        GROUP BY t.nome
+        ORDER BY qtd DESC
+    `, [idUsuario]);
+
+    const contagem = {};
+    contagemResult.forEach(row => {
+        contagem[row.nome] = row.qtd;
+    });
 
     return {
         total: totalResult[0].total,
         maisFrequente: frequenteResult.length > 0 ? frequenteResult[0].nome : "Nenhuma",
-        ultimas: ultimasEmocoes // Manda a lista nova para o controller
+        ultimas: ultimasEmocoes,
+        contagem: contagem
     };
 };
 

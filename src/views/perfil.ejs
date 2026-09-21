@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/perfil.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/logout.js" defer></script>
 </head>
 <body>
@@ -15,10 +16,10 @@
     <%- include('partials/navbar', { logado: logado }) %>
 
     <div class="container perfil-wrapper">
-        
+
         <!-- Cabeçalho do Perfil -->
         <div class="perfil-header">
-            <div class="avatar" id="avatarSigla">--</div> 
+            <div class="avatar" id="avatarSigla">--</div>
             <div class="user-info">
                 <h2 id="userName">Carregando...</h2>
                 <p id="userEmail">Aguarde...</p>
@@ -42,50 +43,52 @@
             </div>
             <div class="stat-card">
                 <span class="stat-title">🎭 Emoções Buscadas</span>
-                <span class="stat-number" id="numEmocoes">-</span> 
+                <span class="stat-number" id="numEmocoes">-</span>
             </div>
         </div>
 
         <!-- Dashboard de Comportamento -->
         <div class="dashboard-comportamento">
             <h3>📊 Dashboard de comportamento</h3>
-            
+
             <div class="comportamento-grid">
-                <!-- Emoção mais selecionada -->
                 <div class="emocao-destaque">
                     <p>Emoção mais selecionada:</p>
                     <h4 id="emocaoDestaque">Em breve</h4>
                 </div>
 
-                <!-- Últimas buscas -->
                 <div class="emocao-historico">
-                    <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #8a7e74;">Últimas buscas:</p>
-                    <div id="ultimasEmocoesContainer" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <span style="color:#999; font-size:0.85rem;">Carregando...</span>
+                    <p class="emocao-historico-titulo">Últimas buscas:</p>
+                    <div id="ultimasEmocoesContainer" class="emocao-historico-tags">
+                        <span class="emocao-vazia">Carregando...</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ===================================== -->
-        <!-- MINHA BIBLIOTECA (RESUMO) -->
-        <!-- ===================================== -->
-        <div class="minha-biblioteca-resumo" style="margin-top: 40px;">
-            <h3 style="font-family: Georgia, 'Times New Roman', serif; color: #2d2a27; margin-bottom: 16px;">📚 Meus Livros</h3>
-            <div id="bibliotecaResumoContainer" style="display: flex; flex-direction: column; gap: 10px;">
-                <p style="color: #8a7e74; text-align: center;">Carregando seus livros...</p>
+        <!-- Gráfico de Emoções -->
+        <div class="dashboard-grafico">
+            <h3>📈 Emoções mais escolhidas</h3>
+            <div class="grafico-container">
+                <canvas id="graficoEmocoes"></canvas>
+            </div>
+            <p id="graficoVazio" class="grafico-vazio">
+                Sem dados suficientes ainda. Use as recomendações para gerar estatísticas!
+            </p>
+        </div>
+
+        <!-- Minha Biblioteca (resumo) -->
+        <div class="minha-biblioteca-resumo">
+            <h3 class="biblioteca-resumo-titulo">📚 Meus Livros</h3>
+            <div id="bibliotecaResumoContainer" class="biblioteca-resumo-lista">
+                <p class="biblioteca-carregando">Carregando seus livros...</p>
             </div>
         </div>
 
     </div>
 
-    <!-- ===================================================== -->
     <!-- ACESSIBILIDADE -->
-    <!-- ===================================================== -->
-
-    <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade" aria-label="Abrir menu de acessibilidade">
-        ♿
-    </button>
+    <button class="btn-acessibilidade-flutuante" onclick="toggleMenuAcessibilidade()" title="Acessibilidade" aria-label="Abrir menu de acessibilidade">♿</button>
 
     <div class="menu-acessibilidade" id="menuAcessibilidade" role="dialog" aria-label="Menu de acessibilidade">
         <h3>Navegação</h3>
@@ -106,78 +109,49 @@
     </div>
 
     <%- include('partials/footer') %>
+
     <script>
         /* =====================================
-           FUNÇÃO ROBUSTA PARA LIMPAR URL
+           FUNÇÕES UTILITÁRIAS
         ===================================== */
-
         function limparUrl(url) {
-            // Se não tiver URL, retorna vazio
             if (!url) return '';
             if (url === 'null' || url === 'undefined') return '';
-
-            // Remove espaços extras
             url = url.trim();
 
-            // Caso 1: Formato Markdown [texto](url)
             if (url.includes('](')) {
                 const match = url.match(/\]\((.*?)\)/);
-                if (match && match[1]) {
-                    return match[1];
-                }
+                if (match && match[1]) return match[1];
             }
-
-            // Caso 2: URL com parênteses extras (url)
             if (url.includes('(') && url.includes(')')) {
                 const match = url.match(/\((.*?)\)/);
-                if (match && match[1] && match[1].startsWith('http')) {
-                    return match[1];
-                }
+                if (match && match[1] && match[1].startsWith('http')) return match[1];
             }
-
-            // Caso 3: URL com colchetes extras [url]
             if (url.startsWith('[') && url.includes(']')) {
                 const match = url.match(/\[(.*?)\]/);
-                if (match && match[1] && match[1].startsWith('http')) {
-                    return match[1];
-                }
+                if (match && match[1] && match[1].startsWith('http')) return match[1];
             }
-
-            // Caso 4: Verifica se é uma URL válida
-            if (url.startsWith('http://') || url.startsWith('https://')) {
-                return url;
-            }
-
-            // Se nada funcionar, retorna vazio
+            if (url.startsWith('http://') || url.startsWith('https://')) return url;
             return '';
         }
 
-        /* =====================================
-           FUNÇÃO PARA CRIAR CAPA COM FALLBACK
-        ===================================== */
-
         function criarCapa(url, titulo) {
             const urlLimpa = limparUrl(url);
-            
             if (urlLimpa) {
-                return `<img 
-                    src="${urlLimpa}" 
-                    alt="Capa do livro ${titulo}" 
+                return `<img
+                    src="${urlLimpa}"
+                    alt="Capa do livro ${titulo}"
                     class="livro-capa-mini"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                    style="width: 50px; height: 75px; object-fit: cover; border-radius: 6px;"
                 >
-                <div style="display: none; width: 50px; height: 75px; background: #f0ece8; border-radius: 6px; align-items: center; justify-content: center; font-size: 1.5rem; color: #8a7e74; flex-shrink: 0;">📖</div>`;
+                <div class="livro-capa-placeholder" style="display:none;">📖</div>`;
             }
-            
-            return `<div style="width: 50px; height: 75px; background: #f0ece8; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #8a7e74; flex-shrink: 0;">📖</div>`;
+            return `<div class="livro-capa-placeholder">📖</div>`;
         }
-
 
         /* =====================================
            ACESSIBILIDADE
         ===================================== */
-
         function toggleMenuAcessibilidade() {
             const menu = document.getElementById('menuAcessibilidade');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
@@ -188,161 +162,174 @@
         }
 
         let tamanhoAtual = 100;
-
         function alterarFonte(direcao) {
-            if (direcao > 0 && tamanhoAtual < 130) {
-                tamanhoAtual += 10;
-            } else if (direcao < 0 && tamanhoAtual > 80) {
-                tamanhoAtual -= 10;
-            }
-            
+            if (direcao > 0 && tamanhoAtual < 130) tamanhoAtual += 10;
+            else if (direcao < 0 && tamanhoAtual > 80) tamanhoAtual -= 10;
             document.documentElement.style.fontSize = tamanhoAtual + '%';
             document.body.style.fontSize = tamanhoAtual + '%';
         }
 
+        /* =====================================
+           GRÁFICO DE EMOÇÕES
+        ===================================== */
+        function desenharGraficoEmocoes(contagem) {
+            const canvas = document.getElementById('graficoEmocoes');
+            const msgVazio = document.getElementById('graficoVazio');
+
+            // Se não tem dados
+            if (!contagem || Object.keys(contagem).length === 0) {
+                canvas.style.display = 'none';
+                msgVazio.style.display = 'block';
+                return;
+            }
+
+            const cores = {
+                'Felicidade': '#4CAF50',
+                'Tristeza':   '#5C6BC0',
+                'Ansiedade':  '#FF7043',
+                'Tédio':      '#FFA726',
+                'Neutro':     '#78909C'
+            };
+
+            const labels = Object.keys(contagem);
+            const valores = Object.values(contagem);
+            const coresGrafico = labels.map(nome => cores[nome] || '#8a6a47');
+
+            new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: valores,
+                        backgroundColor: coresGrafico,
+                        borderColor: '#ffffff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Poppins', size: 13 },
+                                padding: 16,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         /* =====================================
            CARREGAR PERFIL
         ===================================== */
-
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch('/minha-biblioteca');
-                
+
                 if (response.status === 401) {
-                    alert("Sua sessão expirou. Faça login novamente.");
                     window.location.href = '/login';
                     return;
                 }
 
                 const data = await response.json();
-                
-                // =====================================
-                // 1. Dados do Usuário
-                // =====================================
+
+                // 1. Dados do usuário
                 document.getElementById('userName').innerText = data.usuario.nome;
                 document.getElementById('userEmail').innerText = data.usuario.email;
                 document.getElementById('avatarSigla').innerText = data.usuario.nome.charAt(0).toUpperCase();
 
-                // =====================================
-                // 2. Estatísticas de Livros
-                // =====================================
+                // 2. Estatísticas de livros
                 const livros = data.livros;
-                let contLidos = 0;
-                let contQueroLer = 0;
-                let contFavoritos = 0;
+                let contLidos = 0, contQueroLer = 0, contFavoritos = 0;
 
                 livros.forEach(livro => {
                     if (livro.status_leitura === 'Lido') contLidos++;
                     if (livro.status_leitura === 'Quero ler') contQueroLer++;
-                    if (livro.favorito === 1) contFavoritos++; 
+                    if (livro.favorito === 1) contFavoritos++;
                 });
 
                 document.getElementById('numLidos').innerText = contLidos;
                 document.getElementById('numQueroLer').innerText = contQueroLer;
                 document.getElementById('numFavoritos').innerText = contFavoritos;
 
-                // =====================================
-                // 3. Estatísticas de Emoções
-                // =====================================
-                if(data.emocoes) {
+                // 3. Estatísticas de emoções
+                if (data.emocoes) {
                     document.getElementById('numEmocoes').innerText = data.emocoes.total;
                     document.getElementById('emocaoDestaque').innerText = data.emocoes.maisFrequente;
 
+                    // Tags das últimas emoções
                     const ultimasContainer = document.getElementById('ultimasEmocoesContainer');
                     ultimasContainer.innerHTML = '';
 
                     if (data.emocoes.ultimas && data.emocoes.ultimas.length > 0) {
                         const coresEmocoes = {
                             'Felicidade': '#4CAF50',
-                            'Tristeza': '#5C6BC0',
-                            'Ansiedade': '#FF7043',
-                            'Tédio': '#FFA726',
-                            'Neutro': '#78909C'
+                            'Tristeza':   '#5C6BC0',
+                            'Ansiedade':  '#FF7043',
+                            'Tédio':      '#FFA726',
+                            'Neutro':     '#78909C'
                         };
 
                         data.emocoes.ultimas.forEach(emocao => {
                             const tag = document.createElement('span');
                             tag.className = 'tag-pill';
                             tag.style.backgroundColor = coresEmocoes[emocao] || '#4a4038';
-                            tag.style.color = '#ffffff';
-                            tag.style.padding = '6px 14px';
-                            tag.style.borderRadius = '20px';
-                            tag.style.fontSize = '0.8rem';
-                            tag.style.fontWeight = '500';
-                            tag.style.display = 'inline-block';
                             tag.innerText = emocao;
                             ultimasContainer.appendChild(tag);
                         });
                     } else {
-                        ultimasContainer.innerHTML = '<span style="color:#999; font-size:0.85rem;">Nenhuma busca ainda.</span>';
+                        ultimasContainer.innerHTML = '<span class="emocao-vazia">Nenhuma busca ainda.</span>';
                     }
+
+                    // Gráfico
+                    desenharGraficoEmocoes(data.emocoes.contagem);
                 }
 
-                // =====================================
-                // 4. RESUMO DA BIBLIOTECA
-                // =====================================
+                // 4. Resumo da biblioteca
                 const bibliotecaContainer = document.getElementById('bibliotecaResumoContainer');
                 bibliotecaContainer.innerHTML = '';
 
                 if (livros.length === 0) {
                     bibliotecaContainer.innerHTML = `
-                        <div style="text-align: center; padding: 20px; color: #8a7e74; background: #f8f6f4; border-radius: 12px;">
-                            <p style="margin: 0;">Sua biblioteca está vazia. Busque recomendações!</p>
-                            <a href="/" style="display: inline-block; margin-top: 10px; color: #8b7355; text-decoration: none; font-weight: 500;">← Voltar ao início</a>
+                        <div class="biblioteca-vazia">
+                            <p>Sua biblioteca está vazia. Busque recomendações!</p>
+                            <a href="/">← Voltar ao início</a>
                         </div>
                     `;
                 } else {
-                    // Mostra apenas os 5 primeiros livros
                     const livrosResumo = livros.slice(0, 5);
-                    
+
                     livrosResumo.forEach(livro => {
                         const div = document.createElement('div');
-                        div.style.cssText = `
-                            display: flex;
-                            align-items: center;
-                            gap: 14px;
-                            padding: 12px 16px;
-                            background: #ffffff;
-                            border: 1px solid #ece8e4;
-                            border-radius: 10px;
-                            transition: all 0.2s ease;
-                        `;
-                        
+                        div.className = 'livro-resumo-item';
+
                         const statusIcon = livro.status_leitura === 'Lido' ? '📖' : '⏳';
                         const statusCor = livro.status_leitura === 'Lido' ? '#2d6a4f' : '#6b5f55';
-                        
+
                         div.innerHTML = `
                             ${criarCapa(livro.capa_url, livro.titulo)}
-                            <div style="flex: 1; min-width: 0;">
-                                <h4 style="margin: 0; font-size: 0.95rem; color: #2d2a27; font-family: Georgia, 'Times New Roman', serif;">${livro.titulo}</h4>
-                                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #8a7e74;">${livro.autor}</p>
+                            <div class="livro-resumo-info">
+                                <h4>${livro.titulo}</h4>
+                                <p>${livro.autor}</p>
                             </div>
-                            <span style="padding: 4px 12px; border-radius: 12px; background: ${statusCor}15; color: ${statusCor}; font-size: 0.7rem; font-weight: 600; white-space: nowrap;">
+                            <span class="livro-resumo-status" style="background: ${statusCor}15; color: ${statusCor};">
                                 ${statusIcon} ${livro.status_leitura}
                             </span>
-                            ${livro.favorito === 1 ? '<span style="font-size: 0.9rem;">❤️</span>' : ''}
+                            ${livro.favorito === 1 ? '<span class="livro-resumo-fav">❤️</span>' : ''}
                         `;
-                        
-                        // Adiciona hover effect
-                        div.addEventListener('mouseenter', () => {
-                            div.style.borderColor = '#d5cdc4';
-                            div.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
-                        });
-                        div.addEventListener('mouseleave', () => {
-                            div.style.borderColor = '#ece8e4';
-                            div.style.boxShadow = 'none';
-                        });
-                        
+
                         bibliotecaContainer.appendChild(div);
                     });
 
-                    // Se tiver mais de 5 livros, mostra link para ver todos
                     if (livros.length > 5) {
                         const verTodos = document.createElement('div');
-                        verTodos.style.cssText = 'text-align: center; margin-top: 8px;';
+                        verTodos.className = 'biblioteca-ver-todos';
                         verTodos.innerHTML = `
-                            <a href="/biblioteca" style="color: #8b7355; text-decoration: none; font-weight: 500; font-size: 0.85rem;">
+                            <a href="/biblioteca">
                                 Ver todos os ${livros.length} livros →
                             </a>
                         `;
@@ -354,8 +341,8 @@
                 console.error("Erro ao carregar o perfil:", error);
                 document.getElementById('userName').innerText = "Erro ao carregar dados";
                 document.getElementById('bibliotecaResumoContainer').innerHTML = `
-                    <div style="text-align: center; padding: 20px; color: #a34a4a; background: #fef2f2; border-radius: 12px;">
-                        <p style="margin: 0;">Erro ao carregar seus livros. Tente novamente.</p>
+                    <div class="biblioteca-erro">
+                        <p>Erro ao carregar seus livros. Tente novamente.</p>
                     </div>
                 `;
             }
