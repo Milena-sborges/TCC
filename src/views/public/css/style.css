@@ -1,10 +1,6 @@
 /* ============================================================
    EMOTIONBOOKS — STYLE.CSS
-   Responsabilidades:
-   - Variáveis globais (cores, sombras, raios)
-   - Reset e tipografia base
-   - Acessibilidade (botão flutuante + menu)
-   - Ajustes de alto contraste globais
+   Base do sistema: variáveis, reset, tipografia, acessibilidade
 ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -25,16 +21,13 @@
 
     --primary-color: #8a6a47;
     --primary-hover: #705236;
-    --primary-light: rgba(139, 115, 85, 0.12);
+    --primary-light: rgba(138, 106, 71, 0.12);
 
     --border-color: #e9e1d9;
 
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     --shadow-sm: 0 2px 8px rgba(52, 39, 28, 0.04);
     --shadow-md: 0 8px 30px rgba(52, 39, 28, 0.07);
-    --shadow-hover: 0 8px 35px rgba(0, 0, 0, 0.08);
 
-    --radius: 16px;
     --radius-sm: 10px;
     --radius-md: 16px;
     --radius-lg: 22px;
@@ -52,12 +45,10 @@ body.alto-contraste {
     --primary-color: #ffcc00;
     --primary-hover: #e6b800;
     --primary-light: rgba(255, 204, 0, 0.15);
-    --shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
-    --shadow-hover: 0 8px 35px rgba(255, 255, 255, 0.08);
 }
 
 /* ============================================================
-   2. RESET E TIPOGRAFIA BASE
+   2. RESET E BASE
 ============================================================ */
 * {
     box-sizing: border-box;
@@ -82,7 +73,6 @@ h1, h2, h3 {
     font-family: 'Playfair Display', serif;
 }
 
-/* Container genérico (usado em várias páginas) */
 .container {
     width: min(1100px, calc(100% - 40px));
     margin: 0 auto;
@@ -90,60 +80,7 @@ h1, h2, h3 {
 }
 
 /* ============================================================
-   3. BOTÃO PRINCIPAL (compartilhado entre páginas)
-============================================================ */
-.btn-primary {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-    color: #ffffff;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    transition: var(--transition);
-    display: block;
-    width: 100%;
-    max-width: 280px;
-    margin: 32px auto 0;
-    box-shadow: 0 6px 24px rgba(139, 115, 85, 0.22);
-    letter-spacing: 0.3px;
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 35px rgba(139, 115, 85, 0.32);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
-}
-
-/* ============================================================
-   4. MENSAGEM DE ERRO (compartilhada)
-============================================================ */
-.mensagem-erro {
-    display: none;
-    background: #fef2f2;
-    color: #dc2626;
-    padding: 14px 18px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 500;
-    border-left: 4px solid #dc2626;
-    font-size: 0.9rem;
-}
-
-.mensagem-erro strong {
-    display: block;
-    margin-bottom: 3px;
-}
-
-/* ============================================================
-   5. ACESSIBILIDADE (botão flutuante + menu)
+   3. ACESSIBILIDADE
 ============================================================ */
 .btn-acessibilidade-flutuante {
     position: fixed;
@@ -240,27 +177,11 @@ h1, h2, h3 {
 }
 
 /* ============================================================
-   6. ALTO CONTRASTE — AJUSTES GLOBAIS
+   4. ALTO CONTRASTE
 ============================================================ */
-.alto-contraste .btn-primary {
-    background: #ffcc00;
-    color: #000000;
-    box-shadow: 0 4px 20px rgba(255, 204, 0, 0.3);
-}
-
-.alto-contraste .btn-primary:hover {
-    background: #e6b800;
-}
-
 .alto-contraste .btn-acessibilidade-flutuante {
     background-color: #ffcc00;
     color: #000000;
-}
-
-.alto-contraste .mensagem-erro {
-    background: #2a1a1a;
-    color: #ff6b6b;
-    border-left-color: #ff6b6b;
 }
 
 .alto-contraste .acessibilidade-item button:hover {
@@ -270,17 +191,11 @@ h1, h2, h3 {
 }
 
 /* ============================================================
-   7. RESPONSIVIDADE GLOBAL
+   5. RESPONSIVIDADE GLOBAL
 ============================================================ */
 @media (max-width: 768px) {
     .container {
         padding: 20px 16px 40px;
-    }
-
-    .btn-primary {
-        max-width: 100%;
-        padding: 14px 24px;
-        font-size: 0.9rem;
     }
 
     .menu-acessibilidade {

@@ -17,6 +17,7 @@ async function confirmarSair(event) {
     });
 
     if (r.isConfirmed) {
+        sessionStorage.removeItem('eb_navbar_logado');
         window.location.href = '/sair';
     }
 }

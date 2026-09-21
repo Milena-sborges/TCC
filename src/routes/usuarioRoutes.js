@@ -9,6 +9,9 @@ router.get('/perfil', usuarioController.carregarPerfil); // (O nosso futuro Dash
 router.get('/sair', usuarioController.realizarLogout);
 router.get('/minha-biblioteca', verificarSessao, usuarioController.listarMinhaBiblioteca);
 router.get('/biblioteca', verificarSessao, usuarioController.carregarBiblioteca);
+router.get('/sobre', usuarioController.carregarSobre);
+router.get('/ajuda', usuarioController.carregarAjuda);
+router.get('/contato', usuarioController.carregarContato);
 
 router.post('/cadastrar', usuarioController.cadastrarUsuario);
 router.post('/login', usuarioController.realizarLogin);

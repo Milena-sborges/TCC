@@ -20,7 +20,17 @@ const carregarCadastro = (req, res) => {
 const carregarBiblioteca = (req, res) => {
     res.sendFile('biblioteca.html', { root: './src/views' });
 };
+const carregarSobre = (req, res) => {
+    res.sendFile('sobre.html', { root: './src/views' });
+};
 
+const carregarAjuda = (req, res) => {
+    res.sendFile('ajuda.html', { root: './src/views' });
+};
+
+const carregarContato = (req, res) => {
+    res.sendFile('contato.html', { root: './src/views' });
+};
 // =============================================
 // AUTENTICAÇÃO
 // =============================================
@@ -213,6 +223,9 @@ module.exports = {
     carregarLogin,
     carregarCadastro,
     carregarBiblioteca,
+    carregarSobre,      
+    carregarAjuda,       
+    carregarContato,
     cadastrarUsuario,
     realizarLogin,
     realizarLogout,
