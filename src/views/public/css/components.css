@@ -11,37 +11,32 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.85rem 2.5rem;
-    background: #e0d2b8;                    /* ⬅️ mais escuro */
-    border-bottom: 1px solid #d4c3a8;       /* ⬅️ borda mais visível */
-    box-shadow: 0 1px 4px rgba(60, 40, 20, 0.06);
+    background: #3d2f24;
+    border-bottom: 1px solid #2a2018;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     position: sticky;
     top: 0;
     z-index: 100;
     min-height: 62px;
     gap: 1.5rem;
 }
+
 .navbar-placeholder {
     opacity: 0.7;
 }
 
+
 .navbar .logo-link {
     text-decoration: none;
     color: inherit;
     display: inline-flex;
     align-items: center;
-}
-.navbar .logo-link {
-    text-decoration: none;
-    color: inherit;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;                     /* ⬅️ espaço entre ícone e texto */
+    gap: 10px;                     
 }
 
 .navbar .logo-icon {
-    color: var(--primary-color);   /* ⬅️ ícone na cor do site */
+    color: #d6b98c;              /* ⬅️ dourado suave */
     flex-shrink: 0;
-    transition: transform 0.2s ease;
 }
 
 .navbar .logo-link:hover .logo-icon {
@@ -51,10 +46,10 @@
 .navbar .logo h2 {
     margin: 0;
     font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: #3f2a1d;
-     letter-spacing: -0.5px;
+    color: #f5ede0;              /* ⬅️ claro pra ler no fundo escuro */
+    letter-spacing: -0.4px;
 }
 
 /* ---- Links ---- */
@@ -66,79 +61,68 @@
 }
 
 .nav-links a {
-    color: #4a3a2e;              /* ⬅️ mais escuro pra contraste */
+    color: #e8dfd0;              /* ⬅️ claro */
     text-decoration: none;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.8rem;           /* ⬅️ era 0.78rem */
+    font-size: 0.82rem;
     font-weight: 500;
-    padding: 0.45rem 0.7rem;
+    padding: 0.5rem 0.85rem;
     border-radius: 6px;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease;
     white-space: nowrap;
-    line-height: 1;
     position: relative;
 }
 
+
 .nav-links a:hover {
-    color: var(--primary-color);
-    background: transparent;
+    color: #d6b98c;              /* ⬅️ dourado */
+    background: rgba(214, 185, 140, 0.10);
 }
 
 /* ---- Link ativo (linha embaixo) ---- */
 .nav-links a.active {
-    color: var(--primary-color);
+    color: #d6b98c;
     font-weight: 600;
-    background: transparent;
 }
 
 .nav-links a.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0.85rem;
-    right: 0.85rem;
-    height: 2px;
-    background: var(--primary-color);
-    border-radius: 10px;
+    background: #d6b98c;
 }
 
 /* ---- "Sair" como pílula discreta ---- */
 .nav-links a:last-child {
     margin-left: 0.6rem;
     padding: 0.5rem 1.1rem;
-    border: 1px solid #d9cdbd;
+    border: 1px solid rgba(214, 185, 140, 0.4);
     border-radius: 22px;
-    color: #6b5849;
+    color: #d6b98c;
     font-weight: 500;
     background: transparent;
 }
 
 .nav-links a:last-child:hover {
-    background: #f0e5d5;
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    background: rgba(214, 185, 140, 0.15);
+    color: #f5ede0;
+    border-color: #d6b98c;
 }
 
 /* ---- Botão "Entrar" (navbar deslogada) ---- */
 .nav-links a.btn-nav-login {
     margin-left: 0.4rem;
     padding: 0.55rem 1.3rem;
-    background: var(--primary-color);
-    color: #ffffff;
+    background: #d6b98c;          /* ⬅️ dourado */
+    color: #2a2018;               /* ⬅️ texto escuro */
     border-radius: 22px;
     font-weight: 600;
     font-size: 0.85rem;
-    border: 1px solid var(--primary-color);
-    box-shadow: 0 3px 10px rgba(138, 106, 71, 0.15);
-    transition: all 0.2s ease;
+    border: 1px solid #d6b98c;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
 .nav-links a.btn-nav-login:hover {
-    background: var(--primary-hover);
-    border-color: var(--primary-hover);
-    color: #ffffff;
+    background: #c9a878;
+    border-color: #c9a878;
+    color: #2a2018;
     transform: translateY(-1px);
-    box-shadow: 0 5px 14px rgba(138, 106, 71, 0.25);
 }
 
 /* ============================================================
@@ -147,8 +131,8 @@
 .site-footer {
     margin-top: 5rem;
     padding: 2.5rem 2rem 1.5rem;
-    background: #faf6f0;
-    border-top: 1px solid #ebe3d8;
+    background: #3d2f24;          /* ⬅️ IGUAL à navbar */
+    border-top: 1px solid #2a2018;
     text-align: center;
 }
 
@@ -157,33 +141,35 @@
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
     font-weight: 700;
-    color: #3f2a1d;
+    color: #f5ede0;
     letter-spacing: -0.3px;
 }
+
 
 .footer-slogan {
     margin: 0 0 20px;
     font-size: 0.82rem;
-    color: #8a7e74;
+    color: #b8a690;
     font-style: italic;
     font-family: 'Playfair Display', serif;
 }
 
+
 .footer-links {
     margin: 0 0 20px;
     font-size: 0.85rem;
-    color: #a89c92;
+    color: #b8a690;
 }
 
 .footer-links a {
-    color: #6b5849;
+    color: #e8dfd0;
     text-decoration: none;
     padding: 0 0.35rem;
     transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
-    color: var(--primary-color);
+    color: #d6b98c;
 }
 
 .footer-links span {
@@ -194,11 +180,10 @@
 .footer-copy {
     margin: 0;
     padding-top: 20px;
-    border-top: 1px solid #ebe3d8;
-    color: #a89c92;
+    border-top: 1px solid rgba(214, 185, 140, 0.2);
+    color: #8a7a65;
     font-size: 0.78rem;
 }
-
 /* ============================================================
    3. BOTÃO PRINCIPAL
 ============================================================ */
@@ -382,10 +367,11 @@
         justify-content: center;
         gap: 0.25rem;
         width: 100%;
+        flex-wrap: wrap;
     }
 
     .nav-links a {
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         padding: 0.4rem 0.65rem;
     }
 
@@ -398,7 +384,6 @@
         margin-left: 0.2rem;
     }
 }
-
 @media (max-width: 768px) {
     .btn-primary {
         max-width: 100%;
