@@ -156,16 +156,16 @@
 .card-option label {
     position: relative;
     width: 100%;
-    min-height: 148px;
+    min-height: 120px;      /* ⬅️ era 148px */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px 14px 44px; /* espaço pro indicador embaixo */
+    padding: 16px 12px 38px; /* ⬅️ era 20px 14px 44px */
     text-align: center;
     background: #ffffff;
     border: 1.5px solid var(--border-color);
-    border-radius: 18px;
+    border-radius: 16px;
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(50, 38, 28, 0.04);
     transition:
@@ -177,13 +177,13 @@
 
 /* Ícone dentro do círculo */
 .card-option label .icon {
-    width: 52px;
-    height: 52px;
+    width: 44px;              /* ⬅️ era 52px */
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-    font-size: 1.7rem;
+    margin-bottom: 8px;       /* ⬅️ era 10px */
+    font-size: 1.45rem;       /* ⬅️ era 1.7rem */
     background: #f8f4ef;
     border-radius: 50%;
     transition: transform 0.22s ease, background 0.22s ease;
@@ -192,35 +192,34 @@
 .card-option label .title {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.84rem;
+    font-size: 0.82rem;       /* ⬅️ era 0.84rem */
     font-weight: 600;
     color: var(--text-color);
     line-height: 1.2;
 }
 
 .card-option label .desc {
-    margin-top: 6px;
+    margin-top: 4px;
     max-width: 220px;
-    font-size: 0.72rem;
-    line-height: 1.45;
+    font-size: 0.7rem;
+    line-height: 1.4;
     color: var(--text-light);
 }
-
 /* ============================================================
    6. INDICADOR DE SELEÇÃO (○ → ✓)
 ============================================================ */
 .card-option label::after {
     content: '○';
     position: absolute;
-    bottom: 12px;
+    bottom: 10px;             /* ⬅️ era 12px */
     left: 50%;
     transform: translateX(-50%);
-    width: 22px;
-    height: 22px;
+    width: 20px;              /* ⬅️ era 22px */
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #c9bdb0;
     border-radius: 50%;
     transition: all 0.22s ease;
@@ -230,11 +229,10 @@
     content: '✓';
     background: var(--primary-color);
     color: #ffffff;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
     box-shadow: 0 3px 8px rgba(138, 106, 71, 0.32);
 }
-
 /* ============================================================
    7. HOVER / FOCO
 ============================================================ */
@@ -317,26 +315,35 @@
    10. SEGUNDO GRUPO (intenção) — cards maiores
 ============================================================ */
 .card-intencao label {
-    min-height: 168px;
-    padding: 22px 20px 46px;
+    min-height: 138px;        /* ⬅️ era 168px */
+    padding: 18px 18px 40px;  /* ⬅️ era 22px 20px 46px */
 }
 
 .card-intencao label .icon {
-    width: 56px;
-    height: 56px;
-    font-size: 1.85rem;
+    width: 48px;              /* ⬅️ era 56px */
+    height: 48px;
+    font-size: 1.55rem;       /* ⬅️ era 1.85rem */
     background: var(--primary-light);
 }
 
 .card-intencao label .title {
-    font-size: 0.95rem;
+    font-size: 0.92rem;       /* ⬅️ era 0.95rem */
 }
 
 .card-intencao label .desc {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     max-width: 260px;
 }
+.card-intencao label .icon svg {
+    stroke: var(--primary-color);
+    width: 22px;
+    height: 22px;
+}
 
+.card-option input:checked + label .icon svg {
+    stroke: var(--primary-hover);
+    stroke-width: 2.2;
+}
 /* ============================================================
    11. ALTO CONTRASTE
 ============================================================ */
