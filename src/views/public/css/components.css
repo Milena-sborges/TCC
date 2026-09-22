@@ -11,9 +11,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.85rem 2.5rem;
-    background: #f0e5d5;                    /* ⬅️ bege mais quente e escuro */
-    border-bottom: 1px solid #e0d2be;       /* ⬅️ borda mais visível */
-    box-shadow: 0 1px 4px rgba(60, 40, 20, 0.05);
+    background: #e0d2b8;                    /* ⬅️ mais escuro */
+    border-bottom: 1px solid #d4c3a8;       /* ⬅️ borda mais visível */
+    box-shadow: 0 1px 4px rgba(60, 40, 20, 0.06);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -29,6 +29,23 @@
     color: inherit;
     display: inline-flex;
     align-items: center;
+}
+.navbar .logo-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;                     /* ⬅️ espaço entre ícone e texto */
+}
+
+.navbar .logo-icon {
+    color: var(--primary-color);   /* ⬅️ ícone na cor do site */
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.navbar .logo-link:hover .logo-icon {
+    transform: scale(1.06);
 }
 
 .navbar .logo h2 {
@@ -49,13 +66,14 @@
 }
 
 .nav-links a {
-    color: #5a4a3d;
+    color: #4a3a2e;              /* ⬅️ mais escuro pra contraste */
     text-decoration: none;
-    font-size: 0.78rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;           /* ⬅️ era 0.78rem */
     font-weight: 500;
     padding: 0.45rem 0.7rem;
     border-radius: 6px;
-    transition: color 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease;
     white-space: nowrap;
     line-height: 1;
     position: relative;
@@ -185,20 +203,22 @@
    3. BOTÃO PRINCIPAL
 ============================================================ */
 .btn-primary {
-    display: flex;                /* ⬅️ block, não inline */
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
     max-width: 300px;
-    margin: 30px auto 0;          /* ⬅️ margin auto (centraliza) */
-    padding: 13px 28px;
+    margin: 30px auto 0;
+    padding: 14px 30px;
     border: 1px solid var(--primary-color);
     border-radius: 24px;
     background: var(--primary-color);
     color: #ffffff;
+    font-family: 'Poppins', sans-serif;   /* ⬅️ garante a mesma fonte */
     font-size: 0.85rem;
     font-weight: 600;
+    letter-spacing: 0.3px;
     box-shadow: 0 4px 12px rgba(138, 106, 71, 0.16);
     text-decoration: none;
     text-align: center;

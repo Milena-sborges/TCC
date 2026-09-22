@@ -9,7 +9,7 @@
 .descobrir-page {
     width: min(900px, calc(100% - 40px));   /* ⬅️ era 1000px */
     margin: 0 auto;
-    padding: 32px 0 64px;
+    padding: 12px 0 48px;  
 }
 
 .descobrir-page::before {
@@ -37,8 +37,8 @@
 .discover-hero {
     text-align: center;
     max-width: 780px;
-    margin: 0 auto 36px;
-    padding: 20px 16px 0;
+    margin: 0 auto 28px;    /* ⬅️ era 36px */
+    padding: 0;             /* ⬅️ remove o padding-top */
 }
 
 .discover-tag {
