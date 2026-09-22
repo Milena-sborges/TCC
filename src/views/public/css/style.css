@@ -13,10 +13,10 @@
     --card-bg: #ffffff;
 
     /* ---- Textos ---- */
-    --text-color: #302a26;
-    --text-light: #8a7e74;
-    --text-secondary: #756b63;
-    --text-muted: #9b9189;
+   --text-color: #302a26;
+    --text-light: #6a5f55;      /* Escurecido para melhor contraste */
+    --text-secondary: #594d42;  /* Escurecido para melhor contraste */
+    --text-muted: #7d7266;
 
     /* ---- Cor principal (caramelo/madeira) ---- */
     --primary-color: #8a6a47;
