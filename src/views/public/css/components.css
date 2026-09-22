@@ -10,17 +10,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2.5rem;
+    padding: 0.75rem 2.5rem;
     background: #faf6f0;
     border-bottom: 1px solid #ebe3d8;
     box-shadow: 0 1px 3px rgba(60, 40, 20, 0.03);
     position: sticky;
     top: 0;
     z-index: 100;
-    min-height: 68px;
-    gap: 2rem;
+    min-height: 60px;
+      gap: 1.5rem;
 }
-
 .navbar-placeholder {
     opacity: 0.7;
 }
@@ -35,10 +34,10 @@
 .navbar .logo h2 {
     margin: 0;
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #3f2a1d;
-    letter-spacing: -0.4px;
+     letter-spacing: -0.5px;
 }
 
 /* ---- Links ---- */
@@ -52,9 +51,9 @@
 .nav-links a {
     color: #5a4a3d;
     text-decoration: none;
-    font-size: 0.88rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    padding: 0.5rem 0.85rem;
+    padding: 0.45rem 0.7rem;
     border-radius: 6px;
     transition: color 0.2s ease, background 0.2s ease;
     white-space: nowrap;
@@ -186,27 +185,16 @@
    3. BOTÃO PRINCIPAL
 ============================================================ */
 .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    max-width: 320px;
-    margin: 36px auto 0;
-    padding: 15px 34px;
-    border: none;
-    border-radius: 12px;
+    max-width: 300px;
+    margin: 30px auto 0;
+    padding: 13px 28px;
+    border: 1px solid var(--primary-color);
+    border-radius: 24px;
     background: var(--primary-color);
     color: #ffffff;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.92rem;
+    font-size: 0.82rem;
     font-weight: 600;
-    letter-spacing: 0.2px;
-    cursor: pointer;
-    box-shadow: 0 5px 18px rgba(138, 106, 71, 0.22);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    text-align: center;
+    box-shadow: 0 4px 12px rgba(138, 106, 71, 0.16);
 }
 
 .btn-primary:hover {
